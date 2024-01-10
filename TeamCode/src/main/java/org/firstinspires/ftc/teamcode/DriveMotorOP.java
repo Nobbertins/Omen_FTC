@@ -87,7 +87,7 @@ Motors (port, name):
 0 - bl
 1 - fl
 2- rraise
-3 - lateral (this will be hang)
+3 - intake
 Servos:
 0 - deposit
 1 - rslide
@@ -311,6 +311,8 @@ public class DriveMotorOP extends LinearOpMode {
             rbPressed = gamepad1.right_bumper;
             //both triggers are activated then do nothing to prevent killing the motors
             if(gamepad1.left_trigger>0 && gamepad1.right_trigger>0){
+                extraMotor.setDirection(DcMotor.Direction.REVERSE);
+                oppMotor.setDirection(DcMotor.Direction.FORWARD);
                 extraMotor.setPower(0.1);
                 oppMotor.setPower(0.1);
             }
@@ -338,8 +340,8 @@ public class DriveMotorOP extends LinearOpMode {
             if(gamepad1.left_trigger>0) {
                 extraMotor.setDirection(DcMotor.Direction.REVERSE);
                 oppMotor.setDirection(DcMotor.Direction.FORWARD);
-                oppMotor.setPower(0.5);
-                extraMotor.setPower(0.5);
+                oppMotor.setPower(0.6);
+                extraMotor.setPower(0.6);
                 //up
             }
             //right trigger linear slide go down
@@ -352,8 +354,8 @@ public class DriveMotorOP extends LinearOpMode {
             }
             //otherwise do nothing
             else{
-                extraMotor.setDirection(DcMotor.Direction.FORWARD);
-                oppMotor.setDirection(DcMotor.Direction.REVERSE);
+                extraMotor.setDirection(DcMotor.Direction.REVERSE);
+                oppMotor.setDirection(DcMotor.Direction.FORWARD);
                 extraMotor.setPower(0.1);
                 oppMotor.setPower(0.1);
             }
