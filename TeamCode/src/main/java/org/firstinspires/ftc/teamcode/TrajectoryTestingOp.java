@@ -24,10 +24,17 @@ public class TrajectoryTestingOp extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence autonomousDropSequence = drive.trajectorySequenceBuilder(startPose)
-                .splineTo(new Vector2d(46, 36), Math.toRadians(0))
+                //to tile of deposit
+                .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
                 .waitSeconds(3)
-                .build();
 
+                //back to start
+                .lineToLinearHeading(startPose)
+                //move to side to avoid running into marker on left line
+                .strafeLeft(10)
+                .splineToSplineHeading(new Pose2d(46, 36, Math.toRadians(0)), Math.toRadians(10))
+
+                .build();
         waitForStart();
 
         if (!isStopRequested())
