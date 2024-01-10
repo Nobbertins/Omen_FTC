@@ -37,8 +37,18 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
+                                //to tile of deposit
+                                .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
                                 .waitSeconds(3)
-                                .splineTo(new Vector2d(46, 36), Math.toRadians(0))
+
+                                //back to start
+                                .lineToLinearHeading(startPose)
+                                //move to side to avoid running into marker on left line
+                                .strafeLeft(10)
+                                .splineToSplineHeading(new Pose2d(46, 36, Math.toRadians(0)), Math.toRadians(10))
+
+
+
                                 .build()
                 );
 
