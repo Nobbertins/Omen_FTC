@@ -25,10 +25,10 @@ public class MeepMeepTesting {
 
 
 
-        Pose2d blueCloseStartPose = new Pose2d(12,56,Math.toRadians(270));
-        Pose2d blueFarStartPose = new Pose2d(-35,56,Math.toRadians(270));
-        Pose2d redCloseStartPose = new Pose2d(12,-56,Math.toRadians(90));
-        Pose2d redFarStartPose = new Pose2d(-35,-56,Math.toRadians(90));
+        Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(270));
+        Pose2d blueFarStartPose = new Pose2d(-35,61,Math.toRadians(270));
+        Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
+        Pose2d redFarStartPose = new Pose2d(-35,-61,Math.toRadians(90));
 
         Pose2d startPose = blueCloseStartPose;
 
@@ -37,8 +37,8 @@ public class MeepMeepTesting {
                 .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .splineTo(new Vector2d(46, 36), Math.toRadians(0))
                                 .waitSeconds(3)
+                                .splineTo(new Vector2d(46, 36), Math.toRadians(0))
                                 .build()
                 );
 

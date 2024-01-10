@@ -12,10 +12,10 @@ public class TrajectoryTestingOp extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
 
-        Pose2d blueCloseStartPose = new Pose2d(12,56,Math.toRadians(270));
-        Pose2d blueFarStartPose = new Pose2d(-35,56,Math.toRadians(270));
-        Pose2d redCloseStartPose = new Pose2d(12,-56,Math.toRadians(90));
-        Pose2d redFarStartPose = new Pose2d(-35,-56,Math.toRadians(90));
+        Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(270));
+        Pose2d blueFarStartPose = new Pose2d(-35,61,Math.toRadians(270));
+        Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
+        Pose2d redFarStartPose = new Pose2d(-35,-61,Math.toRadians(90));
 
         Pose2d startPose = blueCloseStartPose;
 
