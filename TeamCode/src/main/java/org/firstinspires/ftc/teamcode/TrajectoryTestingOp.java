@@ -36,8 +36,8 @@ public class TrajectoryTestingOp extends LinearOpMode {
     public void dropPlaceHolder(){
 
     }
-    
-    
+
+
     @Override
     public void runOpMode() throws InterruptedException {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
@@ -197,7 +197,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
         Drop yellow pixel in intake sequence
         because all outtakes return to the same spot the same drop sequence can be utilized for all sequences of same start pose
          */
-        
+
         //Close Blue
         TrajectorySequence blueCloseDropSequence = drive.trajectorySequenceBuilder(blueClosePostOuttakePose)
                 .splineTo(blueBackDrop, Math.toRadians(0))
@@ -253,10 +253,11 @@ public class TrajectoryTestingOp extends LinearOpMode {
 
         waitForStart();
 
-        if (!isStopRequested())
+        if (!isStopRequested()) {
             //EXAMPLE SEQUENCE CHAIN
             drive.followTrajectorySequence(blueCloseMarkerLeftOuttakeSequence);
             drive.followTrajectorySequence(blueCloseDropSequence);
             drive.followTrajectorySequence(blueNearParkSequence);
+        }
     }
 }
