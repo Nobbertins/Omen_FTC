@@ -22,33 +22,40 @@ public class MeepMeepTesting {
         MeepMeep meepMeep = new MeepMeep(800);
 
         //EVERY TILE IS 24x24
-
-
-
+        //IMPORTANT LOCATIONS
         Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(270));
-        Pose2d blueFarStartPose = new Pose2d(-35,61,Math.toRadians(270));
+        Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(270));
         Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
-        Pose2d redFarStartPose = new Pose2d(-35,-61,Math.toRadians(90));
+        Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
-        Pose2d startPose = blueCloseStartPose;
+        Pose2d blueClosePostOutakePose = new Pose2d(12,58,Math.toRadians(0));
+        Pose2d blueFarPostOutakePose = new Pose2d(-36,58,Math.toRadians(0));
+        Pose2d redClosePostOutakePose = new Pose2d(12,-58,Math.toRadians(0));
+        Pose2d redFarPostOutakePose = new Pose2d(-36,-58,Math.toRadians(0));
+
+        Vector2d blueBackDrop = new Vector2d(48,36);
+        Vector2d redBackDrop = new Vector2d(48, -36);
+
+        Vector2d blueNearPark = new Vector2d(60,60);
+        Vector2d blueAwayPark = new Vector2d(60,12);
+        Vector2d redNearPark = new Vector2d(60,-60);
+        Vector2d redAwayPark = new Vector2d(60,-12);
+
+        Vector2d blueCloseMarkerTile = new Vector2d(12, 36);
+        Vector2d blueFarMarkerTile = new Vector2d(-36, 36);
+        Vector2d redCloseMarkerTile = new Vector2d(12, -36);
+        Vector2d redFarMarkerTile = new Vector2d(-36, -36);
+
+        Pose2d startPose = new Pose2d(redBackDrop, Math.toRadians(0));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(60, 60, Math.toRadians(180), Math.toRadians(180), 15)
+                .setConstraints(42.52, 30, 3.7, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                //to tile of deposit
-                                .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
-                                .waitSeconds(3)
-
-                                //back to start
-                                .lineToLinearHeading(startPose)
-                                //move to side to avoid running into marker on left line
-                                .strafeLeft(10)
-                                .splineToSplineHeading(new Pose2d(46, 36, Math.toRadians(0)), Math.toRadians(10))
-
-
-
+                                //slightly longer than near strafe to make SURE that the backdrop is not hit
+                                .strafeLeft(24)
+                                .forward(12)
                                 .build()
                 );
 
