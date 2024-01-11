@@ -50,10 +50,10 @@ public class TrajectoryTestingOp extends LinearOpMode {
         Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
         Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
-        Pose2d blueClosePostouttakePose = new Pose2d(12,58,Math.toRadians(0));
-        Pose2d blueFarPostouttakePose = new Pose2d(-36,58,Math.toRadians(0));
-        Pose2d redClosePostouttakePose = new Pose2d(12,-58,Math.toRadians(0));
-        Pose2d redFarPostouttakePose = new Pose2d(-36,-58,Math.toRadians(0));
+        Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
+        Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
+        Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
+        Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
         Vector2d blueBackDrop = new Vector2d(48,36);
         Vector2d redBackDrop = new Vector2d(48, -36);
@@ -84,7 +84,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
                 //giving more lee-way to wall because bot was hitting wall during testing
-                .lineToLinearHeading(blueClosePostouttakePose)
+                .lineToLinearHeading(blueClosePostOuttakePose)
                 .build();
 
         TrajectorySequence blueCloseMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
@@ -93,7 +93,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                .lineToLinearHeading(blueClosePostouttakePose)
+                .lineToLinearHeading(blueClosePostOuttakePose)
                 .build();
 
         TrajectorySequence blueCloseMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
@@ -102,7 +102,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                .lineToLinearHeading(blueClosePostouttakePose)
+                .lineToLinearHeading(blueClosePostOuttakePose)
                 .build();
 
         //Far Blue
@@ -113,7 +113,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
                 //giving more lee-way to wall because bot was hitting wall during testing
-                .lineToLinearHeading(blueFarPostouttakePose)
+                .lineToLinearHeading(blueFarPostOuttakePose)
                 .build();
 
         TrajectorySequence blueFarMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
@@ -122,7 +122,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                .lineToLinearHeading(blueFarPostouttakePose)
+                .lineToLinearHeading(blueFarPostOuttakePose)
                 .build();
 
         TrajectorySequence blueFarMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
@@ -131,7 +131,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                .lineToLinearHeading(blueFarPostouttakePose)
+                .lineToLinearHeading(blueFarPostOuttakePose)
                 .build();
 
         //Close red
@@ -142,7 +142,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
                 //giving more lee-way to wall because bot was hitting wall during testing
-                .lineToLinearHeading(redClosePostouttakePose)
+                .lineToLinearHeading(redClosePostOuttakePose)
                 .build();
 
         TrajectorySequence redCloseMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
@@ -151,7 +151,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-                .lineToLinearHeading(redClosePostouttakePose)
+                .lineToLinearHeading(redClosePostOuttakePose)
                 .build();
 
         TrajectorySequence redCloseMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
@@ -160,7 +160,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-                .lineToLinearHeading(redClosePostouttakePose)
+                .lineToLinearHeading(redClosePostOuttakePose)
                 .build();
 
         //Far red
@@ -171,7 +171,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
                 //giving more lee-way to wall because bot was hitting wall during testing
-                .lineToLinearHeading(redFarPostouttakePose)
+                .lineToLinearHeading(redFarPostOuttakePose)
                 .build();
 
         TrajectorySequence redFarMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
@@ -180,7 +180,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-                .lineToLinearHeading(redFarPostouttakePose)
+                .lineToLinearHeading(redFarPostOuttakePose)
                 .build();
 
         TrajectorySequence redFarMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
@@ -189,7 +189,7 @@ public class TrajectoryTestingOp extends LinearOpMode {
                 //outtake of tile goes in this marker
                 .addDisplacementMarker(() ->{outtakePlaceHolder();})
                 //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-                .lineToLinearHeading(redFarPostouttakePose)
+                .lineToLinearHeading(redFarPostOuttakePose)
                 .build();
 
 
@@ -199,26 +199,26 @@ public class TrajectoryTestingOp extends LinearOpMode {
          */
         
         //Close Blue
-        TrajectorySequence blueCloseDropSequence = drive.trajectorySequenceBuilder(blueClosePostouttakePose)
+        TrajectorySequence blueCloseDropSequence = drive.trajectorySequenceBuilder(blueClosePostOuttakePose)
                 .splineTo(blueBackDrop, Math.toRadians(0))
                 .addDisplacementMarker(() -> {dropPlaceHolder();})
                 .build();
 
         //Far Blue
-        TrajectorySequence blueFarDropSequence = drive.trajectorySequenceBuilder(blueFarPostouttakePose)
-                .lineToLinearHeading(blueClosePostouttakePose)
+        TrajectorySequence blueFarDropSequence = drive.trajectorySequenceBuilder(blueFarPostOuttakePose)
+                .lineToLinearHeading(blueClosePostOuttakePose)
                 .splineTo(blueBackDrop, Math.toRadians(0))
                 .build();
 
         //Close red
-        TrajectorySequence redCloseDropSequence = drive.trajectorySequenceBuilder(redClosePostouttakePose)
+        TrajectorySequence redCloseDropSequence = drive.trajectorySequenceBuilder(redClosePostOuttakePose)
                 .splineTo(redBackDrop, Math.toRadians(0))
                 .addDisplacementMarker(() -> {dropPlaceHolder();})
                 .build();
 
         //Far red
-        TrajectorySequence redFarDropSequence = drive.trajectorySequenceBuilder(redFarPostouttakePose)
-                .lineToLinearHeading(redClosePostouttakePose)
+        TrajectorySequence redFarDropSequence = drive.trajectorySequenceBuilder(redFarPostOuttakePose)
+                .lineToLinearHeading(redClosePostOuttakePose)
                 .splineTo(redBackDrop, Math.toRadians(0))
                 .addDisplacementMarker(() -> {dropPlaceHolder();})
                 .build();
