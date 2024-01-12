@@ -54,17 +54,17 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
         MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
         switch(position){
             case LEFT:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerLeftOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerLeftOuttakeSequence);
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseDropLeftSequence);
                 break;
 
             case RIGHT:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerRightOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerRightOuttakeSequence);
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseDropRightSequence);
                 break;
 
             case MIDDLE:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerMiddleOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerMiddleOuttakeSequence);
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseDropMiddleSequence);
                 break;
 

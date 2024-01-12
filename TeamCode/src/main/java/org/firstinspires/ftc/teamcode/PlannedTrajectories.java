@@ -14,8 +14,8 @@ public class PlannedTrajectories {
         this.drive = new SampleMecanumDrive(hardwareMap);
     }
 
-    //Fill this function with the functionality to outake the pixel on the line and any other actual robotics shit, runs during outake sequence
-    public void outakePlaceHolder(){
+    //Fill this function with the functionality to Outtake the pixel on the line and any other actual robotics shit, runs during Outtake sequence
+    public void OuttakePlaceHolder(){
 
     }
 
@@ -32,10 +32,10 @@ public class PlannedTrajectories {
     Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
     Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
-    Pose2d blueClosePostOutakePose = new Pose2d(12,58,Math.toRadians(0));
-    Pose2d blueFarPostOutakePose = new Pose2d(-36,58,Math.toRadians(0));
-    Pose2d redClosePostOutakePose = new Pose2d(12,-58,Math.toRadians(0));
-    Pose2d redFarPostOutakePose = new Pose2d(-36,-58,Math.toRadians(0));
+    Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
+    Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
+    Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
+    Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
 
     Vector2d blueBackDropLeft = new Vector2d(48,40);
@@ -62,195 +62,195 @@ public class PlannedTrajectories {
     //neccesary to prevent mismatch between the driver's representation of pose and the trajectory's
     //only need to do this once for the start pose in the beginning if you chain trajectory sequences
 
-    //All trajectories for automatic outake of pixel on marker's line
+    //All trajectories for automatic Outtake of pixel on marker's line
 
     //Close Blue
-    TrajectorySequence blueCloseMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
+    TrajectorySequence blueCloseMarkerRightOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
             .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
             //giving more lee-way to wall because bot was hitting wall during testing
-            .lineToLinearHeading(blueClosePostOutakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .build();
 
-    TrajectorySequence blueCloseMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
+    TrajectorySequence blueCloseMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
             .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(270)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-            .lineToLinearHeading(blueClosePostOutakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .build();
 
-    TrajectorySequence blueCloseMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
+    TrajectorySequence blueCloseMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
             //reach tile at correct heading
 
             //TESTING A SPLINE HEADING
             .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(0)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-            .lineToLinearHeading(blueClosePostOutakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .build();
 
     //Far Blue
-    TrajectorySequence blueFarMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
+    TrajectorySequence blueFarMarkerRightOuttakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
             //giving more lee-way to wall because bot was hitting wall during testing
-            .lineToLinearHeading(blueFarPostOutakePose)
+            .lineToLinearHeading(blueFarPostOuttakePose)
             .build();
 
-    TrajectorySequence blueFarMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
+    TrajectorySequence blueFarMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(270)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-            .lineToLinearHeading(blueFarPostOutakePose)
+            .lineToLinearHeading(blueFarPostOuttakePose)
             .build();
 
-    TrajectorySequence blueFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
+    TrajectorySequence blueFarMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-            .lineToLinearHeading(blueFarPostOutakePose)
+            .lineToLinearHeading(blueFarPostOuttakePose)
             .build();
 
     //Close red
-    TrajectorySequence redCloseMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
+    TrajectorySequence redCloseMarkerRightOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(180)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
             //giving more lee-way to wall because bot was hitting wall during testing
-            .lineToLinearHeading(redClosePostOutakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .build();
 
-    TrajectorySequence redCloseMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
+    TrajectorySequence redCloseMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(270)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-            .lineToLinearHeading(redClosePostOutakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .build();
 
-    TrajectorySequence redCloseMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
+    TrajectorySequence redCloseMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-            .lineToLinearHeading(redClosePostOutakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .build();
 
     //Far red
-    TrajectorySequence redFarMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
+    TrajectorySequence redFarMarkerRightOuttakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(180)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
             //giving more lee-way to wall because bot was hitting wall during testing
-            .lineToLinearHeading(redFarPostOutakePose)
+            .lineToLinearHeading(redFarPostOuttakePose)
             .build();
 
-    TrajectorySequence redFarMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
+    TrajectorySequence redFarMarkerMiddleOuttakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(270)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-            .lineToLinearHeading(redFarPostOutakePose)
+            .lineToLinearHeading(redFarPostOuttakePose)
             .build();
 
-    TrajectorySequence redFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
+    TrajectorySequence redFarMarkerLeftOuttakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
-            //Outake of tile goes in this marker
-            .addDisplacementMarker(() ->{outakePlaceHolder();})
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
-            .lineToLinearHeading(redFarPostOutakePose)
+            .lineToLinearHeading(redFarPostOuttakePose)
             .build();
 
 
         /*
         Drop yellow pixel in intake sequence
-        because all outakes return to the same spot the same drop sequence can be utilized for all sequences of same start pose
+        because all Outtakes return to the same spot the same drop sequence can be utilized for all sequences of same start pose
          */
 
     //Close Blue
-    TrajectorySequence blueCloseDropMiddleSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+    TrajectorySequence blueCloseDropMiddleSequence = drive.trajectorySequenceBuilder(blueClosePostOuttakePose)
             .splineTo(blueBackDropMiddle, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
-    TrajectorySequence blueCloseDropRightSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+    TrajectorySequence blueCloseDropRightSequence = drive.trajectorySequenceBuilder(blueClosePostOuttakePose)
             .splineTo(blueBackDropRight, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
-    TrajectorySequence blueCloseDropLeftSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+    TrajectorySequence blueCloseDropLeftSequence = drive.trajectorySequenceBuilder(blueClosePostOuttakePose)
             .splineTo(blueBackDropLeft, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
 
     //Far Blue
-    TrajectorySequence blueFarDropMiddleSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
-            .lineToLinearHeading(blueClosePostOutakePose)
+    TrajectorySequence blueFarDropMiddleSequence = drive.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .splineTo(blueBackDropMiddle, Math.toRadians(0))
             .build();
-    TrajectorySequence blueFarDropRightSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
-            .lineToLinearHeading(blueClosePostOutakePose)
+    TrajectorySequence blueFarDropRightSequence = drive.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .splineTo(blueBackDropRight, Math.toRadians(0))
             .build();
-    TrajectorySequence blueFarDropLeftSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
-            .lineToLinearHeading(blueClosePostOutakePose)
+    TrajectorySequence blueFarDropLeftSequence = drive.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
             .splineTo(blueBackDropLeft, Math.toRadians(0))
             .build();
 
 
     //Close red
-    TrajectorySequence redCloseDropMiddleSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+    TrajectorySequence redCloseDropMiddleSequence = drive.trajectorySequenceBuilder(redClosePostOuttakePose)
             .splineTo(redBackDropMiddle, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
-    TrajectorySequence redCloseDropRightSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+    TrajectorySequence redCloseDropRightSequence = drive.trajectorySequenceBuilder(redClosePostOuttakePose)
             .splineTo(redBackDropRight, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
-    TrajectorySequence redCloseDropLeftSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+    TrajectorySequence redCloseDropLeftSequence = drive.trajectorySequenceBuilder(redClosePostOuttakePose)
             .splineTo(redBackDropMiddle, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
     //Far red
-    TrajectorySequence redFarDropMiddleSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
-            .lineToLinearHeading(redClosePostOutakePose)
+    TrajectorySequence redFarDropMiddleSequence = drive.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .splineTo(redBackDropMiddle, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
-    TrajectorySequence redFarDropRightSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
-            .lineToLinearHeading(redClosePostOutakePose)
+    TrajectorySequence redFarDropRightSequence = drive.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .splineTo(redBackDropRight, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
-    TrajectorySequence redFarDropLeftSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
-            .lineToLinearHeading(redClosePostOutakePose)
+    TrajectorySequence redFarDropLeftSequence = drive.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
             .splineTo(redBackDropLeft, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
