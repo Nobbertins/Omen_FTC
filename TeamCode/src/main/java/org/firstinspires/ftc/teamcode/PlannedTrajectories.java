@@ -91,7 +91,7 @@ public class PlannedTrajectories {
     //Far Blue
     TrajectorySequence blueFarMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, 36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -101,7 +101,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence blueFarMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, 36, Math.toRadians(270)))
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(270)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -110,7 +110,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence blueFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, 36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -120,7 +120,7 @@ public class PlannedTrajectories {
     //Close red
     TrajectorySequence redCloseMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(12, -36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(180)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -130,7 +130,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence redCloseMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(12, -36, Math.toRadians(270)))
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(270)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -139,7 +139,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence redCloseMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(12, -36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -149,7 +149,7 @@ public class PlannedTrajectories {
     //Far red
     TrajectorySequence redFarMarkerRightOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, -36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(180)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -159,7 +159,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence redFarMarkerMiddleOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, -36, Math.toRadians(270)))
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(270)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -168,7 +168,7 @@ public class PlannedTrajectories {
 
     TrajectorySequence redFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToLinearHeading(new Pose2d(-36, -36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
             //Outake of tile goes in this marker
             .addDisplacementMarker(() ->{outakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
