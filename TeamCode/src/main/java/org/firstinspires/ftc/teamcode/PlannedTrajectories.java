@@ -2,14 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
 public class PlannedTrajectories {
     private SampleMecanumDrive drive;
-    public PlannedTrajectories(SampleMecanumDrive drive){
-        this.drive = drive;
+    public PlannedTrajectories(HardwareMap hardwareMap){
+
+        this.drive = new SampleMecanumDrive(hardwareMap);
     }
 
     //Fill this function with the functionality to outake the pixel on the line and any other actual robotics shit, runs during outake sequence

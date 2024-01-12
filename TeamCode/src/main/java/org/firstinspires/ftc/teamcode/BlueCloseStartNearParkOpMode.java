@@ -17,7 +17,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
     OpenCvWebcam webcam1 = null;
     BlueMarkerDetectionPipeline workingPipeline = new BlueMarkerDetectionPipeline();
 
-    PlannedTrajectories plannedTrajectories = new PlannedTrajectories(drive);
+    PlannedTrajectories plannedTrajectories = new PlannedTrajectories(hardwareMap);
 
     public void sleepMillis(int delay){
         Long start = System.currentTimeMillis();
