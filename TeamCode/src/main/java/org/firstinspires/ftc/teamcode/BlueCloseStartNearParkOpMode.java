@@ -55,22 +55,23 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
         switch(position){
             case LEFT:
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerLeftOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropLeftSequence);
                 break;
 
             case RIGHT:
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerRightOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropRightSequence);
                 break;
 
             case MIDDLE:
                 drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerMiddleOutakeSequence);
+                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropMiddleSequence);
                 break;
 
             default:
                 break;
         }
 
-        //Drop yellow pixel at back drop
-        drive.followTrajectorySequence(plannedTrajectories.blueCloseDropSequence);
 
         //park near
         drive.followTrajectorySequence(plannedTrajectories.blueNearParkSequence);

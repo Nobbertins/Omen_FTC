@@ -28,13 +28,22 @@ public class MeepMeepTesting {
         Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
         Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
-        Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
-        Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
-        Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
-        Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
+        Pose2d blueClosePostOutakePose = new Pose2d(12,58,Math.toRadians(0));
+        Pose2d blueFarPostOutakePose = new Pose2d(-36,58,Math.toRadians(0));
+        Pose2d redClosePostOutakePose = new Pose2d(12,-58,Math.toRadians(0));
+        Pose2d redFarPostOutakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
-        Vector2d blueBackDrop = new Vector2d(48,36);
-        Vector2d redBackDrop = new Vector2d(48, -36);
+
+        Vector2d blueBackDropRight = new Vector2d(48,40);
+        Vector2d redBackDropRight = new Vector2d(48, -40);
+
+        Vector2d blueBackDropMiddle = new Vector2d(48,35);
+        Vector2d redBackDropMiddle = new Vector2d(48, -35);
+
+        Vector2d blueBackDropLeft = new Vector2d(48,30);
+        Vector2d redBackDropLeft = new Vector2d(48, -30);
+
+
 
         Vector2d blueNearPark = new Vector2d(60,60);
         Vector2d blueAwayPark = new Vector2d(60,12);
@@ -46,19 +55,14 @@ public class MeepMeepTesting {
         Vector2d redCloseMarkerTile = new Vector2d(12, -36);
         Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 
-        Pose2d startPose =  blueFarStartPose;
+        Pose2d startPose =  new Pose2d(blueBackDropLeft, 0);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42.52, 30, 3.7, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                //reach tile at correct heading
-                                .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
-                                //Outake of tile goes in this marker
-                                //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                                //giving more lee-way to wall because bot was hitting wall during testing
-                                .lineToLinearHeading(blueFarPostOuttakePose)
+                                .waitSeconds(10)
                                 .build()
                 );
 

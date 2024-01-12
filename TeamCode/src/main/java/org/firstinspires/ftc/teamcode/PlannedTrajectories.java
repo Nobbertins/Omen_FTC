@@ -35,8 +35,17 @@ public class PlannedTrajectories {
     Pose2d redClosePostOutakePose = new Pose2d(12,-58,Math.toRadians(0));
     Pose2d redFarPostOutakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
-    Vector2d blueBackDrop = new Vector2d(48,36);
-    Vector2d redBackDrop = new Vector2d(48, -36);
+
+    Vector2d blueBackDropLeft = new Vector2d(48,40);
+    Vector2d redBackDropLeft = new Vector2d(48, -40);
+
+    Vector2d blueBackDropMiddle = new Vector2d(48,35);
+    Vector2d redBackDropMiddle = new Vector2d(48, -35);
+
+    Vector2d blueBackDropRight = new Vector2d(48,30);
+    Vector2d redBackDropRight = new Vector2d(48, -30);
+
+
 
     Vector2d blueNearPark = new Vector2d(60,60);
     Vector2d blueAwayPark = new Vector2d(60,12);
@@ -108,7 +117,7 @@ public class PlannedTrajectories {
             .lineToLinearHeading(blueFarPostOutakePose)
             .build();
 
-    TrajectorySequence blueFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(blueCloseStartPose)
+    TrajectorySequence blueFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
             //Outake of tile goes in this marker
@@ -166,7 +175,7 @@ public class PlannedTrajectories {
             .lineToLinearHeading(redFarPostOutakePose)
             .build();
 
-    TrajectorySequence redFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redCloseStartPose)
+    TrajectorySequence redFarMarkerLeftOutakeSequence = drive.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
             .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
             //Outake of tile goes in this marker
@@ -182,50 +191,88 @@ public class PlannedTrajectories {
          */
 
     //Close Blue
-    TrajectorySequence blueCloseDropSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
-            .splineTo(blueBackDrop, Math.toRadians(0))
+    TrajectorySequence blueCloseDropMiddleSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+            .splineTo(blueBackDropMiddle, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    TrajectorySequence blueCloseDropRightSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+            .splineTo(blueBackDropRight, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    TrajectorySequence blueCloseDropLeftSequence = drive.trajectorySequenceBuilder(blueClosePostOutakePose)
+            .splineTo(blueBackDropLeft, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
+
     //Far Blue
-    TrajectorySequence blueFarDropSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
+    TrajectorySequence blueFarDropMiddleSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
             .lineToLinearHeading(blueClosePostOutakePose)
-            .splineTo(blueBackDrop, Math.toRadians(0))
+            .splineTo(blueBackDropMiddle, Math.toRadians(0))
+            .build();
+    TrajectorySequence blueFarDropRightSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
+            .lineToLinearHeading(blueClosePostOutakePose)
+            .splineTo(blueBackDropRight, Math.toRadians(0))
+            .build();
+    TrajectorySequence blueFarDropLeftSequence = drive.trajectorySequenceBuilder(blueFarPostOutakePose)
+            .lineToLinearHeading(blueClosePostOutakePose)
+            .splineTo(blueBackDropLeft, Math.toRadians(0))
             .build();
 
+
     //Close red
-    TrajectorySequence redCloseDropSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
-            .splineTo(redBackDrop, Math.toRadians(0))
+    TrajectorySequence redCloseDropMiddleSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+            .splineTo(redBackDropMiddle, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    TrajectorySequence redCloseDropRightSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+            .splineTo(redBackDropRight, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    TrajectorySequence redCloseDropLeftSequence = drive.trajectorySequenceBuilder(redClosePostOutakePose)
+            .splineTo(redBackDropMiddle, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
     //Far red
-    TrajectorySequence redFarDropSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
+    TrajectorySequence redFarDropMiddleSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
             .lineToLinearHeading(redClosePostOutakePose)
-            .splineTo(redBackDrop, Math.toRadians(0))
+            .splineTo(redBackDropMiddle, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    TrajectorySequence redFarDropRightSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
+            .lineToLinearHeading(redClosePostOutakePose)
+            .splineTo(redBackDropRight, Math.toRadians(0))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    TrajectorySequence redFarDropLeftSequence = drive.trajectorySequenceBuilder(redFarPostOutakePose)
+            .lineToLinearHeading(redClosePostOutakePose)
+            .splineTo(redBackDropLeft, Math.toRadians(0))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
     //Trajectories for parking after dropping off pixel, they are the same for all blue starts and all red starts
 
     //Blue Near
-    TrajectorySequence blueNearParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDrop, Math.toRadians(0)))
+    TrajectorySequence blueNearParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             .strafeLeft(23)
             .forward(12)
             .build();
     //Blue Away
-    TrajectorySequence blueAwayParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDrop, Math.toRadians(0)))
+    TrajectorySequence blueAwayParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             //slightly longer than near strafe to make SURE that the backdrop is not hit
             .strafeRight(24)
             .forward(12)
             .build();
     //Red Near
-    TrajectorySequence redNearParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDrop, Math.toRadians(0)))
+    TrajectorySequence redNearParkSequence = drive.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(0)))
             .strafeRight(23)
             .forward(12)
             .build();
     //Red Away
-    TrajectorySequence redAwayParkSequence = drive.trajectorySequenceBuilder(new Pose2d(blueBackDrop, Math.toRadians(0)))
+    TrajectorySequence redAwayParkSequence = drive.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(0)))
             //slightly longer than near strafe to make SURE that the backdrop is not hit
             .strafeLeft(24)
             .forward(12)
