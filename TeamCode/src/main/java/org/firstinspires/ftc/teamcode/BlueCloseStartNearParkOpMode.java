@@ -13,11 +13,12 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
 public class BlueCloseStartNearParkOpMode extends OpMode {
-    SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
+
+    SampleMecanumDrive drive = null;
     OpenCvWebcam webcam1 = null;
     BlueMarkerDetectionPipeline workingPipeline = new BlueMarkerDetectionPipeline();
 
-    PlannedTrajectories plannedTrajectories = new PlannedTrajectories(hardwareMap);
+    //drive drive = new drive();
 
     public void sleepMillis(int delay){
         Long start = System.currentTimeMillis();
@@ -28,7 +29,9 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
     public void init(){
 
         //Set start position estimate for drive to avoid fuck ups in follower
-        drive.setPoseEstimate(plannedTrajectories.blueCloseStartPose);
+        drive = new SampleMecanumDrive(hardwareMap);
+
+        drive.setPoseEstimate(drive.blueCloseStartPose);
 
 
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
@@ -46,41 +49,38 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
             public void onError(int errorCode) {
 
             }
+
         });
 
-        sleepMillis(1000);
-
-        //Determine location of marker and outtake the purple pixel
-        MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
-        switch(position){
-            case LEFT:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerLeftOuttakeSequence);
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropLeftSequence);
-                break;
-
-            case RIGHT:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerRightOuttakeSequence);
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropRightSequence);
-                break;
-
-            case MIDDLE:
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseMarkerMiddleOuttakeSequence);
-                drive.followTrajectorySequence(plannedTrajectories.blueCloseDropMiddleSequence);
-                break;
-
-            default:
-                break;
-        }
+    }
 
 
-        //park near
-        drive.followTrajectorySequence(plannedTrajectories.blueNearParkSequence);
+        public void start() {
+//Determine location of marker and outtake the purple pixel
+            MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
+            switch(position){
+                case LEFT:
+                    drive.followTrajectorySequence(drive.blueCloseMarkerLeftOuttakeSequence);
+                    drive.followTrajectorySequence(drive.blueCloseDropLeftSequence);
+                    break;
+
+                case RIGHT:
+                    drive.followTrajectorySequence(drive.blueCloseMarkerRightOuttakeSequence);
+                    drive.followTrajectorySequence(drive.blueCloseDropRightSequence);
+                    break;
+
+                case MIDDLE:
+                    drive.followTrajectorySequence(drive.blueCloseMarkerMiddleOuttakeSequence);
+                    drive.followTrajectorySequence(drive.blueCloseDropMiddleSequence);
+                    break;
+
+                default:
+                    break;
+            }
 
 
-
-
-
-
+            //park near
+            drive.followTrajectorySequence(drive.blueNearParkSequence);
 
 
     }

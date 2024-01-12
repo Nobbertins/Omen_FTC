@@ -9,6 +9,7 @@ import com.acmerobotics.roadrunner.drive.MecanumDrive;
 import com.acmerobotics.roadrunner.followers.HolonomicPIDVAFollower;
 import com.acmerobotics.roadrunner.followers.TrajectoryFollower;
 import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.acmerobotics.roadrunner.trajectory.TrajectoryBuilder;
 import com.acmerobotics.roadrunner.trajectory.constraints.AngularVelocityConstraint;
@@ -313,4 +314,266 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
+    public void OuttakePlaceHolder(){
+
+    }
+
+    //Fill this function with the functionality to drop off a pixel on the backdrop
+    public void dropPlaceHolder(){
+
+    }
+    //IMPORTANT LOCATIONS
+    public Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(90));
+    public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(90));
+    public Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(270));
+    public Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(270));
+
+    public Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
+    public Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
+    public Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
+    public Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
+
+
+    public Vector2d blueBackDropLeft = new Vector2d(48,40);
+    public Vector2d redBackDropLeft = new Vector2d(48, -40);
+
+    public Vector2d blueBackDropMiddle = new Vector2d(48,35);
+    public Vector2d redBackDropMiddle = new Vector2d(48, -35);
+
+    public Vector2d blueBackDropRight = new Vector2d(48,30);
+    public Vector2d redBackDropRight = new Vector2d(48, -30);
+
+
+
+    public Vector2d blueNearPark = new Vector2d(60,60);
+    public Vector2d blueAwayPark = new Vector2d(60,12);
+    public Vector2d redNearPark = new Vector2d(60,-60);
+    public Vector2d redAwayPark = new Vector2d(60,-12);
+
+    public Vector2d blueCloseMarkerTile = new Vector2d(12, 36);
+    public Vector2d blueFarMarkerTile = new Vector2d(-36, 36);
+    public Vector2d redCloseMarkerTile = new Vector2d(12, -36);
+    public Vector2d redFarMarkerTile = new Vector2d(-36, -36);
+
+    //neccesary to prevent mismatch between the driver's representation of pose and the trajectory's
+    //only need to do this once for the start pose in the beginning if you chain trajectory sequences
+
+    //All trajectories for automatic Outtake of pixel on marker's line
+
+    //Close Blue
+    public TrajectorySequence blueCloseMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(blueCloseStartPose)
+            //reach tile at correct heading
+            //TESTING A SPLINE HEADING
+
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(0)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            //giving more lee-way to wall because bot was hitting wall during testing
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .build();
+
+    public TrajectorySequence blueCloseMarkerMiddleOuttakeSequence = this.trajectorySequenceBuilder(blueCloseStartPose)
+            //reach tile at correct heading
+            //TESTING A SPLINE HEADING
+
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(90)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .build();
+
+    public TrajectorySequence blueCloseMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(blueCloseStartPose)
+            //reach tile at correct heading
+
+            //TESTING A SPLINE HEADING
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .build();
+
+    //Far Blue
+    public TrajectorySequence blueFarMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(blueFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            //giving more lee-way to wall because bot was hitting wall during testing
+            .lineToLinearHeading(blueFarPostOuttakePose)
+            .build();
+
+    public TrajectorySequence blueFarMarkerMiddleOuttakeSequence = this.trajectorySequenceBuilder(blueFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(90)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            .lineToLinearHeading(blueFarPostOuttakePose)
+            .build();
+
+    public TrajectorySequence blueFarMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(blueFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+            .lineToLinearHeading(blueFarPostOuttakePose)
+            .build();
+
+    //Close red
+    public TrajectorySequence redCloseMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(redCloseStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            //giving more lee-way to wall because bot was hitting wall during testing
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .build();
+
+    public TrajectorySequence redCloseMarkerMiddleOuttakeSequence = this.trajectorySequenceBuilder(redCloseStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(90)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .build();
+
+    public TrajectorySequence redCloseMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(redCloseStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(180)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .build();
+
+    //Far red
+    public TrajectorySequence redFarMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(redFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            //giving more lee-way to wall because bot was hitting wall during testing
+            .lineToLinearHeading(redFarPostOuttakePose)
+            .build();
+
+    public TrajectorySequence redFarMarkerMiddleOuttakeSequence = this.trajectorySequenceBuilder(redFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(90)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            .lineToLinearHeading(redFarPostOuttakePose)
+            .build();
+
+    public TrajectorySequence redFarMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(redFarStartPose)
+            //reach tile at correct heading
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(180)))
+            //Outtake of tile goes in this marker
+            .addDisplacementMarker(() ->{OuttakePlaceHolder();})
+            //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
+            .lineToLinearHeading(redFarPostOuttakePose)
+            .build();
+
+
+        /*
+        Drop yellow pixel in intake sequence
+        because all Outtakes return to the same spot the same drop sequence can be utilized for all sequences of same start pose
+         */
+
+    //Close Blue
+    public TrajectorySequence blueCloseDropMiddleSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
+            .splineTo(blueBackDropMiddle, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    public TrajectorySequence blueCloseDropRightSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
+            .splineTo(blueBackDropRight, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    public TrajectorySequence blueCloseDropLeftSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
+            .splineTo(blueBackDropLeft, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+
+    //Far Blue
+    public TrajectorySequence blueFarDropMiddleSequence = this.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .splineTo(blueBackDropMiddle, Math.toRadians(180))
+            .build();
+    public TrajectorySequence blueFarDropRightSequence = this.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .splineTo(blueBackDropRight, Math.toRadians(180))
+            .build();
+    public TrajectorySequence blueFarDropLeftSequence = this.trajectorySequenceBuilder(blueFarPostOuttakePose)
+            .lineToLinearHeading(blueClosePostOuttakePose)
+            .splineTo(blueBackDropLeft, Math.toRadians(180))
+            .build();
+
+
+    //Close red
+    public TrajectorySequence redCloseDropMiddleSequence = this.trajectorySequenceBuilder(redClosePostOuttakePose)
+            .splineTo(redBackDropMiddle, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    public TrajectorySequence redCloseDropRightSequence = this.trajectorySequenceBuilder(redClosePostOuttakePose)
+            .splineTo(redBackDropRight, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    public TrajectorySequence redCloseDropLeftSequence = this.trajectorySequenceBuilder(redClosePostOuttakePose)
+            .splineTo(redBackDropMiddle, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    //Far red
+    public TrajectorySequence redFarDropMiddleSequence = this.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .splineTo(redBackDropMiddle, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+    public TrajectorySequence redFarDropRightSequence = this.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .splineTo(redBackDropRight, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    public TrajectorySequence redFarDropLeftSequence = this.trajectorySequenceBuilder(redFarPostOuttakePose)
+            .lineToLinearHeading(redClosePostOuttakePose)
+            .splineTo(redBackDropLeft, Math.toRadians(180))
+            .addDisplacementMarker(() -> {dropPlaceHolder();})
+            .build();
+
+    //Trajectories for parking after dropping off pixel, they are the same for all blue starts and all red starts
+
+    //Blue Near
+    public TrajectorySequence blueNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(180)))
+            .strafeLeft(23)
+            .forward(12)
+            .build();
+    //Blue Away
+    public TrajectorySequence blueAwayParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(180)))
+            //slightly longer than near strafe to make SURE that the backdrop is not hit
+            .strafeRight(24)
+            .forward(12)
+            .build();
+    //Red Near
+    public TrajectorySequence redNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(180)))
+            .strafeRight(23)
+            .forward(12)
+            .build();
+    //Red Away
+    public TrajectorySequence redAwayParkSequence = this.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(180)))
+            //slightly longer than near strafe to make SURE that the backdrop is not hit
+            .strafeLeft(24)
+            .forward(12)
+            .build();
+
 }
