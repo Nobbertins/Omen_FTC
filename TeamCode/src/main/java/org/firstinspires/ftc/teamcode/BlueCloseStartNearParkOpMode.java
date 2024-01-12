@@ -58,6 +58,9 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
         public void start() {
 //Determine location of marker and outtake the purple pixel
             MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
+            sleepMillis(10000);
+            telemetry.addData("Line Detected", position);
+
             switch(position){
                 case LEFT:
                     drive.followTrajectorySequence(drive.blueCloseMarkerLeftOuttakeSequence);
