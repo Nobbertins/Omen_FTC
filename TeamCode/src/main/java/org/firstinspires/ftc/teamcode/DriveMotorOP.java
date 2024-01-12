@@ -82,25 +82,15 @@ A - toggle deposit servo
 A and X - launch plane
 
 CONFIG MOTOR NAMES:
+
+*REMEMBER THAT THE DEADWHEEL ENCODERS ARE ALSO WIRED TO THESE MOTORS
+
 Control Hub:
 Motors (port, name):
 0 - bl
 1 - fl
 2- rraise
-3 - intake
-Servos:
-0 - deposit
-1 - rslide
-2 - lslide
-3 - rdrop
-4 -
-5 -
-Expansion Hub:
-Motors:
-0 - br
-1 - fr
-2 - intake
-3 - axial (this is also lraise)
+3 - intake (lateral deadwheel)
 Servos:
 0 - ldrop
 1 -
@@ -108,6 +98,19 @@ Servos:
 3 -
 4 -
 5 -
+Expansion Hub:
+Motors:
+0 - br
+1 - fr
+2 - lraise
+3 - hang (axial deadwheel)
+Servos:
+0 - rdrop
+1 - launch
+2 - lslide
+3 - rslide
+4 -
+5 - deposit
  */
 
 //define OP
@@ -126,11 +129,12 @@ public class DriveMotorOP extends LinearOpMode {
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
 
-    private DcMotor extraMotor = null;
+    private DcMotor rraiseMotor = null;
 
-    private DcMotor oppMotor = null;
+    private DcMotor lraiseMotor = null;
 
     private DcMotor intakeMotor = null;
+    private DcMotor hangMotor = null;
     //declare all servo motors
     private Servo lslideServo = null;
 
@@ -152,9 +156,10 @@ public class DriveMotorOP extends LinearOpMode {
         leftBackDrive  = hardwareMap.get(DcMotor.class, "bl");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "fr");
         rightBackDrive = hardwareMap.get(DcMotor.class, "br");
-        extraMotor = hardwareMap.get(DcMotor.class, "rraise");
-        oppMotor = hardwareMap.get(DcMotor.class, "axial");
+        rraiseMotor = hardwareMap.get(DcMotor.class, "rraise");
+        lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
+        hangMotor = hardwareMap.get(DcMotor.class, "hang");
         lslideServo = hardwareMap.get(Servo.class, "lslide");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         ldropServo = hardwareMap.get(Servo.class, "ldrop");
@@ -169,7 +174,7 @@ public class DriveMotorOP extends LinearOpMode {
         rightFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-
+        hangMotor.setDirection(DcMotor.Direction.FORWARD);
         // Wait for the game to start (driver presses PLAY)
         telemetry.addData("Status", "Initialized");
         telemetry.update();
@@ -235,7 +240,17 @@ public class DriveMotorOP extends LinearOpMode {
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-
+            if(gamepad1.a && gamepad1.b){
+                hangMotor.setDirection(DcMotor.Direction.FORWARD);
+                hangMotor.setPower(1);
+            }
+            if(gamepad1.a && gamepad1.x){
+                hangMotor.setDirection(DcMotor.Direction.REVERSE);
+                hangMotor.setPower(1);
+            }
+            if(gamepad1.a && gamepad1.y){
+                hangMotor.setPower(0);
+            }
             //switch slide servos position on y press
             if(gamepad1.y && !yPressed) {
                 slideState = !slideState;
@@ -311,10 +326,10 @@ public class DriveMotorOP extends LinearOpMode {
             rbPressed = gamepad1.right_bumper;
             //both triggers are activated then do nothing to prevent killing the motors
             if(gamepad1.left_trigger>0 && gamepad1.right_trigger>0){
-                extraMotor.setDirection(DcMotor.Direction.REVERSE);
-                oppMotor.setDirection(DcMotor.Direction.FORWARD);
-                extraMotor.setPower(0.1);
-                oppMotor.setPower(0.1);
+                rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+                lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+                rraiseMotor.setPower(0.1);
+                lraiseMotor.setPower(0.1);
             }
             /*
             //prevent motor from freaking out if both buttons are pressed
@@ -338,26 +353,26 @@ public class DriveMotorOP extends LinearOpMode {
             */
             //left trigger linear slide go up
             if(gamepad1.left_trigger>0) {
-                extraMotor.setDirection(DcMotor.Direction.REVERSE);
-                oppMotor.setDirection(DcMotor.Direction.FORWARD);
-                oppMotor.setPower(0.6);
-                extraMotor.setPower(0.6);
+                rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+                lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+                lraiseMotor.setPower(0.6);
+                rraiseMotor.setPower(0.6);
                 //up
             }
             //right trigger linear slide go down
             else if(gamepad1.right_trigger>0){
-                extraMotor.setDirection(DcMotor.Direction.FORWARD);
-                oppMotor.setDirection(DcMotor.Direction.REVERSE);
-                oppMotor.setPower(0.5);
-                extraMotor.setPower(0.5);
+                rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+                lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+                lraiseMotor.setPower(0.5);
+                rraiseMotor.setPower(0.5);
                 //down
             }
             //otherwise do nothing
             else{
-                extraMotor.setDirection(DcMotor.Direction.REVERSE);
-                oppMotor.setDirection(DcMotor.Direction.FORWARD);
-                extraMotor.setPower(0.1);
-                oppMotor.setPower(0.1);
+                rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+                lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+                rraiseMotor.setPower(0.1);
+                lraiseMotor.setPower(0.1);
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
