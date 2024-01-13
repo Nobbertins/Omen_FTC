@@ -392,7 +392,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
 
             //TESTING A SPLINE HEADING
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -402,7 +402,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     //Far Blue
     public TrajectorySequence blueFarMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -421,7 +421,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public TrajectorySequence blueFarMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(blueFarStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(-36, 36, Math.toRadians(180)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -431,7 +431,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     //Close red
     public TrajectorySequence redCloseMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -450,7 +450,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public TrajectorySequence redCloseMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(redCloseStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(12, -36, Math.toRadians(180)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -460,7 +460,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     //Far red
     public TrajectorySequence redFarMarkerRightOuttakeSequence = this.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(180)))
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
@@ -479,7 +479,7 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     public TrajectorySequence redFarMarkerLeftOuttakeSequence = this.trajectorySequenceBuilder(redFarStartPose)
             //reach tile at correct heading
-            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(0)))
+            .lineToSplineHeading(new Pose2d(-36, -36, Math.toRadians(180)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all red close starts but facing backdrop
