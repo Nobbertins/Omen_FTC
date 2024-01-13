@@ -64,13 +64,13 @@ class RedMarkerDetectionPipeline extends OpenCvPipeline {
         if (sampling){
             if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
                 //nothing detected must be in furthest left lane
-                currentMarkerPosition = MarkerPosition.LEFT;
+                currentMarkerPosition = MarkerPosition.RIGHT;
             } else if (leftavgin > rightavgin) {
                 //on the left of screen which is middle line
                 currentMarkerPosition = MarkerPosition.MIDDLE;
             } else {
                 //on the right
-                currentMarkerPosition = MarkerPosition.RIGHT;
+                currentMarkerPosition = MarkerPosition.LEFT;
             }
         }
 
