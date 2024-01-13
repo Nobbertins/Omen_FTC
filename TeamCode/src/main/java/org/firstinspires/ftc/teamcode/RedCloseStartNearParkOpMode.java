@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
-import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -15,11 +14,11 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 
 @Autonomous
-public class BlueCloseStartNearParkOpMode extends OpMode {
+public class RedCloseStartNearParkOpMode extends OpMode {
 
     SampleMecanumDrive drive = null;
     OpenCvWebcam webcam1 = null;
-    BlueMarkerDetectionPipeline workingPipeline = new BlueMarkerDetectionPipeline();
+    RedMarkerDetectionPipeline workingPipeline = new RedMarkerDetectionPipeline();
 
     //drive drive = new drive();
 
@@ -60,7 +59,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
         public void start() {
 //Determine location of marker and outtake the purple pixel
-            Pose2d startPose =  new Pose2d(14,61,Math.toRadians(90));
+            Pose2d startPose =  new Pose2d(14,-61,Math.toRadians(270));
             MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
             telemetry.addData("Line Detected", position);
             telemetry.update();
@@ -79,11 +78,11 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     drive.followTrajectorySequence(drive.blueLeftNearParkSequence);
                     */
                     drive.trajectorySequenceBuilder(startPose)
-                            .lineTo(new Vector2d(14+14, 61-20))
-                            .forward(20)
+                            .lineTo(new Vector2d(14-4.5, -61+20))
+                            .forward(18)
                             //Outtake of tile goes in this marker
                             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                            .strafeRight(34)
+                            .strafeLeft(50)
                             .build();
                     break;
 
@@ -97,11 +96,11 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     drive.followTrajectorySequence(drive.blueRightNearParkSequence);
                     */
                     drive.trajectorySequenceBuilder(startPose)
-                            .lineTo(new Vector2d(14-4.5, 61-20))
-                            .forward(20)
+                            .lineTo(new Vector2d(14+14, -61+20))
+                            .forward(18)
                             //Outtake of tile goes in this marker
                             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                            .strafeRight(50)
+                            .strafeLeft(32)
                             .build();
                     break;
 

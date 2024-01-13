@@ -314,6 +314,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     public static TrajectoryAccelerationConstraint getAccelerationConstraint(double maxAccel) {
         return new ProfileAccelerationConstraint(maxAccel);
     }
+/*
     public void OuttakePlaceHolder(){
 
     }
@@ -597,4 +598,5 @@ public class SampleMecanumDrive extends MecanumDrive {
             .forward(12)
             .build();
 
+ */
 }

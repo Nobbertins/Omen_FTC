@@ -185,7 +185,8 @@ public class DriveMotorOP extends LinearOpMode {
         //initialize motor states
         boolean slideState = false;
         boolean yPressed = false;
-
+        boolean xPressed = false;
+        float hangMotorPower = 0;
         boolean dropState = false;
         boolean bPressed = false;
 
@@ -240,19 +241,19 @@ public class DriveMotorOP extends LinearOpMode {
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            if(gamepad1.a && gamepad1.b){
+            if(gamepad2.x && !xPressed){
                 hangMotor.setDirection(DcMotor.Direction.FORWARD);
-                hangMotor.setPower(1);
+                if(hangMotorPower == 0){
+                    hangMotorPower = 1;
+                }
+                else{
+                    hangMotorPower = 0;
+                }
+                hangMotor.setPower(hangMotorPower);
             }
-            if(gamepad1.a && gamepad1.x){
-                hangMotor.setDirection(DcMotor.Direction.REVERSE);
-                hangMotor.setPower(1);
-            }
-            if(gamepad1.a && gamepad1.y){
-                hangMotor.setPower(0);
-            }
+            xPressed = gamepad2.x;
             //switch slide servos position on y press
-            if(gamepad1.y && !yPressed) {
+            if(gamepad2.y && !yPressed) {
                 slideState = !slideState;
                 if (slideState) {
                     //lslideServo.setPosition(0);
@@ -263,13 +264,13 @@ public class DriveMotorOP extends LinearOpMode {
                 }
             }
             //launch drone
-            if(gamepad1.a & gamepad1.x){
+            if(gamepad1.x){
                 //release servo
                 launchServo.setPosition(0);
                 sleep(300);                //stop servo movement
                 launchServo.setPosition(0.5);
             }
-            yPressed = gamepad1.y;
+            yPressed = gamepad2.y;
             //switch drop servos position on b press
             if(gamepad1.b && !bPressed) {
                 dropState = !dropState;
@@ -282,7 +283,7 @@ public class DriveMotorOP extends LinearOpMode {
                 }
             }
             bPressed = gamepad1.b;
-            if(gamepad1.a && !aPressed) {
+            if(gamepad2.a && !aPressed) {
                 depositState = !depositState;
                 if (depositState) {
                     depositServo.setPosition(0.7);
@@ -290,7 +291,7 @@ public class DriveMotorOP extends LinearOpMode {
                     depositServo.setPosition(0);
                 }
             }
-            aPressed = gamepad1.a;
+            aPressed = gamepad2.a;
             //switch intake motor direction on LB
             if(gamepad1.left_bumper && !lbPressed) {
                 intakeMotorDirection = !intakeMotorDirection;
@@ -325,7 +326,7 @@ public class DriveMotorOP extends LinearOpMode {
             }
             rbPressed = gamepad1.right_bumper;
             //both triggers are activated then do nothing to prevent killing the motors
-            if(gamepad1.left_trigger>0 && gamepad1.right_trigger>0){
+            if(gamepad2.left_trigger>0 && gamepad2.right_trigger>0){
                 rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
                 rraiseMotor.setPower(0.1);
@@ -352,7 +353,7 @@ public class DriveMotorOP extends LinearOpMode {
             }
             */
             //left trigger linear slide go up
-            if(gamepad1.left_trigger>0) {
+            if(gamepad2.left_trigger>0) {
                 rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
                 lraiseMotor.setPower(0.6);
@@ -360,7 +361,7 @@ public class DriveMotorOP extends LinearOpMode {
                 //up
             }
             //right trigger linear slide go down
-            else if(gamepad1.right_trigger>0){
+            else if(gamepad2.right_trigger>0){
                 rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
                 lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setPower(0.5);
