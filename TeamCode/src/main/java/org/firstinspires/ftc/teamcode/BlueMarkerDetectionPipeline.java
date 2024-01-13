@@ -20,11 +20,9 @@ class BlueMarkerDetectionPipeline extends OpenCvPipeline {
     private Double leftavgin;
     private Double rightavgin;
     private Mat outPut = new Mat();
+    private Rect leftRect = new Rect(1, 100, 319, 259);
 
-    //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-    private Rect leftRect = new Rect(1, 200, 319, 159);
-
-    private Rect rightRect = new Rect(320, 200, 319, 159);
+    private Rect rightRect = new Rect(320, 100, 319, 259);
 
 
 

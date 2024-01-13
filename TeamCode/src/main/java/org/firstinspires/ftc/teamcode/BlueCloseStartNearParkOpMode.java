@@ -28,10 +28,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
     @Override
     public void init(){
 
-        //Set start position estimate for drive to avoid fuck ups in follower
         drive = new SampleMecanumDrive(hardwareMap);
-
-        drive.setPoseEstimate(drive.blueCloseStartPose);
 
 
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
@@ -59,15 +56,13 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
 
         public void start() {
-        //give time to camera to start reading
-            sleepMillis(1000);
 //Determine location of marker and outtake the purple pixel
 
             MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
             telemetry.addData("Line Detected", position);
             telemetry.update();
-
-            sleepMillis(100000);
+            //Set start position estimate for drive to avoid mess ups in follower
+            drive.setPoseEstimate(drive.blueCloseStartPose);
 
             switch(position){
                 case LEFT:
@@ -86,6 +81,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     break;
 
                 default:
+                    telemetry.addLine("error with camera");
                     //stop();
                     break;
             }
@@ -93,7 +89,6 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
             //park near
             drive.followTrajectorySequence(drive.blueNearParkSequence);
-
 
     }
 
