@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
@@ -64,20 +66,28 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
             //Set start position estimate for drive to avoid mess ups in follower
             drive.setPoseEstimate(drive.blueCloseStartPose);
 
+
+
             switch(position){
                 case LEFT:
                     drive.followTrajectorySequence(drive.blueCloseMarkerLeftOuttakeSequence);
                     drive.followTrajectorySequence(drive.blueCloseDropLeftSequence);
+                    //park near
+                    drive.followTrajectorySequence(drive.blueLeftNearParkSequence);
                     break;
 
                 case RIGHT:
                     drive.followTrajectorySequence(drive.blueCloseMarkerRightOuttakeSequence);
                     drive.followTrajectorySequence(drive.blueCloseDropRightSequence);
+                    //park near
+                    drive.followTrajectorySequence(drive.blueRightNearParkSequence);
                     break;
 
                 case MIDDLE:
                     drive.followTrajectorySequence(drive.blueCloseMarkerMiddleOuttakeSequence);
                     drive.followTrajectorySequence(drive.blueCloseDropMiddleSequence);
+                    //park near
+                    drive.followTrajectorySequence(drive.blueMiddleNearParkSequence);
                     break;
 
                 default:
@@ -87,8 +97,6 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
             }
 
 
-            //park near
-            drive.followTrajectorySequence(drive.blueNearParkSequence);
 
     }
 

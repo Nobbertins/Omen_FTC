@@ -325,17 +325,19 @@ public class SampleMecanumDrive extends MecanumDrive {
     //IMPORTANT LOCATIONS
 
     //I AM NOT CHANGING ANY REDS AT THIS TIME
-    public Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(90));
-    public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(90));
-    public Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(270));
-    public Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(270));
+    public Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(270));
+    public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(270));
+    public Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(90));
+    public Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
-    //
+    Pose2d blueCloseMarkerRightPose = new Pose2d(12, 36, Math.toRadians(180));
+    Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(270));
+    Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(0));
 
-    public Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
-    public Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
-    public Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
-    public Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
+    Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
+    Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
+    Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
+    Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
 
     public Vector2d blueBackDropLeft = new Vector2d(48,40);
@@ -369,7 +371,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
+            .lineToSplineHeading(blueCloseMarkerRightPose)
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -381,7 +383,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(270)))
+            .lineToSplineHeading(blueCloseMarkerMiddlePose)
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -392,7 +394,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
 
             //TESTING A SPLINE HEADING
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
+            .lineToSplineHeading(blueCloseMarkerLeftPose)
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
@@ -494,15 +496,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //Close Blue
     public TrajectorySequence blueCloseDropMiddleSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropMiddle, Math.toRadians(0)), Math.toRadians(10))
+            .lineTo(blueBackDropMiddle)
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
     public TrajectorySequence blueCloseDropRightSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropRight, Math.toRadians(0)), Math.toRadians(10))
+            .lineTo(blueBackDropRight)
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
     public TrajectorySequence blueCloseDropLeftSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropLeft, Math.toRadians(0)), Math.toRadians(10))
+            .lineTo(blueBackDropLeft)
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
@@ -558,10 +560,19 @@ public class SampleMecanumDrive extends MecanumDrive {
     //Trajectories for parking after dropping off pixel, they are the same for all blue starts and all red starts
 
     //Blue Near
-    public TrajectorySequence blueNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+    public TrajectorySequence blueMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             .strafeLeft(23)
             .forward(12)
             .build();
+    public TrajectorySequence blueRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+            .strafeLeft(30)
+            .forward(12)
+            .build();
+    public TrajectorySequence blueLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+            .strafeLeft(18)
+            .forward(12)
+            .build();
+
     //Blue Away
     public TrajectorySequence blueAwayParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             //slightly longer than near strafe to make SURE that the backdrop is not hit
