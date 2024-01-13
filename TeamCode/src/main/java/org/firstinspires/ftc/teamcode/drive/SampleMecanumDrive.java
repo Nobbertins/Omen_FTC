@@ -325,14 +325,14 @@ public class SampleMecanumDrive extends MecanumDrive {
     //IMPORTANT LOCATIONS
 
     //I AM NOT CHANGING ANY REDS AT THIS TIME
-    public Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(270));
-    public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(270));
-    public Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(90));
-    public Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
+    Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(90));
+    Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(90));
+    Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(270));
+    Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(270));
 
-    Pose2d blueCloseMarkerRightPose = new Pose2d(12, 36, Math.toRadians(180));
-    Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(270));
-    Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(0));
+    Pose2d blueCloseMarkerRightPose = new Pose2d(12, 36, Math.toRadians(0));
+    Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(90));
+    Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(180));
 
     Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
     Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
@@ -340,26 +340,26 @@ public class SampleMecanumDrive extends MecanumDrive {
     Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
 
 
-    public Vector2d blueBackDropLeft = new Vector2d(48,40);
-    public Vector2d redBackDropLeft = new Vector2d(48, -40);
+    Vector2d blueBackDropLeft = new Vector2d(48,40);
+    Vector2d redBackDropLeft = new Vector2d(48, -40);
 
-    public Vector2d blueBackDropMiddle = new Vector2d(48,35);
-    public Vector2d redBackDropMiddle = new Vector2d(48, -35);
+    Vector2d blueBackDropMiddle = new Vector2d(48,35);
+    Vector2d redBackDropMiddle = new Vector2d(48, -35);
 
-    public Vector2d blueBackDropRight = new Vector2d(48,30);
-    public Vector2d redBackDropRight = new Vector2d(48, -30);
+    Vector2d blueBackDropRight = new Vector2d(48,30);
+    Vector2d redBackDropRight = new Vector2d(48, -30);
 
 
 
-    public Vector2d blueNearPark = new Vector2d(60,60);
-    public Vector2d blueAwayPark = new Vector2d(60,12);
-    public Vector2d redNearPark = new Vector2d(60,-60);
-    public Vector2d redAwayPark = new Vector2d(60,-12);
+    Vector2d blueNearPark = new Vector2d(60,60);
+    Vector2d blueAwayPark = new Vector2d(60,12);
+    Vector2d redNearPark = new Vector2d(60,-60);
+    Vector2d redAwayPark = new Vector2d(60,-12);
 
-    public Vector2d blueCloseMarkerTile = new Vector2d(12, 36);
-    public Vector2d blueFarMarkerTile = new Vector2d(-36, 36);
-    public Vector2d redCloseMarkerTile = new Vector2d(12, -36);
-    public Vector2d redFarMarkerTile = new Vector2d(-36, -36);
+    Vector2d blueCloseMarkerTile = new Vector2d(12, 36);
+    Vector2d blueFarMarkerTile = new Vector2d(-36, 36);
+    Vector2d redCloseMarkerTile = new Vector2d(12, -36);
+    Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 
     //neccesary to prevent mismatch between the driver's representation of pose and the trajectory's
     //only need to do this once for the start pose in the beginning if you chain trajectory sequences
