@@ -31,10 +31,10 @@ public class MeepMeepTesting {
         Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(90));
         Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(180));
 
-        Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
-        Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
-        Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
-        Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
+        Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
+        Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
+        Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
+        Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
 
 
          Vector2d blueBackDropLeft = new Vector2d(48,40);

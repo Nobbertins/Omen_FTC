@@ -334,10 +334,10 @@ public class SampleMecanumDrive extends MecanumDrive {
     Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(90));
     Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(180));
 
-    Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
-    Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
-    Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
-    Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
+    Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
+    Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
+    Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
+    Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
 
 
     Vector2d blueBackDropLeft = new Vector2d(48,40);
@@ -561,36 +561,36 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //Blue Near
     public TrajectorySequence blueMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeLeft(23)
-            .forward(12)
+            .strafeRight(23)
+            .back(12)
             .build();
     public TrajectorySequence blueRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeLeft(30)
-            .forward(12)
+            .strafeRight(30)
+            .back(12)
             .build();
     public TrajectorySequence blueLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeLeft(18)
-            .forward(12)
+            .strafeRight(18)
+            .back(12)
             .build();
 
     //Blue Away
     public TrajectorySequence blueAwayParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             //slightly longer than near strafe to make SURE that the backdrop is not hit
-            .strafeRight(24)
-            .forward(12)
+            .strafeLeft(24)
+            .back(12)
             .build();
     //Red Near
     public TrajectorySequence redMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeRight(23)
-            .forward(12)
+            .strafeLeft(23)
+            .back(12)
             .build();
     public TrajectorySequence redRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeRight(30)
-            .forward(12)
+            .strafeLeft(30)
+            .back(12)
             .build();
     public TrajectorySequence redLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
-            .strafeRight(18)
-            .forward(12)
+            .strafeLeft(18)
+            .back(12)
             .build();
     //Red Away
     public TrajectorySequence redAwayParkSequence = this.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(0)))
