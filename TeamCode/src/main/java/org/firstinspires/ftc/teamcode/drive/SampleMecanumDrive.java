@@ -323,9 +323,11 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     }
     //IMPORTANT LOCATIONS
-    public Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(90));
+
+    //I AM NOT CHANGING ANY REDS AT THIS TIME
+    public Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(90));
     public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(90));
-    public Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(270));
+    public Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(270));
     public Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(270));
 
     //
@@ -379,7 +381,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(270)))
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(90)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop

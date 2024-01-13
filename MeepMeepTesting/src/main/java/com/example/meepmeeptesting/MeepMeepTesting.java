@@ -23,9 +23,9 @@ public class MeepMeepTesting {
 
         //EVERY TILE IS 24x24
         //IMPORTANT LOCATIONS
-        Pose2d blueCloseStartPose = new Pose2d(12,61,Math.toRadians(270));
+        Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(270));
         Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(270));
-        Pose2d redCloseStartPose = new Pose2d(12,-61,Math.toRadians(90));
+        Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(90));
         Pose2d redFarStartPose = new Pose2d(-36,-61,Math.toRadians(90));
 
         Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
@@ -62,13 +62,7 @@ public class MeepMeepTesting {
                 .setConstraints(42.52, 30, 3.7, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                //reach tile at correct heading
-
-                                //TESTING A SPLINE HEADING
-                                .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(180)))
-                                //Outtake of tile goes in this marker
-                                //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                                .lineToLinearHeading(blueClosePostOuttakePose)
+                                .waitSeconds(10)
                                 .build()
                 );
 
