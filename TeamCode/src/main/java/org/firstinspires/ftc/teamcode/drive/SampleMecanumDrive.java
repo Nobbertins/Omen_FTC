@@ -494,15 +494,15 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //Close Blue
     public TrajectorySequence blueCloseDropMiddleSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropMiddle, Math.toRadians(180)), Math.toRadians(10))
+            .splineToSplineHeading(new Pose2d(blueBackDropMiddle, Math.toRadians(0)), Math.toRadians(10))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
     public TrajectorySequence blueCloseDropRightSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropRight, Math.toRadians(180)), Math.toRadians(10))
+            .splineToSplineHeading(new Pose2d(blueBackDropRight, Math.toRadians(0)), Math.toRadians(10))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
     public TrajectorySequence blueCloseDropLeftSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)
-            .splineToSplineHeading(new Pose2d(blueBackDropLeft, Math.toRadians(180)), Math.toRadians(10))
+            .splineToSplineHeading(new Pose2d(blueBackDropLeft, Math.toRadians(0)), Math.toRadians(10))
             .addDisplacementMarker(() -> {dropPlaceHolder();})
             .build();
 
