@@ -28,7 +28,6 @@ class BlueMarkerDetectionPipeline extends OpenCvPipeline {
 
 
 
-    private boolean sampling = true;
 
         /*
         position of left, right, middle are determined as the left line being the line closest to the backdrop
@@ -61,18 +60,17 @@ class BlueMarkerDetectionPipeline extends OpenCvPipeline {
         int sensitivity = 5;
 
         //when viewing just right and middle lines
-        if (sampling){
-            if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
-                //nothing detected must be in furthest left lane
-                currentMarkerPosition = MarkerPosition.LEFT;
-            } else if (leftavgin > rightavgin) {
-                //on the left of screen which is middle line
-                currentMarkerPosition = MarkerPosition.MIDDLE;
-            } else {
-                //on the right
-                currentMarkerPosition = MarkerPosition.RIGHT;
-            }
+        if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
+            //nothing detected must be in furthest left lane
+            currentMarkerPosition = MarkerPosition.LEFT;
+        } else if (leftavgin > rightavgin) {
+            //on the left of screen which is middle line
+            currentMarkerPosition = MarkerPosition.MIDDLE;
+        } else {
+            //on the right
+            currentMarkerPosition = MarkerPosition.RIGHT;
         }
+
 
         return(outPut);
 

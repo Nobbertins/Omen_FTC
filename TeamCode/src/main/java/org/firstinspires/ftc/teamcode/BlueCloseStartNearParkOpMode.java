@@ -43,11 +43,14 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
             @Override
             public void onOpened() {
                 webcam1.startStreaming(640, 360, OpenCvCameraRotation.UPRIGHT);
+                telemetry.addLine("Camera Init");
+                telemetry.update();
             }
 
             @Override
             public void onError(int errorCode) {
-
+                telemetry.addData("Camera err", errorCode);
+                telemetry.update();
             }
 
         });
@@ -56,10 +59,15 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
 
         public void start() {
+        //give time to camera to start reading
+            sleepMillis(1000);
 //Determine location of marker and outtake the purple pixel
+
             MarkerPosition position = workingPipeline.getCurrentMarkerPosition();
-            sleepMillis(10000);
             telemetry.addData("Line Detected", position);
+            telemetry.update();
+
+            sleepMillis(100000);
 
             switch(position){
                 case LEFT:
@@ -78,6 +86,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     break;
 
                 default:
+                    //stop();
                     break;
             }
 
