@@ -381,7 +381,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             //reach tile at correct heading
             //TESTING A SPLINE HEADING
 
-            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(90)))
+            .lineToSplineHeading(new Pose2d(12, 36, Math.toRadians(270)))
             //Outtake of tile goes in this marker
             .addDisplacementMarker(() ->{OuttakePlaceHolder();})
             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
