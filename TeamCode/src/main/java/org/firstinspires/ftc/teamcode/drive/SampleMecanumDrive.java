@@ -490,10 +490,7 @@ public class SampleMecanumDrive extends MecanumDrive {
             .build();
 
 
-        /*
-        Drop yellow pixel in intake sequence
-        because all Outtakes return to the same spot the same drop sequence can be utilized for all sequences of same start pose
-         */
+
 
     //Close Blue
     public TrajectorySequence blueCloseDropMiddleSequence = this.trajectorySequenceBuilder(blueClosePostOuttakePose)

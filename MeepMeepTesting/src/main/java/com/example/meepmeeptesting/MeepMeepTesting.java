@@ -70,7 +70,7 @@ public class MeepMeepTesting {
                                 //TESTING A SPLINE HEADING
 
                                 //to the tile
-                                .lineToSplineHeading(blueCloseMarkerLeftPose)
+                                .lineToLinearHeading(blueCloseMarkerLeftPose)
                                 //Outtake of tile goes in this marker
                                 //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
 
