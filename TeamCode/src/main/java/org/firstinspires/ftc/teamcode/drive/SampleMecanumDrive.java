@@ -580,8 +580,16 @@ public class SampleMecanumDrive extends MecanumDrive {
             .forward(12)
             .build();
     //Red Near
-    public TrajectorySequence redNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(redBackDropMiddle, Math.toRadians(0)))
+    public TrajectorySequence redMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
             .strafeRight(23)
+            .forward(12)
+            .build();
+    public TrajectorySequence redRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+            .strafeRight(30)
+            .forward(12)
+            .build();
+    public TrajectorySequence redLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+            .strafeRight(18)
             .forward(12)
             .build();
     //Red Away
