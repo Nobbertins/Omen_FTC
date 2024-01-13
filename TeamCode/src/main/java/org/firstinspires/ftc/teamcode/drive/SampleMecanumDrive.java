@@ -332,10 +332,10 @@ public class SampleMecanumDrive extends MecanumDrive {
 
     //
 
-    public Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(0));
-    public Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(0));
-    public Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(0));
-    public Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(0));
+    public Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
+    public Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
+    public Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
+    public Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
 
 
     public Vector2d blueBackDropLeft = new Vector2d(48,40);
