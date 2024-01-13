@@ -325,6 +325,7 @@ public class SampleMecanumDrive extends MecanumDrive {
     //IMPORTANT LOCATIONS
 
     //I AM NOT CHANGING ANY REDS AT THIS TIME
+    //IMPORTANT LOCATIONS
     public Pose2d blueCloseStartPose = new Pose2d(14,61,Math.toRadians(90));
     public Pose2d blueFarStartPose = new Pose2d(-36,61,Math.toRadians(90));
     public Pose2d redCloseStartPose = new Pose2d(14,-61,Math.toRadians(270));

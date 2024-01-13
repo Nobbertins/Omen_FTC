@@ -77,8 +77,8 @@ public class MeepMeepTesting {
                                 //back to where you started
                                 .lineToSplineHeading(blueClosePostOuttakePose)
                                 .lineTo(blueBackDropLeft)
-                                .strafeLeft(18)
-                                .forward(12)
+                                .strafeRight(18)
+                                .back(12)
                                 .build()
                 );
 
