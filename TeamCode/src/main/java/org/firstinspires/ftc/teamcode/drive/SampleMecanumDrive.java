@@ -558,15 +558,15 @@ public class SampleMecanumDrive extends MecanumDrive {
     //Trajectories for parking after dropping off pixel, they are the same for all blue starts and all red starts
 
     //Blue Near
-    public TrajectorySequence blueMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+    public TrajectorySequence blueMiddleNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(180)))
             .strafeRight(23)
             .back(12)
             .build();
-    public TrajectorySequence blueRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+    public TrajectorySequence blueRightNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropRight, Math.toRadians(180)))
             .strafeRight(30)
             .back(12)
             .build();
-    public TrajectorySequence blueLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropMiddle, Math.toRadians(0)))
+    public TrajectorySequence blueLeftNearParkSequence = this.trajectorySequenceBuilder(new Pose2d(blueBackDropLeft, Math.toRadians(180)))
             .strafeRight(18)
             .back(12)
             .build();
