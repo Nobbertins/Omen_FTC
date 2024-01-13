@@ -335,20 +335,20 @@ public class SampleMecanumDrive extends MecanumDrive {
     Pose2d blueCloseMarkerMiddlePose = new Pose2d(12, 36, Math.toRadians(90));
     Pose2d blueCloseMarkerLeftPose = new Pose2d(12, 36, Math.toRadians(180));
 
-    Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
-    Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
-    Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
-    Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
+    public Pose2d blueClosePostOuttakePose = new Pose2d(12,58,Math.toRadians(180));
+    public Pose2d blueFarPostOuttakePose = new Pose2d(-36,58,Math.toRadians(180));
+    public Pose2d redClosePostOuttakePose = new Pose2d(12,-58,Math.toRadians(180));
+    public Pose2d redFarPostOuttakePose = new Pose2d(-36,-58,Math.toRadians(180));
 
 
-    Vector2d blueBackDropLeft = new Vector2d(48,40);
-    Vector2d redBackDropLeft = new Vector2d(48, -40);
+    public Vector2d blueBackDropLeft = new Vector2d(48,40);
+    public Vector2d redBackDropLeft = new Vector2d(48, -40);
 
-    Vector2d blueBackDropMiddle = new Vector2d(48,35);
-    Vector2d redBackDropMiddle = new Vector2d(48, -35);
+    public Vector2d blueBackDropMiddle = new Vector2d(48,35);
+    public Vector2d redBackDropMiddle = new Vector2d(48, -35);
 
-    Vector2d blueBackDropRight = new Vector2d(48,30);
-    Vector2d redBackDropRight = new Vector2d(48, -30);
+    public Vector2d blueBackDropRight = new Vector2d(48,30);
+    public Vector2d redBackDropRight = new Vector2d(48, -30);
 
 
 

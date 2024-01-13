@@ -71,6 +71,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
             switch(position){
                 case LEFT:
                     drive.followTrajectorySequence(drive.blueCloseMarkerLeftOuttakeSequence);
+                    drive.setPoseEstimate(drive.blueClosePostOuttakePose);
                     drive.followTrajectorySequence(drive.blueCloseDropLeftSequence);
                     //park near
                     drive.followTrajectorySequence(drive.blueLeftNearParkSequence);
@@ -78,6 +79,8 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
                 case RIGHT:
                     drive.followTrajectorySequence(drive.blueCloseMarkerRightOuttakeSequence);
+                    drive.setPoseEstimate(drive.blueClosePostOuttakePose);
+
                     drive.followTrajectorySequence(drive.blueCloseDropRightSequence);
                     //park near
                     drive.followTrajectorySequence(drive.blueRightNearParkSequence);
@@ -85,6 +88,8 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
 
                 case MIDDLE:
                     drive.followTrajectorySequence(drive.blueCloseMarkerMiddleOuttakeSequence);
+                    drive.setPoseEstimate(drive.blueClosePostOuttakePose);
+
                     drive.followTrajectorySequence(drive.blueCloseDropMiddleSequence);
                     //park near
                     drive.followTrajectorySequence(drive.blueMiddleNearParkSequence);

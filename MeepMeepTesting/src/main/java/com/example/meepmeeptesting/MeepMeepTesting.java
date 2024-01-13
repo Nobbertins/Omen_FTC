@@ -64,8 +64,13 @@ public class MeepMeepTesting {
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42.52, 30, 3.7, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
-                        drive.trajectorySequenceBuilder((new Pose2d(blueBackDropLeft, Math.toRadians(180))))
-                                .strafeRight(18)
+                        drive.trajectorySequenceBuilder(startPose)
+                                .lineToSplineHeading(blueCloseMarkerMiddlePose)
+                                //Outtake of tile goes in this marker
+                                //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+                                .lineToLinearHeading(blueClosePostOuttakePose)
+                                .lineTo(blueBackDropMiddle)
+                                .strafeRight(23)
                                 .back(12)
                                 .build()
                 );
