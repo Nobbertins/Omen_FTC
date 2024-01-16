@@ -22,9 +22,9 @@ class RedMarkerDetectionPipeline extends OpenCvPipeline {
     private Mat outPut = new Mat();
 
     //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-    private Rect leftRect = new Rect(1, 200, 319, 159);
+    private Rect leftRect = new Rect(1, 100, 319, 259);
 
-    private Rect rightRect = new Rect(320, 200, 319, 159);
+    private Rect rightRect = new Rect(320, 100, 319, 259);
 
 
 
@@ -64,13 +64,13 @@ class RedMarkerDetectionPipeline extends OpenCvPipeline {
         if (sampling){
             if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
                 //nothing detected must be in furthest left lane
-                currentMarkerPosition = MarkerPosition.RIGHT;
+                currentMarkerPosition = MarkerPosition.LEFT;
             } else if (leftavgin > rightavgin) {
                 //on the left of screen which is middle line
                 currentMarkerPosition = MarkerPosition.MIDDLE;
             } else {
                 //on the right
-                currentMarkerPosition = MarkerPosition.LEFT;
+                currentMarkerPosition = MarkerPosition.RIGHT;
             }
         }
 

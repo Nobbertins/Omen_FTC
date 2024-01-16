@@ -78,13 +78,14 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     //park near
                     drive.followTrajectorySequence(drive.blueLeftNearParkSequence);
                     */
-                    drive.trajectorySequenceBuilder(startPose)
+                    TrajectorySequence seqL = drive.trajectorySequenceBuilder(startPose)
                             .lineTo(new Vector2d(14+14, 61-20))
-                            .forward(20)
+                            .forward(17)
                             //Outtake of tile goes in this marker
                             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
                             .strafeRight(34)
                             .build();
+                    drive.followTrajectorySequence(seqL);
                     break;
 
                 case RIGHT:
@@ -96,13 +97,16 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     //park near
                     drive.followTrajectorySequence(drive.blueRightNearParkSequence);
                     */
-                    drive.trajectorySequenceBuilder(startPose)
-                            .lineTo(new Vector2d(14-4.5, 61-20))
-                            .forward(20)
+                    TrajectorySequence seqR = drive.trajectorySequenceBuilder(startPose)
+                            .lineToLinearHeading(new Pose2d(14, 61-35, Math.toRadians(0)))
+                            .back(5)
+                            .forward(30)
                             //Outtake of tile goes in this marker
                             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
-                            .strafeRight(50)
+                            .strafeLeft(32)
+                            .forward(20)
                             .build();
+                    drive.followTrajectorySequence(seqR);
                     break;
 
                 case MIDDLE:
@@ -114,13 +118,14 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     //park near
                     drive.followTrajectorySequence(drive.blueMiddleNearParkSequence);
                     */
-                    drive.trajectorySequenceBuilder(startPose)
-                            .back(30)
-                            .forward(30)
+                    TrajectorySequence seqM = drive.trajectorySequenceBuilder(startPose)
+                            .back(28)
+                            .forward(25)
                             //Outtake of tile goes in this marker
                             //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
                             .strafeRight(45)
                             .build();
+                    drive.followTrajectorySequence(seqM);
                     break;
 
                 default:
@@ -128,9 +133,7 @@ public class BlueCloseStartNearParkOpMode extends OpMode {
                     //stop();
                     break;
             }
-
-
-
+stop();
     }
 
     @Override
