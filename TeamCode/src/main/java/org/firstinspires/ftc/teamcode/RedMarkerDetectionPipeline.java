@@ -8,7 +8,7 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 import org.openftc.easyopencv.OpenCvPipeline;
 
-class RedMarkerDetectionPipeline extends OpenCvPipeline {
+class RedMarkerDetectionPipeline extends BlueMarkerDetectionPipeline {//you can delete anything here that is already in bluemarkerdetectionpipeline
 
     //Color to detect Defined as int 1 for red 2 for blue
     private int color = 1;
