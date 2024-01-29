@@ -2,10 +2,16 @@ package org.firstinspires.ftc.teamcode;
 
 import android.webkit.WebBackForwardList;
 
+import com.acmerobotics.roadrunner.geometry.Pose2d;
+import com.acmerobotics.roadrunner.geometry.Vector2d;
+import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequenceBuilder;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
@@ -20,14 +26,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 @Autonomous
 public class ColorDetectionTest extends OpMode {
     OpenCvWebcam webcam1 = null;
-
+    public MarkerPosition currentMarkerPosition = MarkerPosition.UNKNOWN;
     @Override
     public void init(){
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
         webcam1.setPipeline(new examplePipeline());
-
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -40,14 +45,24 @@ public class ColorDetectionTest extends OpMode {
             }
         });
     }
+    public void start(){
+        switch(currentMarkerPosition){
+            case LEFT:
+                break;
+            case RIGHT:
+                break;
+            case MIDDLE:
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public void loop() {
-
     }
 
     //Camera lens was 12.5cm from right side of tile and at edge of tile when these values were calibrated
-
     class examplePipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
         Mat leftCrop;
@@ -71,8 +86,6 @@ public class ColorDetectionTest extends OpMode {
         position of left, right, middle are determined as the left line being the line closest to the backdrop
         */
 
-        MarkerPosition currentMarkerPosition = MarkerPosition.UNKNOWN;
-
         @Override
         public Mat processFrame(Mat input) {
             Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
@@ -93,7 +106,6 @@ public class ColorDetectionTest extends OpMode {
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
             int sensitivity = 5;
-
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
@@ -118,11 +130,5 @@ public class ColorDetectionTest extends OpMode {
             return(outPut);
 
         }
-
-
-
-
-
-
     }
 }

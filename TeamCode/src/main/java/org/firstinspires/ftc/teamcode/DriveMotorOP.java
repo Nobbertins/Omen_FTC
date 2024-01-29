@@ -332,8 +332,8 @@ public class DriveMotorOP extends LinearOpMode {
             if(gamepad2.left_trigger>0 && gamepad2.right_trigger>0){
                 rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
-                rraiseMotor.setPower(0.1);
-                lraiseMotor.setPower(0.1);
+                rraiseMotor.setPower(0.05);
+                lraiseMotor.setPower(0.05);
             }
             /*
             //prevent motor from freaking out if both buttons are pressed
@@ -375,8 +375,8 @@ public class DriveMotorOP extends LinearOpMode {
             else{
                 rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
-                rraiseMotor.setPower(0.1);
-                lraiseMotor.setPower(0.1);
+                rraiseMotor.setPower(0.05);
+                lraiseMotor.setPower(0.05);
             }
             // Show the elapsed game time and wheel power.
             telemetry.addData("Status", "Run Time: " + runtime.toString());
