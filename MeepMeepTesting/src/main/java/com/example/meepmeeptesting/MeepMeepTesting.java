@@ -66,14 +66,14 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 .lineTo(new Vector2d(18, -50))
-                                .lineToLinearHeading(new Pose2d(20, -30, Math.toRadians(0)))
-                                .lineTo(new Vector2d(15, -40))
+                                .lineToLinearHeading(new Pose2d(23, -30, Math.toRadians(0)))
+                                .lineTo(new Vector2d(29, -30))
                                 .waitSeconds(1.2)
                                 .waitSeconds(1)
                                 .lineToLinearHeading(new Pose2d(49, -35, Math.toRadians(180)))
                                 .waitSeconds(1)
                                 .waitSeconds(1)
-                                .strafeLeft(37)
+                                .strafeLeft(23)
                                 .back(11)
                                 .build()
 
