@@ -5,28 +5,73 @@ import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
+
 @Autonomous
 public class TrajectoryTest extends LinearOpMode {
-    public Vector2d transformVector(Vector2d vector){
-        return new Vector2d(vector.getY(), -vector.getX());
+
+
+    private DcMotor rraiseMotor = null;
+
+    private DcMotor lraiseMotor = null;
+    private Servo depositServo = null;
+    private Servo lslideServo = null;
+
+    private Servo rslideServo = null;
+    private void slideRaise() {
+        rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        lraiseMotor.setPower(0.6);
+        rraiseMotor.setPower(0.6);
+    }
+    private void swingArm() {
+        rslideServo.setPosition(0.24);
+        lraiseMotor.setPower(0.05);
+        rraiseMotor.setPower(0.05);
+    }
+    public void slideDrop() {
+        rslideServo.setPosition(0.02);
+        rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        lraiseMotor.setPower(0.5);
+        rraiseMotor.setPower(0.5);
     }
     @Override
     public void runOpMode() {
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
-
-        Pose2d blueCloseStartPose = new Pose2d(0,0,Math.toRadians(0));
-
-        Trajectory traj1 = drive.trajectoryBuilder(blueCloseStartPose)
-                .splineTo(transformVector(new Vector2d(50, 0)), Math.toRadians(0))
-                .splineTo(transformVector(new Vector2d(-20, 10)), Math.toRadians(0))
-                .splineTo(transformVector(new Vector2d(0,0)), Math.toRadians(30))
+        rraiseMotor = hardwareMap.get(DcMotor.class, "rraise");
+        lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
+        depositServo = hardwareMap.get(Servo.class, "deposit");
+        lslideServo = hardwareMap.get(Servo.class, "lslide");
+        rslideServo = hardwareMap.get(Servo.class, "rslide");
+        rslideServo.setPosition(0.02);
+        depositServo.setPosition(0);
+        Pose2d startPose = new Pose2d(11, -62, Math.toRadians(270));
+drive.setPoseEstimate(startPose);
+        TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(18, -50))
+                .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
+                .lineTo(new Vector2d(15, -40))
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(1.2)
+                .addTemporalMarker(()->swingArm())
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
+                .addTemporalMarker(()->depositServo.setPosition(0.5))
+                .waitSeconds(1)
+                .addTemporalMarker(()->slideDrop())
+                .waitSeconds(1)
+                .strafeLeft(37)
+                .back(11)
                 .build();
-
-
         waitForStart();
 
         if(isStopRequested()) return;
 
-        drive.followTrajectory(traj1);
+        drive.followTrajectorySequence(trajSeq);
     }
 }

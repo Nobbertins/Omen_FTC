@@ -289,9 +289,9 @@ public class DriveMotorOP extends LinearOpMode {
             if(gamepad2.a && !aPressed) {
                 depositState = !depositState;
                 if (depositState) {
-                    depositServo.setPosition(0.7);
-                } else {
                     depositServo.setPosition(0);
+                } else {
+                    depositServo.setPosition(0.5);
                 }
             }
             aPressed = gamepad2.a;
