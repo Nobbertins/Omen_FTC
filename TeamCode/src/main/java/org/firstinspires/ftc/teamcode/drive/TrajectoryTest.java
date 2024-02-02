@@ -84,6 +84,21 @@ drive.setPoseEstimate(startPose);
                 .strafeLeft(23)
                 .back(11)
                 .build();
+        TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(17, -40))
+                .lineTo(new Vector2d(17, -50))
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(1.2)
+                .addTemporalMarker(()->swingArm())
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(49, -45, Math.toRadians(180)))
+                .addTemporalMarker(()->depositServo.setPosition(0.5))
+                .waitSeconds(1)
+                .addTemporalMarker(()->slideDrop())
+                .waitSeconds(1)
+                .strafeLeft(15)
+                .back(11)
+                .build();
         waitForStart();
 
         if(isStopRequested()) return;
