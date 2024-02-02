@@ -18,6 +18,7 @@ HOW TO MAKE YOUR OWN RUN CONFIGURATION
 
 
 public class MeepMeepTesting {
+
     public static void main(String[] args) {
         MeepMeep meepMeep = new MeepMeep(800);
 /*
@@ -58,20 +59,23 @@ public class MeepMeepTesting {
          Vector2d redCloseMarkerTile = new Vector2d(12, -36);
          Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 */
-        Pose2d startPose =  new Pose2d(14,61,Math.toRadians(90));
-
+        Pose2d startPose =  new Pose2d(11, -62, Math.toRadians(270));
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
-                .setConstraints(42.52, 30, 3.7, Math.toRadians(60), 16.05)
+                .setConstraints(42, 30, 3, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineToLinearHeading(new Pose2d(14, 61-35, Math.toRadians(0)))
-                                .back(5)
-                                .forward(30)
-                                //Outtake of tile goes in this marker
-                                //return to start to be able to use the same dropSequence for all blue close starts but facing backdrop
+                                .lineTo(new Vector2d(18, -50))
+                                //discontinuity
+                                .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
+                                .lineTo(new Vector2d(15, -40))
+                                .lineToLinearHeading(new Pose2d(50, -28, Math.toRadians(180)))
                                 .strafeLeft(32)
-                                .forward(20)
+                                .back(10)
+
+                                //.splineToConstantHeading(new Vector2d(16, -43), Math.toRadians(270))
+
+                                //.splineToLinearHeading(new Pose2d(22, -30, Math.toRadians(0)),Math.toRadians(270))
                                 .build()
                 );
 

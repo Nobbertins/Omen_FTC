@@ -112,7 +112,7 @@ Servos:
  */
 
 //define OP
-@TeleOp(name="Basic: Omni Linear OpMode", group="Linear OpMode")
+@TeleOp(name="Intake Tuning Op", group="Linear OpMode")
 //@Disabled
 
 //define OP class
@@ -196,13 +196,13 @@ public class IntakeTuningOp extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             if(gamepad1.left_trigger > 0){
-                dropServoPosition += 0.0001;
+                dropServoPosition += 0.001;
             }
             if(gamepad1.right_trigger > 0){
-                dropServoPosition -= 0.0001;
+                dropServoPosition -= 0.001;
             }
             ldropServo.setPosition(dropServoPosition);
-            rdropServo.setPosition(dropServoPosition + 0.5);
+            rdropServo.setPosition(0.5-dropServoPosition);
             //switch drop servos position on b press
             if(gamepad1.b && !bPressed) {
                 dropState = !dropState;
