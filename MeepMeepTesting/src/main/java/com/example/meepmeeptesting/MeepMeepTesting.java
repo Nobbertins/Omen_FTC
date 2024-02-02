@@ -66,17 +66,20 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 .lineTo(new Vector2d(18, -50))
-                                //discontinuity
-                                .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
+                                .lineToLinearHeading(new Pose2d(20, -30, Math.toRadians(0)))
                                 .lineTo(new Vector2d(15, -40))
-                                .lineToLinearHeading(new Pose2d(50, -28, Math.toRadians(180)))
-                                .strafeLeft(32)
-                                .back(10)
+                                .waitSeconds(1.2)
+                                .waitSeconds(1)
+                                .lineToLinearHeading(new Pose2d(49, -35, Math.toRadians(180)))
+                                .waitSeconds(1)
+                                .waitSeconds(1)
+                                .strafeLeft(37)
+                                .back(11)
+                                .build()
 
                                 //.splineToConstantHeading(new Vector2d(16, -43), Math.toRadians(270))
 
                                 //.splineToLinearHeading(new Pose2d(22, -30, Math.toRadians(0)),Math.toRadians(270))
-                                .build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)
