@@ -59,20 +59,23 @@ public class MeepMeepTesting {
          Vector2d redCloseMarkerTile = new Vector2d(12, -36);
          Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 */
-        Pose2d startPose =  new Pose2d(11, -62, Math.toRadians(270));
+        Pose2d startPose =  new Pose2d(-36, -62, Math.toRadians(270));
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42, 30, 3, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineTo(new Vector2d(17, -40))
-                                .lineTo(new Vector2d(17, -50))
+                                .lineTo(new Vector2d(-40, -50))
+                                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
+                                .lineTo(new Vector2d(-32, -40))
+                                .lineTo(new Vector2d(-32, 0))
+                                .lineTo(new Vector2d(15, 0))
                                 .waitSeconds(1.2)
                                 .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(49, -45, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
                                 .waitSeconds(1)
                                 .waitSeconds(1)
-                                .strafeLeft(15)
+                                .strafeLeft(37)
                                 .back(11)
                                 .build()
 
