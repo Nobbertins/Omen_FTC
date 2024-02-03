@@ -49,7 +49,7 @@ public class TrajectoryTestRedFarAuto extends LinearOpMode {
         depositServo.setPosition(0);
         Pose2d startPose = new Pose2d(-38, -62, Math.toRadians(270));
 drive.setPoseEstimate(startPose);
-        TrajectorySequence trajSeqCloseLeft = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence trajSeqFarLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-40, -50))
                 .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
                 .lineTo(new Vector2d(-32, -40))
@@ -67,7 +67,7 @@ drive.setPoseEstimate(startPose);
                 .strafeLeft(37)
                 .back(11)
                 .build();
-        TrajectorySequence trajSeqCloseMiddle = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence trajSeqFarMiddle = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-38, -34))
                 .lineTo(new Vector2d(-38, -60))
                 .lineTo(new Vector2d(-54, -20))
@@ -85,7 +85,7 @@ drive.setPoseEstimate(startPose);
                 .strafeLeft(37)
                 .back(11)
                 .build();
-        TrajectorySequence trajSeqCloseRight = drive.trajectorySequenceBuilder(startPose)
+        TrajectorySequence trajSeqFarRight = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(17, -40))
                 .lineTo(new Vector2d(17, -50))
                 .addTemporalMarker(()->slideRaise())
@@ -104,6 +104,6 @@ drive.setPoseEstimate(startPose);
 
         if(isStopRequested()) return;
 
-        drive.followTrajectorySequence(trajSeqCloseMiddle);
+        drive.followTrajectorySequence(trajSeqFarMiddle);
     }
 }
