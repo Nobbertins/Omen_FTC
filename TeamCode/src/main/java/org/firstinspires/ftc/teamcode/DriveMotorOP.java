@@ -147,6 +147,47 @@ public class DriveMotorOP extends LinearOpMode {
     private Servo depositServo = null;
     private Servo launchServo = null;
     //private CRServo contServo = null;
+    private int currentTicks = 0;
+    private void slideRaise(int ticks) {
+        rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        // reset encoder counts kept by motors.
+        rraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        currentTicks += ticks;
+        // set motors to run forward for 5000 encoder counts.
+        rraiseMotor.setTargetPosition(currentTicks);
+        lraiseMotor.setTargetPosition(currentTicks);
+        rraiseMotor.setPower(1);
+        lraiseMotor.setPower(1);
+        // set motors to run to target encoder position and stop with brakes on.
+        rraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(lraiseMotor.isBusy() || rraiseMotor.isBusy()){}
+        rraiseMotor.setPower(0.05);
+        lraiseMotor.setPower(0.05);
+//        lraiseMotor.setPower(0.6);
+//        rraiseMotor.setPower(0.6);
+    }
+    public void slideDrop(int ticks) {
+        rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        // reset encoder counts kept by motors.
+        rraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        lraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        currentTicks -= ticks;
+        // set motors to run forward for 5000 encoder counts.
+        rraiseMotor.setTargetPosition(currentTicks);
+        lraiseMotor.setTargetPosition(currentTicks);
+        rraiseMotor.setPower(1);
+        lraiseMotor.setPower(1);
+        // set motors to run to target encoder position and stop with brakes on.
+        rraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        lraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(lraiseMotor.isBusy() || rraiseMotor.isBusy()){}
+        rraiseMotor.setPower(0.05);
+        lraiseMotor.setPower(0.05);
+    }
     @Override
     public void runOpMode() {
 
@@ -241,18 +282,7 @@ public class DriveMotorOP extends LinearOpMode {
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
             if(gamepad2.x && !xPressed){
-                hangMotor.setDirection(DcMotor.Direction.FORWARD);
-                if(hangMotorPower == 0){
-                    hangMotorPower = 1;
-                }
-                else{
-                    hangMotorPower = 0;
-                }
-                hangMotor.setPower(hangMotorPower);
-            }
-            if(gamepad2.a && gamepad2.b){
-                hangMotor.setDirection(DcMotor.Direction.REVERSE);
-                hangMotor.setPower(1);
+               slideRaise(1500);
             }
             xPressed = gamepad2.x;
             //switch slide servos position on y press
@@ -268,10 +298,16 @@ public class DriveMotorOP extends LinearOpMode {
             }
             //launch drone
             if(gamepad1.x){
+                slideRaise(1);
+                /*
                 //release servo
                 launchServo.setPosition(0);
                 sleep(300);                //stop servo movement
                 launchServo.setPosition(0.5);
+                 */
+            }
+            if(gamepad1.a){
+                slideDrop(1);
             }
             yPressed = gamepad2.y;
             //switch drop servos position on b press
@@ -386,6 +422,7 @@ public class DriveMotorOP extends LinearOpMode {
             //telemetry.addData("Intake Motor Power/Direction", "%4.2f, %4.2f", intakeMotor.getPower(), intakeMotor.getDirection());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("Current Ticks: ", Integer.toString(currentTicks));
             telemetry.update();
         }
     }}

@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,20 +10,19 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.MarkerPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvWebcam;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class RedCloseAuto extends LinearOpMode {
+public class BlueCloseInsidePark extends LinearOpMode {
 
 
     private DcMotor rraiseMotor = null;
@@ -57,7 +57,7 @@ public class RedCloseAuto extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam1.setPipeline(new RedCloseAuto.examplePipeline());
+        webcam1.setPipeline(new BlueCloseInsidePark.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -77,53 +77,53 @@ public class RedCloseAuto extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(11, -62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(15, 62, Math.toRadians(90));
 drive.setPoseEstimate(startPose);
-        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
-                .lineTo(new Vector2d(15, -40))
+        TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(18, 50))
+                .lineToLinearHeading(new Pose2d(10, 40, Math.toRadians(0)))
+                .lineTo(new Vector2d(15, 40))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d( 50,-24, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(50, 28, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeLeft(37)
-                .back(11)
+                .strafeRight(32)
+                .back(10)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(25, -30, Math.toRadians(0)))
-                .lineTo(new Vector2d(31, -30))
+                .lineTo(new Vector2d(18, 50))
+                .lineToLinearHeading(new Pose2d(25, 30, Math.toRadians(0)))
+                .lineTo(new Vector2d(31, 30))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50, -32, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(50, 32, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeLeft(26)
+                .strafeRight(26)
                 .back(11)
                 .build();
-        TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(17, -41))
-                .lineTo(new Vector2d(17, -50))
+        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(17, 41))
+                .lineTo(new Vector2d(17, 50))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(49, -45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(49, 45, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeLeft(15)
+                .strafeRight(15)
                 .back(11)
                 .build();
         waitForStart();
@@ -157,7 +157,7 @@ drive.setPoseEstimate(startPose);
 
         Rect rightRect = new Rect(320, 200, 319, 159);
 
-        int color = 1;
+        int color = 2;
         //red = 1, blue = 2
 
 
@@ -186,7 +186,7 @@ drive.setPoseEstimate(startPose);
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            int sensitivity = 3;
+            double sensitivity = 2.3;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

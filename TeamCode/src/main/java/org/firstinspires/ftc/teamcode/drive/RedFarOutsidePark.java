@@ -22,7 +22,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class BlueCloseAuto extends LinearOpMode {
+public class RedFarOutsidePark extends LinearOpMode {
 
 
     private DcMotor rraiseMotor = null;
@@ -57,7 +57,7 @@ public class BlueCloseAuto extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam1.setPipeline(new BlueCloseAuto.examplePipeline());
+        webcam1.setPipeline(new RedFarOutsidePark.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -77,53 +77,60 @@ public class BlueCloseAuto extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(15, 62, Math.toRadians(90));
-drive.setPoseEstimate(startPose);
-        TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, 50))
-                .lineToLinearHeading(new Pose2d(10, 40, Math.toRadians(0)))
-                .lineTo(new Vector2d(15, 40))
+        Pose2d startPose = new Pose2d(-38, -62, Math.toRadians(270));
+        drive.setPoseEstimate(startPose);
+        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(-40, -50))
+                .lineToLinearHeading(new Pose2d(-38, -40, Math.toRadians(0)))
+                .lineTo(new Vector2d(-32, -40))
+                .lineTo(new Vector2d(-32, -10))
+                .lineTo(new Vector2d(15, -10))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50, 28, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeRight(32)
-                .back(10)
-                .build();
-        TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, 50))
-                .lineToLinearHeading(new Pose2d(25, 30, Math.toRadians(0)))
-                .lineTo(new Vector2d(31, 30))
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
-                .addTemporalMarker(()->swingArm())
-                .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50, 32, Math.toRadians(180)))
-                .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(1)
-                .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .strafeRight(26)
+                .strafeLeft(37)
                 .back(11)
                 .build();
-        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(17, 41))
-                .lineTo(new Vector2d(17, 50))
+        TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(-38, -34))
+                .lineTo(new Vector2d(-38, -45))
+                .lineTo(new Vector2d(-54, -20))
+                .lineTo(new Vector2d(-32, -10))
+                .lineTo(new Vector2d(15, -10))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
+                .waitSeconds(1)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(49, 45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(49, -32, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeRight(15)
+                .strafeLeft(28)
+                .back(11)
+                .build();
+        TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
+                .lineTo(new Vector2d(-32, -40))
+                .lineTo(new Vector2d(-32, -45))
+                .lineTo(new Vector2d(-38, -45))
+                .lineTo(new Vector2d(-38, -10))
+                .lineTo(new Vector2d(30, -10))
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(1)
+                .addTemporalMarker(()->swingArm())
+                .waitSeconds(1)
+                .lineToLinearHeading(new Pose2d(49, -45, Math.toRadians(180)))
+                .addTemporalMarker(()->depositServo.setPosition(0.5))
+                .waitSeconds(1)
+                .addTemporalMarker(()->slideDrop())
+                .waitSeconds(1)
+                .strafeLeft(15)
                 .back(11)
                 .build();
         waitForStart();
@@ -186,7 +193,7 @@ drive.setPoseEstimate(startPose);
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            int sensitivity = 3;
+            double sensitivity = 2.3;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
