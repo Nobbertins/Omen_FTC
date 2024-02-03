@@ -47,7 +47,7 @@ public class TrajectoryTestRedFarAuto extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(-36, -62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-38, -62, Math.toRadians(270));
 drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqCloseLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-40, -50))
@@ -68,19 +68,21 @@ drive.setPoseEstimate(startPose);
                 .back(11)
                 .build();
         TrajectorySequence trajSeqCloseMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(23, -30, Math.toRadians(0)))
-                .lineTo(new Vector2d(29, -30))
+                .lineTo(new Vector2d(-38, -34))
+                .lineTo(new Vector2d(-38, -60))
+                .lineTo(new Vector2d(-54, -20))
+                .lineTo(new Vector2d(-32, 0))
+                .lineTo(new Vector2d(15, 0))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(49, -35, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                .strafeLeft(23)
+                .strafeLeft(37)
                 .back(11)
                 .build();
         TrajectorySequence trajSeqCloseRight = drive.trajectorySequenceBuilder(startPose)
