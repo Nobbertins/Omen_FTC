@@ -86,8 +86,10 @@ drive.setPoseEstimate(startPose);
                 .back(11)
                 .build();
         TrajectorySequence trajSeqFarRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(17, -40))
-                .lineTo(new Vector2d(17, -50))
+                .lineTo(new Vector2d(-32, -40))
+                .lineTo(new Vector2d(-38, -60))
+                .lineTo(new Vector2d(-38, 0))
+                .lineTo(new Vector2d(30, 0))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(1.2)
                 .addTemporalMarker(()->swingArm())
