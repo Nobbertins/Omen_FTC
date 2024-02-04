@@ -233,7 +233,8 @@ public class DriveMotorOP extends LinearOpMode {
 
         boolean depositState = false;
         boolean aPressed = false;
-
+        boolean launchPressed = false;
+        boolean launched = false;
         boolean intakeMotorDirection = true;
         boolean lbPressed = false;
 
@@ -246,6 +247,7 @@ public class DriveMotorOP extends LinearOpMode {
         depositServo.setPosition(0.5);
         ldropServo.setPosition(0.5);
         rdropServo.setPosition(0);
+        launchServo.setPosition(0.5);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //max variable will be used later -> calculated then compared
@@ -297,20 +299,19 @@ public class DriveMotorOP extends LinearOpMode {
                 }
             }
             //launch drone
-            if(gamepad1.x){
-                slideRaise(1);
-                /*
-                //release servo
-                launchServo.setPosition(0);
-                sleep(300);                //stop servo movement
-                launchServo.setPosition(0.5);
-                 */
-            }
-            if(gamepad1.a){
-                slideDrop(1);
-            }
             yPressed = gamepad2.y;
             //switch drop servos position on b press
+            if(gamepad1.x && !launchPressed){
+                if(launched){
+                    launchServo.setPosition(0);
+                    launched = false;
+                }
+                else {
+                    launchServo.setPosition(0.8);
+                    launched = true;
+                }
+            }
+            launchPressed = gamepad1.x;
             if(gamepad1.b && !bPressed) {
                 dropState = !dropState;
                 if (dropState) {

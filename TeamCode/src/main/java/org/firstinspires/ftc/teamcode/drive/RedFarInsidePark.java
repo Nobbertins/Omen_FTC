@@ -193,7 +193,7 @@ public class RedFarInsidePark extends LinearOpMode {
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            double sensitivity = 2.3;
+            double sensitivity = 3.4;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

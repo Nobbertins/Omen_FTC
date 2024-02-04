@@ -38,13 +38,11 @@ public class RedFarOutsidePark extends LinearOpMode {
         lraiseMotor.setPower(0.6);
         rraiseMotor.setPower(0.6);
     }
-    private void swingArm() {
-        rslideServo.setPosition(0.24);
+    private void slideStop(){
         lraiseMotor.setPower(0.05);
         rraiseMotor.setPower(0.05);
     }
     public void slideDrop() {
-        rslideServo.setPosition(0.02);
         rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setPower(0.5);
@@ -86,14 +84,20 @@ public class RedFarOutsidePark extends LinearOpMode {
                 .lineTo(new Vector2d(-32, -10))
                 .lineTo(new Vector2d(15, -10))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
+                .waitSeconds(2.3)
                 .strafeLeft(37)
                 .back(11)
                 .build();
@@ -104,14 +108,20 @@ public class RedFarOutsidePark extends LinearOpMode {
                 .lineTo(new Vector2d(-32, -10))
                 .lineTo(new Vector2d(15, -10))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(49, -32, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
+                .waitSeconds(2.3)
                 .strafeLeft(28)
                 .back(11)
                 .build();
@@ -122,14 +132,20 @@ public class RedFarOutsidePark extends LinearOpMode {
                 .lineTo(new Vector2d(-38, -10))
                 .lineTo(new Vector2d(30, -10))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
                 .lineToLinearHeading(new Pose2d(49, -45, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
+                .waitSeconds(2.3)
                 .strafeLeft(15)
                 .back(11)
                 .build();
@@ -160,9 +176,9 @@ public class RedFarOutsidePark extends LinearOpMode {
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(1, 200, 319, 159);
+        Rect leftRect = new Rect(1, 0, 319, 319);
 
-        Rect rightRect = new Rect(320, 200, 319, 159);
+        Rect rightRect = new Rect(320, 0, 319, 319);
 
         int color = 1;
         //red = 1, blue = 2
@@ -193,7 +209,7 @@ public class RedFarOutsidePark extends LinearOpMode {
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            double sensitivity = 2.3;
+            double sensitivity = 3.4;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

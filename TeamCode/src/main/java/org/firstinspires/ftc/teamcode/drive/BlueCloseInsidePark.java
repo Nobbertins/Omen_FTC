@@ -38,13 +38,11 @@ public class BlueCloseInsidePark extends LinearOpMode {
         lraiseMotor.setPower(0.6);
         rraiseMotor.setPower(0.6);
     }
-    private void swingArm() {
-        rslideServo.setPosition(0.24);
+    private void slideStop(){
         lraiseMotor.setPower(0.05);
         rraiseMotor.setPower(0.05);
     }
     public void slideDrop() {
-        rslideServo.setPosition(0.02);
         rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setPower(0.5);
@@ -84,15 +82,21 @@ drive.setPoseEstimate(startPose);
                 .lineToLinearHeading(new Pose2d(10, 40, Math.toRadians(0)))
                 .lineTo(new Vector2d(15, 40))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50, 28, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(51, 28, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .strafeRight(32)
+                .waitSeconds(2.3)
+                .strafeLeft(15)
                 .back(10)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
@@ -100,30 +104,42 @@ drive.setPoseEstimate(startPose);
                 .lineToLinearHeading(new Pose2d(25, 30, Math.toRadians(0)))
                 .lineTo(new Vector2d(31, 30))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(50, 32, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(51, 38, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .strafeRight(26)
+                .waitSeconds(2.3)
+                .strafeLeft(24)
                 .back(11)
                 .build();
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(17, 41))
                 .lineTo(new Vector2d(17, 50))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(1.2)
-                .addTemporalMarker(()->swingArm())
+                .waitSeconds(0.8)
+                .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(49, 45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(51, 45, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .strafeRight(15)
+                .waitSeconds(2.3)
+                .strafeLeft(36)
                 .back(11)
                 .build();
         waitForStart();
@@ -153,9 +169,9 @@ drive.setPoseEstimate(startPose);
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(1, 200, 319, 159);
+        Rect leftRect = new Rect(1, 0, 319, 319);
 
-        Rect rightRect = new Rect(320, 200, 319, 159);
+        Rect rightRect = new Rect(320, 0, 319, 319);
 
         int color = 2;
         //red = 1, blue = 2
@@ -186,7 +202,7 @@ drive.setPoseEstimate(startPose);
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            double sensitivity = 2.3;
+            double sensitivity = 3.4;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

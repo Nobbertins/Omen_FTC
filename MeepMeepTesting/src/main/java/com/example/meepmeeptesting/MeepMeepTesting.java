@@ -59,26 +59,29 @@ public class MeepMeepTesting {
          Vector2d redCloseMarkerTile = new Vector2d(12, -36);
          Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 */
-        Pose2d startPose =  new Pose2d(-36, -62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-31, 62, Math.toRadians(90));
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42, 30, 3, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineTo(new Vector2d(-40, -50))
-                                .lineToLinearHeading(new Pose2d(-36, -40, Math.toRadians(0)))
-                                .lineTo(new Vector2d(-32, -40))
-                                .lineTo(new Vector2d(-32, 0))
-                                .lineTo(new Vector2d(15, 0))
+                                .lineTo(new Vector2d(-51, 40))
+                                .lineTo(new Vector2d(-51, 45))
+                                .lineTo(new Vector2d(-36, 45))
+                                .lineTo(new Vector2d(-36, 10))
+                                .lineTo(new Vector2d(30, 10))
+                               // .addTemporalMarker(()->slideRaise())
                                 .waitSeconds(1.2)
+                               // .addTemporalMarker(()->swingArm())
                                 .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(49, -23, Math.toRadians(180)))
+                                .lineToLinearHeading(new Pose2d(49, 45, Math.toRadians(180)))
+                              //  .addTemporalMarker(()->depositServo.setPosition(0.5))
                                 .waitSeconds(1)
+                               // .addTemporalMarker(()->slideDrop())
                                 .waitSeconds(1)
-                                .strafeLeft(37)
+                                .strafeRight(15)
                                 .back(11)
                                 .build()
-
                                 //.splineToConstantHeading(new Vector2d(16, -43), Math.toRadians(270))
 
                                 //.splineToLinearHeading(new Pose2d(22, -30, Math.toRadians(0)),Math.toRadians(270))

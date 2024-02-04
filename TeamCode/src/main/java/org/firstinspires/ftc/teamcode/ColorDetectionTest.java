@@ -6,7 +6,10 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.drive.SampleMecanumDrive;
@@ -23,8 +26,34 @@ import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
+@Disabled
 @Autonomous
 public class ColorDetectionTest extends OpMode {
+    private DcMotor rraiseMotor = null;
+
+    private DcMotor lraiseMotor = null;
+    private Servo depositServo = null;
+    private Servo lslideServo = null;
+
+    private Servo rslideServo = null;
+    private void slideRaise() {
+        rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        lraiseMotor.setPower(0.6);
+        rraiseMotor.setPower(0.6);
+    }
+    private void swingArm() {
+        rslideServo.setPosition(0.24);
+        lraiseMotor.setPower(0.05);
+        rraiseMotor.setPower(0.05);
+    }
+    public void slideDrop() {
+        rslideServo.setPosition(0.02);
+        rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
+        lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
+        lraiseMotor.setPower(0.5);
+        rraiseMotor.setPower(0.5);
+    }
     OpenCvWebcam webcam1 = null;
     public MarkerPosition currentMarkerPosition = MarkerPosition.UNKNOWN;
     @Override
@@ -46,16 +75,6 @@ public class ColorDetectionTest extends OpMode {
         });
     }
     public void start(){
-        switch(currentMarkerPosition){
-            case LEFT:
-                break;
-            case RIGHT:
-                break;
-            case MIDDLE:
-                break;
-            default:
-                break;
-        }
     }
 
     @Override
@@ -76,7 +95,7 @@ public class ColorDetectionTest extends OpMode {
 
         Rect rightRect = new Rect(320, 200, 319, 159);
 
-        int color = 2;
+        int color = 1;
         //red = 1, blue = 2
 
 
@@ -105,7 +124,7 @@ public class ColorDetectionTest extends OpMode {
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            int sensitivity = 5;
+            double sensitivity = 3.4;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

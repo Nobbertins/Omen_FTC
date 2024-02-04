@@ -3,6 +3,7 @@ import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.acmerobotics.roadrunner.trajectory.Trajectory;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
 
+@Disabled
 @Autonomous
 public class TrajectoryTest extends LinearOpMode {
 
@@ -51,7 +53,7 @@ public class TrajectoryTest extends LinearOpMode {
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
         Pose2d startPose = new Pose2d(11, -62, Math.toRadians(270));
-drive.setPoseEstimate(startPose);
+        drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqCloseLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(18, -50))
                 .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
