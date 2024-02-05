@@ -169,9 +169,9 @@ drive.setPoseEstimate(startPose);
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(1, 0, 319, 319);
+        Rect leftRect = new Rect(0, 80, 120, 140);
 
-        Rect rightRect = new Rect(320, 0, 319, 319);
+        Rect rightRect = new Rect(300, 95, 120, 130);
 
         int color = 2;
         //red = 1, blue = 2
@@ -195,14 +195,15 @@ drive.setPoseEstimate(startPose);
 
             Core.extractChannel(leftCrop, leftCrop, color);
             Core.extractChannel(rightCrop, rightCrop, color);
-
+            Imgproc.rectangle(outPut, leftRect, new Scalar(255.0,255.0,255.0),2);
+            Imgproc.rectangle(outPut, rightRect, new Scalar(255.0,255.0,255.0),2);
             Scalar leftavg = Core.mean(leftCrop);
             Scalar rightavg = Core.mean(rightCrop);
 
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            double sensitivity = 3.4;
+            double sensitivity = 2;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
