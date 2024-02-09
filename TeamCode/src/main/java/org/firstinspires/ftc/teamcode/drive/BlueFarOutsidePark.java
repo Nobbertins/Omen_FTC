@@ -111,7 +111,7 @@ public class BlueFarOutsidePark extends LinearOpMode {
                 .waitSeconds(0.8)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
-                .lineToLinearHeading(new Pose2d(49, 32, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(50, 32, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
