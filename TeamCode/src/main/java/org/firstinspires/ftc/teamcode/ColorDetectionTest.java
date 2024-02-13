@@ -124,7 +124,7 @@ public class ColorDetectionTest extends OpMode {
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
             //lower -> more sensitive to choosing left or right
-            double sensitivity = 2;
+            double sensitivity = 5.0;
             //when viewing just right and middle lines
             if (sampling){
                 if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {

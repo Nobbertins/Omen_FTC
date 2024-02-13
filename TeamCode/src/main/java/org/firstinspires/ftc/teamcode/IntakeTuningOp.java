@@ -113,7 +113,6 @@ Servos:
  */
 
 //define OP
-@Disabled
 @TeleOp(name="Intake Tuning Op", group="Linear OpMode")
 //@Disabled
 

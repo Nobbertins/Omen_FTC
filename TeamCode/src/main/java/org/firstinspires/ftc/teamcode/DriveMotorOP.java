@@ -247,7 +247,7 @@ public class DriveMotorOP extends LinearOpMode {
         depositServo.setPosition(0.5);
         ldropServo.setPosition(0.5);
         rdropServo.setPosition(0);
-        launchServo.setPosition(0.5);
+        launchServo.setPosition(0.2);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //max variable will be used later -> calculated then compared
@@ -303,11 +303,11 @@ public class DriveMotorOP extends LinearOpMode {
             //switch drop servos position on b press
             if(gamepad1.x && !launchPressed){
                 if(launched){
-                    launchServo.setPosition(0);
+                    launchServo.setPosition(0.2);
                     launched = false;
                 }
                 else {
-                    launchServo.setPosition(0.8);
+                    launchServo.setPosition(0.0);
                     launched = true;
                 }
             }
