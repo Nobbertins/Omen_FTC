@@ -25,6 +25,7 @@ import org.openftc.easyopencv.OpenCvWebcam;
 public class BlueCloseOutsidePark extends LinearOpMode {
 
 
+    // pos x is closer to the wall in this case, pos y is farther away from wall
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -76,17 +77,17 @@ public class BlueCloseOutsidePark extends LinearOpMode {
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
         Pose2d startPose = new Pose2d(12, 62, Math.toRadians(90));
-drive.setPoseEstimate(startPose);
+        drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(18, 50))
-                .lineToLinearHeading(new Pose2d(10,40, Math.toRadians(0)))
+                .lineToLinearHeading(new Pose2d(12,40, Math.toRadians(0)))
                 .lineTo(new Vector2d(15, 40))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.8)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(53, 28, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(54, 32, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -96,11 +97,14 @@ drive.setPoseEstimate(startPose);
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(2.3)
-                .strafeRight(36)
+                .forward(5)
+                .waitSeconds(0.8)
+                .strafeRight(32)
                 .back(8)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, 50))
+                // pos x neg x
+                .lineTo(new Vector2d(18, 55))
                 .lineToLinearHeading(new Pose2d(29, 30, Math.toRadians(0)))
                 .lineTo(new Vector2d(35, 30))
                 .addTemporalMarker(()->slideRaise())
@@ -108,7 +112,7 @@ drive.setPoseEstimate(startPose);
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(53, 38, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(52, 38, Math.toRadians(180)))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -118,6 +122,9 @@ drive.setPoseEstimate(startPose);
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(2.3)
+                // added forward to make sure the bot moves forward away from the wall
+                .forward(3)
+                .waitSeconds(0.8)
                 .strafeRight(22)
                 .back(8)
                 .build();
@@ -139,6 +146,8 @@ drive.setPoseEstimate(startPose);
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(2.3)
+                .forward(5)
+                .waitSeconds(0.8)
                 .strafeRight(15)
                 .back(8)
                 .build();
@@ -169,9 +178,9 @@ drive.setPoseEstimate(startPose);
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(0, 80, 120, 140);
+        Rect leftRect = new Rect(140, 200, 160, 159);
 
-        Rect rightRect = new Rect(300, 95, 120, 130);
+        Rect rightRect = new Rect(420, 200, 160, 159);
 
         int color = 2;
         //red = 1, blue = 2
