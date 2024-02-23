@@ -31,6 +31,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
     public BlueCloseLeftPlacement(){
         pixelPlacement = 0;
     }
+
+
+    //Initialize Motors and Servos, if you wish to control other actuators in a trajectory first intialize them here
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -38,16 +41,22 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
     private Servo lslideServo = null;
 
     private Servo rslideServo = null;
+
+    //Raise bucket to drop height
     private void slideRaise() {
         rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setPower(0.6);
         rraiseMotor.setPower(0.6);
     }
+
+    //Keep slide motors running at a low power to lock them in place
     private void slideStop(){
         lraiseMotor.setPower(0.05);
         rraiseMotor.setPower(0.05);
     }
+
+    //Bring bucket back down after pixel has been dropped
     public void slideDrop() {
         rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -56,11 +65,15 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
     }
     OpenCvWebcam webcam1 = null;
     public MarkerPosition currentMarkerPosition = MarkerPosition.UNKNOWN;
+
     @Override
     public void runOpMode() {
+
+        //Intialize webcam
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
+        //Pipeline is the
         webcam1.setPipeline(new BlueCloseLeftPlacement.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
@@ -73,40 +86,69 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
 
             }
         });
+        //Intialize motors based on how they are listed listed in the robot configuration. This configuration can be edited from the dirver control hub
         SampleMecanumDrive drive = new SampleMecanumDrive(hardwareMap);
         rraiseMotor = hardwareMap.get(DcMotor.class, "rraise");
         lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         depositServo = hardwareMap.get(Servo.class, "deposit");
         lslideServo = hardwareMap.get(Servo.class, "lslide");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
+        //Intialize robot
         rslideServo.setPosition(0.02);
+        //close deposit servo to lock in piece
         depositServo.setPosition(0);
+
+        //Starting position and heading of the robot. *YOU SHOULD NOT NEED TO CHANGE HEADING*
         Pose2d startPose = new Pose2d(12, 62, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
+
+        //Trajectory which is run if the piece is detected on the right spike mark
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
+                //go out a little (better start point)
                 .lineTo(new Vector2d(18, 50))
+                //push pixel to the line by moving to a point while rotating the bot to the side
                 .lineToLinearHeading(new Pose2d(12,40, Math.toRadians(0)))
+                //move back from the line to let go of pixel on line
                 .lineTo(new Vector2d(15, 40))
+
+                //Raise the servo slide to prepare for backboard dropping
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.9)
+                //flip the bucket out to be parellel to the backboard angle
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
+                //lock slides in this position
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
+
+                //drive to backboard while rotating robot to be facing backdrop
+                //32 is the absolute right side of the back board, move slightly left by the (pixelPlacement * 1.2) term for accurate placement in the right column
                 .lineToLinearHeading(new Pose2d(45, 32 - (pixelPlacement * 1.2), Math.toRadians(180)))
+                //Go forward into the backboard until the bucket is right up against the backdrop
                 .back(9)
+
+                //Open the bucket and drop the pixel
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
+
+                //Raise slide to release pixel from bucket completly
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideStop())
+                //bring the bucket back in
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
+                //lower slides all the way down
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
+                //Back away from backboard
                 .forward(5)
+                //the robot will go relatively left all the way to corner
                 .strafeRight(28 + (pixelPlacement * 3.2))
+                //go forward into corner
                 .back(8)
                 .build();
+
+        //Trajectory which is run if the piece is detected on the middle spike mark
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
                 //go out a little (better start point)
                 .lineTo(new Vector2d(18, 55))
@@ -135,6 +177,8 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .strafeRight(22 + (pixelPlacement * 3.2))
                 .back(8)
                 .build();
+
+        //Trajectory which is run if the piece is detected on the left spike mark
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(18, 43))
                 .lineTo(new Vector2d(18, 50))
@@ -175,7 +219,21 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 break;
         }
     }
-    //Camera lens was 12.5cm from right side of tile and at edge of tile when these values were calibrated
+
+
+    /*
+    Pipelines are how you control piece detection. At the start the camera can only view two of the three spike marks.
+    This pipeline works by splitting the camera view into two sides by making two crops. Then the blue channel (how much blue there is)
+    is extracted from each crop and the difference between the blue between the two crops is taken. If this difference is above a certain
+    sensitivty threshold, the piece is considered to be on the side with the higher blue content. If the sensitivity
+    threshold is not exceeded then the piece is considered to be on the line that is not in the view.
+
+    Settings You Can Alter
+        -Sensitivity of Color Detection
+        -Size of the two crops
+
+    Camera lens was 12.5cm from right side of tile and at edge of tile when these values were calibrated
+     */
     class examplePipeline extends OpenCvPipeline{
         Mat YCbCr = new Mat();
         Mat leftCrop;
@@ -184,22 +242,33 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
         Double rightavgin;
         Mat outPut = new Mat();
 
-        //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
+        /*
+        The crops which are compared
+        The x and y arguments are the root vertex of the rectangle
+        Width is the amount the rectangle is expanded to the right
+        Hieght is the amount the rectangle is expanded down
+
+        *Important* (0,0) is the top left corner so a higher y value will raise the rectangle crop up
+        x + width must be less than 640 as this is the x-resolution of the webcam
+        y + height must be less than 360 as this is the y-resolution of the webcam
+         */
         Rect leftRect = new Rect(100, 220, 160, 139);
 
         Rect rightRect = new Rect(420, 220, 160, 139);
 
-        int color = 2;
         //red = 1, blue = 2
+        int color = 2;
 
 
-        boolean sampling = true;
+        //The sensitivty threshold: Lower sensitivity value means more likely to detect a piece on a visible spike but less likely to detect if the piece is placed on a non-visible spike
+        double sensitivity = 5.0;
 
         /*
         position of left, right, middle are determined as the left line being the line closest to the backdrop
         */
 
         @Override
+        //*YOU SHOULD NOT NEED TO CHNAGE ANYTHING IN THIS FUNCTION FOR TUNING*
         public Mat processFrame(Mat input) {
             Imgproc.cvtColor(input, YCbCr, Imgproc.COLOR_RGB2YCrCb);
             telemetry.addLine("pipeline running");
@@ -218,24 +287,19 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
 
             leftavgin = leftavg.val[0];
             rightavgin = rightavg.val[0];
-            //lower -> more sensitive to choosing left or right
-            double sensitivity = 5.0;
             //when viewing just right and middle lines
-            if (sampling){
-                if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
-                    //nothing detected must be in furthest left lane
-                    currentMarkerPosition = MarkerPosition.LEFT;
-                } else if (leftavgin > rightavgin) {
-                    //on the left of screen which is middle line
-                    currentMarkerPosition = MarkerPosition.MIDDLE;
-                } else {
-                    //on the right
-                    currentMarkerPosition = MarkerPosition.RIGHT;
-                }
+            if (leftavgin - rightavgin < sensitivity && leftavgin - rightavgin > -sensitivity) {
+                //nothing detected must be in furthest left lane
+                currentMarkerPosition = MarkerPosition.LEFT;
+            } else if (leftavgin > rightavgin) {
+                //on the left of screen which is middle line
+                currentMarkerPosition = MarkerPosition.MIDDLE;
+            } else {
+                //on the right
+                currentMarkerPosition = MarkerPosition.RIGHT;
             }
 
-
-
+            //Print blue values of each crop and the predicted position on the driver controller
             telemetry.addData("Leftavgin", leftavgin);
             telemetry.addData("Rightavgin", rightavgin);
             telemetry.addData("Marker Position", currentMarkerPosition);
