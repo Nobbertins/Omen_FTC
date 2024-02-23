@@ -22,8 +22,6 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 
-
-
 // btw strafeRight goes left and strafeLeft goes right
 @Autonomous
 public class BlueFarLeftPlacement extends LinearOpMode {
@@ -87,16 +85,16 @@ public class BlueFarLeftPlacement extends LinearOpMode {
         drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-18, 50))
-                .lineToLinearHeading(new Pose2d(-10, 40, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(-11, 40, Math.toRadians(180)))
                 .lineTo(new Vector2d(-15, 40))
                 .strafeLeft(30)
-                .back(65)
+                .back(75)
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineTo(new Vector2d(62, 43.5 - (pixelPlacement * 3.2)))
+                .lineTo(new Vector2d(62, 43.7 - (pixelPlacement * 3.2)))
                 .back(12)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
@@ -110,16 +108,16 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
                 .lineTo(new Vector2d(-18, 50))
-                .lineToLinearHeading(new Pose2d(-25, 28, Math.toRadians(180)))
-                .lineTo(new Vector2d(-30, 28))
-                .strafeLeft(18)
+                .lineToLinearHeading(new Pose2d(-25, 29, Math.toRadians(180)))
+                .lineTo(new Vector2d(-30, 29))
+                .strafeLeft(19)
                 .back(80)
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
-                .lineTo(new Vector2d(62, 37 - (pixelPlacement * 2.2)))
-                .back(12)
+                .lineTo(new Vector2d(62, 39.7 - (pixelPlacement * 2.2)))
+                .back(10)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -131,16 +129,16 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-17, 43))
-                .lineTo(new Vector2d(-17, 47))
-                .strafeRight(7)
-                .back(40)
+                .lineTo(new Vector2d(-18.5, 43))
+                .lineTo(new Vector2d(-18.5, 47))
+                .strafeRight(6)
+                .back(35)
                 .lineToLinearHeading(new Pose2d(40,10,Math.toRadians(180)))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
-                .lineTo(new Vector2d(62, 32 - (pixelPlacement * 1.2)))
+                .lineTo(new Vector2d(62, 33 - (pixelPlacement * 1.2)))
                 .back(12)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
