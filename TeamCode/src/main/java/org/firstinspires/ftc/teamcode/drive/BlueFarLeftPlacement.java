@@ -26,9 +26,13 @@ import org.openftc.easyopencv.OpenCvWebcam;
 
 // btw strafeRight goes left and strafeLeft goes right
 @Autonomous
-public class BlueFarOutsidePark extends LinearOpMode {
+public class BlueFarLeftPlacement extends LinearOpMode {
 
+    public int pixelPlacement;//0 is left, 1 is right
 
+    public BlueFarLeftPlacement(){
+        pixelPlacement = 0;
+    }
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -59,7 +63,7 @@ public class BlueFarOutsidePark extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam1.setPipeline(new BlueFarOutsidePark.examplePipeline());
+        webcam1.setPipeline(new BlueFarLeftPlacement.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -79,44 +83,43 @@ public class BlueFarOutsidePark extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(-31, 62, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-12, 62, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-32, 40))
-                .lineTo(new Vector2d(-32, 45))
-                .lineTo(new Vector2d(-38, 45))
-                .lineTo(new Vector2d(-36,  10))
-                .lineTo(new Vector2d(30, 10))
+                .lineTo(new Vector2d(-18, 50))
+                .lineToLinearHeading(new Pose2d(-10, 40, Math.toRadians(180)))
+                .lineTo(new Vector2d(-15, 40))
+                .strafeLeft(30)
+                .back(65)
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.8)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(55, 45, Math.toRadians(180)))
+                .lineTo(new Vector2d(62, 43.5 - (pixelPlacement * 3.2)))
+                .back(12)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(0.6)
+                .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.2)
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideStop())
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
-                .waitSeconds(0.3)
+                .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
-                // changed to strafe right because the bot is strafing right when the code says strafe left
-                .strafeRight(15)
-                .back(11)
+                .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-38, 34))
-                .lineTo(new Vector2d(-38, 45))
-                .lineTo(new Vector2d(-57, 20))
-                .lineTo(new Vector2d(-32, 10))
-                .lineTo(new Vector2d(15, 10))
+                .lineTo(new Vector2d(-18, 50))
+                .lineToLinearHeading(new Pose2d(-25, 28, Math.toRadians(180)))
+                .lineTo(new Vector2d(-30, 28))
+                .strafeLeft(18)
+                .back(80)
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
-                .lineToLinearHeading(new Pose2d(58, 18, Math.toRadians(180)))
+                .lineTo(new Vector2d(62, 37 - (pixelPlacement * 2.2)))
+                .back(12)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -125,21 +128,20 @@ public class BlueFarOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
-                .strafeRight(28)
-                .back(11)
+                .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-49, 40))
-                .lineTo(new Vector2d(-53, 45))
-                .lineTo(new Vector2d(-34, 45))
-                .lineTo(new Vector2d(-34, 10))
-                .lineTo(new Vector2d(30, 10))
+                .lineTo(new Vector2d(-17, 43))
+                .lineTo(new Vector2d(-17, 47))
+                .strafeRight(7)
+                .back(40)
+                .lineToLinearHeading(new Pose2d(40,10,Math.toRadians(180)))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
-                .lineToLinearHeading(new Pose2d(58, 45, Math.toRadians(180)))
+                .lineTo(new Vector2d(62, 32 - (pixelPlacement * 1.2)))
+                .back(12)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -148,9 +150,7 @@ public class BlueFarOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
-                .strafeRight(34)
-                .back(11)
+                .waitSeconds(2)
                 .build();
         waitForStart();
 
@@ -179,9 +179,9 @@ public class BlueFarOutsidePark extends LinearOpMode {
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(150, 200, 160, 159);
+        Rect leftRect = new Rect(150, 230, 190, 129);
         // y = 80 og
-        Rect rightRect = new Rect(450, 200, 160, 159);
+        Rect rightRect = new Rect(450, 230, 190, 129);
         // y 95 og
         // x 300 og
         int color = 2;

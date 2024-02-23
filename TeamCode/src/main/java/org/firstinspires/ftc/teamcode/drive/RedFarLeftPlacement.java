@@ -1,4 +1,5 @@
 package org.firstinspires.ftc.teamcode.drive;
+
 import com.acmerobotics.roadrunner.geometry.Pose2d;
 import com.acmerobotics.roadrunner.geometry.Vector2d;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -9,22 +10,25 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.teamcode.MarkerPosition;
 import org.firstinspires.ftc.teamcode.trajectorysequence.TrajectorySequence;
-import org.openftc.easyopencv.OpenCvCamera;
-import org.openftc.easyopencv.OpenCvWebcam;
-
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
-import org.opencv.core.Scalar;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
+import org.openftc.easyopencv.OpenCvCamera;
 import org.openftc.easyopencv.OpenCvCameraFactory;
 import org.openftc.easyopencv.OpenCvCameraRotation;
 import org.openftc.easyopencv.OpenCvPipeline;
+import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class RedCloseOutsidePark extends LinearOpMode {
+public class RedFarLeftPlacement extends LinearOpMode {
 
+    public int pixelPlacement;//0 is left, 1 is right
 
+    public RedFarLeftPlacement(){
+        pixelPlacement = 0;
+    }
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -32,25 +36,17 @@ public class RedCloseOutsidePark extends LinearOpMode {
     private Servo lslideServo = null;
 
     private Servo rslideServo = null;
-
-    private void slideStop(){
-        lraiseMotor.setPower(0.05);
-        rraiseMotor.setPower(0.05);
-    }
-
     private void slideRaise() {
         rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setPower(0.6);
         rraiseMotor.setPower(0.6);
     }
-    private void swingArm() {
-        rslideServo.setPosition(0.24);
+    private void slideStop(){
         lraiseMotor.setPower(0.05);
         rraiseMotor.setPower(0.05);
     }
     public void slideDrop() {
-        rslideServo.setPosition(0.02);
         rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
         lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setPower(0.5);
@@ -63,7 +59,7 @@ public class RedCloseOutsidePark extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam1.setPipeline(new RedCloseOutsidePark.examplePipeline());
+        webcam1.setPipeline(new RedFarLeftPlacement.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -83,18 +79,21 @@ public class RedCloseOutsidePark extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(11, -62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-12, -62, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(8, -40, Math.toRadians(0)))
-                .lineTo(new Vector2d(15, -40))
+                .lineTo(new Vector2d(-18, -43))
+                .lineTo(new Vector2d(-18, -55))
+                .strafeLeft(7)
+                .lineTo(new Vector2d(-20, -11))
+                .lineToLinearHeading(new Pose2d(40, -18, Math.toRadians(180)))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d( 47,-28, Math.toRadians(180)))
+                .lineTo(new Vector2d( 64,-30-(pixelPlacement*3.5)))
+                .back(9)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -103,22 +102,24 @@ public class RedCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(6)
-                .waitSeconds(0.8)
-                .strafeLeft(30)
-                .back(10)
+                .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(25, -30, Math.toRadians(0)))
-                .lineTo(new Vector2d(31, -30))
+                //go out a little (better start point)
+                .lineTo(new Vector2d(-18, -55))
+                //push pixel to line
+                .lineToLinearHeading(new Pose2d(-29, -28.5, Math.toRadians(180)))
+                //leave pixel on line
+                .lineTo(new Vector2d(-33, -28.5))
+                .strafeRight(18)
+                .back(85)
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(48, -36, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(62, -36-(pixelPlacement*3), Math.toRadians(180)))
+                .back(8.5)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -127,21 +128,21 @@ public class RedCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(6)
-                .waitSeconds(0.8)
-                .strafeLeft(27)
-                .back(10)
+                .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(15, -41))
-                .lineTo(new Vector2d(17, -50))
+                .lineTo(new Vector2d(-18, -50))
+                .lineToLinearHeading(new Pose2d(-12,-38, Math.toRadians(180)))
+                .forward(7)
+                .strafeRight(28)
+                .back(75)
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(48, -47, Math.toRadians(180)))
+                .lineTo(new Vector2d(62, -41.5-(pixelPlacement*2)))
+                .back(9.5)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -150,11 +151,7 @@ public class RedCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(6)
-                .waitSeconds(0.8)
-                .strafeLeft(15)
-                .back(10)
+                .waitSeconds(2)
                 .build();
         waitForStart();
 
@@ -183,9 +180,9 @@ public class RedCloseOutsidePark extends LinearOpMode {
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(90, 200, 160, 159);
+        Rect leftRect = new Rect(70, 200, 200, 159);
 
-        Rect rightRect = new Rect(370, 200, 160, 159);
+        Rect rightRect = new Rect(360, 200, 200, 159);
 
         int color = 1;
         //red = 1, blue = 2
@@ -206,7 +203,6 @@ public class RedCloseOutsidePark extends LinearOpMode {
 
             leftCrop = YCbCr.submat(leftRect);
             rightCrop = YCbCr.submat(rightRect);
-
 
             Core.extractChannel(leftCrop, leftCrop, color);
             Core.extractChannel(rightCrop, rightCrop, color);

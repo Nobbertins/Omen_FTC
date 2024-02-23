@@ -22,10 +22,15 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class BlueCloseOutsidePark extends LinearOpMode {
+public class BlueCloseLeftPlacement extends LinearOpMode {
 
 
     // pos x is closer to the wall in this case, pos y is farther away from wall
+    public int pixelPlacement;//0 is left, 1 is right
+
+    public BlueCloseLeftPlacement(){
+        pixelPlacement = 0;
+    }
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -56,7 +61,7 @@ public class BlueCloseOutsidePark extends LinearOpMode {
         WebcamName webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId","id",hardwareMap.appContext.getPackageName());
         webcam1 = OpenCvCameraFactory.getInstance().createWebcam(webcamName,cameraMonitorViewId);
-        webcam1.setPipeline(new BlueCloseOutsidePark.examplePipeline());
+        webcam1.setPipeline(new BlueCloseLeftPlacement.examplePipeline());
         webcam1.openCameraDeviceAsync(new OpenCvCamera.AsyncCameraOpenListener() {
             @Override
             public void onOpened() {
@@ -83,11 +88,12 @@ public class BlueCloseOutsidePark extends LinearOpMode {
                 .lineToLinearHeading(new Pose2d(12,40, Math.toRadians(0)))
                 .lineTo(new Vector2d(15, 40))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.9)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(54, 32, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(45, 32 - (pixelPlacement * 1.2), Math.toRadians(180)))
+                .back(9)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -96,23 +102,25 @@ public class BlueCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
+                .waitSeconds(1)
                 .forward(5)
-                .waitSeconds(0.8)
-                .strafeRight(32)
+                .strafeRight(28 + (pixelPlacement * 3.2))
                 .back(8)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                // pos x neg x
+                //go out a little (better start point)
                 .lineTo(new Vector2d(18, 55))
-                .lineToLinearHeading(new Pose2d(29, 30, Math.toRadians(0)))
-                .lineTo(new Vector2d(35, 30))
+                //push pixel to line
+                .lineToLinearHeading(new Pose2d(27, 28.5, Math.toRadians(0)))
+                //leave pixel on line
+                .lineTo(new Vector2d(35, 28.5))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.9)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(52, 38, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(45, 37 - (pixelPlacement * 2.2), Math.toRadians(180)))
+                .back(9)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -121,22 +129,22 @@ public class BlueCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
+                .waitSeconds(1)
                 // added forward to make sure the bot moves forward away from the wall
-                .forward(3)
-                .waitSeconds(0.8)
-                .strafeRight(22)
+                .forward(5)
+                .strafeRight(22 + (pixelPlacement * 3.2))
                 .back(8)
                 .build();
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(17, 41))
-                .lineTo(new Vector2d(17, 50))
+                .lineTo(new Vector2d(18, 43))
+                .lineTo(new Vector2d(18, 50))
                 .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.8)
+                .waitSeconds(0.9)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(53, 45, Math.toRadians(180)))
+                .lineToLinearHeading(new Pose2d(45, 45 - (pixelPlacement * 3.2), Math.toRadians(180)))
+                .back(9)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -145,10 +153,9 @@ public class BlueCloseOutsidePark extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
-                .waitSeconds(2.3)
+                .waitSeconds(1)
                 .forward(5)
-                .waitSeconds(0.8)
-                .strafeRight(15)
+                .strafeRight(15 + (pixelPlacement * 3.2))
                 .back(8)
                 .build();
         waitForStart();
@@ -178,9 +185,9 @@ public class BlueCloseOutsidePark extends LinearOpMode {
         Mat outPut = new Mat();
 
         //Currently crops only include the bottom third of the image as current camera position only ever sees marker in bottom
-        Rect leftRect = new Rect(140, 200, 160, 159);
+        Rect leftRect = new Rect(100, 220, 160, 139);
 
-        Rect rightRect = new Rect(420, 200, 160, 159);
+        Rect rightRect = new Rect(420, 220, 160, 139);
 
         int color = 2;
         //red = 1, blue = 2

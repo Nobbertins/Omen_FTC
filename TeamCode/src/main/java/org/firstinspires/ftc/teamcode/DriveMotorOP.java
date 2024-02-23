@@ -147,47 +147,6 @@ public class DriveMotorOP extends LinearOpMode {
     private Servo depositServo = null;
     private Servo launchServo = null;
     //private CRServo contServo = null;
-    private int currentTicks = 0;
-    private void slideRaise(int ticks) {
-        rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
-        lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
-        // reset encoder counts kept by motors.
-        rraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        currentTicks += ticks;
-        // set motors to run forward for 5000 encoder counts.
-        rraiseMotor.setTargetPosition(currentTicks);
-        lraiseMotor.setTargetPosition(currentTicks);
-        rraiseMotor.setPower(1);
-        lraiseMotor.setPower(1);
-        // set motors to run to target encoder position and stop with brakes on.
-        rraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while(lraiseMotor.isBusy() || rraiseMotor.isBusy()){}
-        rraiseMotor.setPower(0.05);
-        lraiseMotor.setPower(0.05);
-//        lraiseMotor.setPower(0.6);
-//        rraiseMotor.setPower(0.6);
-    }
-    public void slideDrop(int ticks) {
-        rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
-        lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
-        // reset encoder counts kept by motors.
-        rraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lraiseMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        currentTicks -= ticks;
-        // set motors to run forward for 5000 encoder counts.
-        rraiseMotor.setTargetPosition(currentTicks);
-        lraiseMotor.setTargetPosition(currentTicks);
-        rraiseMotor.setPower(1);
-        lraiseMotor.setPower(1);
-        // set motors to run to target encoder position and stop with brakes on.
-        rraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        lraiseMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        while(lraiseMotor.isBusy() || rraiseMotor.isBusy()){}
-        rraiseMotor.setPower(0.05);
-        lraiseMotor.setPower(0.05);
-    }
     @Override
     public void runOpMode() {
 
@@ -226,6 +185,8 @@ public class DriveMotorOP extends LinearOpMode {
         //initialize motor states
         boolean slideState = false;
         boolean yPressed = false;
+        boolean a1Pressed = false;
+        boolean y1Pressed = false;
         boolean xPressed = false;
         float hangMotorPower = 0;
         boolean dropState = false;
@@ -240,7 +201,7 @@ public class DriveMotorOP extends LinearOpMode {
 
         boolean runIntakeMotor = false;
         boolean rbPressed = false;
-
+        double dropPosition = 0;
         //initialize servos positions
         //lslideServo.setPosition(0);
         rslideServo.setPosition(0.02);
@@ -283,10 +244,7 @@ public class DriveMotorOP extends LinearOpMode {
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-            if(gamepad2.x && !xPressed){
-               slideRaise(1500);
-            }
-            xPressed = gamepad2.x;
+
             //switch slide servos position on y press
             if(gamepad2.y && !yPressed) {
                 slideState = !slideState;
@@ -317,12 +275,24 @@ public class DriveMotorOP extends LinearOpMode {
                 if (dropState) {
                     ldropServo.setPosition(0);
                     rdropServo.setPosition(0.5);
+                    dropPosition = 0.5;
                 } else {
                     ldropServo.setPosition(0.5);
                     rdropServo.setPosition(0);
+                    dropPosition = 0;
                 }
             }
             bPressed = gamepad1.b;
+            if(gamepad1.y && !y1Pressed){
+                dropPosition = Math.min(0.5, dropPosition + 0.05);
+            }
+            if(gamepad1.a && !a1Pressed){
+                dropPosition = Math.max(0, dropPosition - 0.05);
+            }
+            y1Pressed = gamepad1.y;
+            a1Pressed = gamepad1.a;
+            ldropServo.setPosition(0.5 - dropPosition);
+            rdropServo.setPosition(dropPosition);
             if(gamepad2.a && !aPressed) {
                 depositState = !depositState;
                 if (depositState) {
@@ -423,7 +393,6 @@ public class DriveMotorOP extends LinearOpMode {
             //telemetry.addData("Intake Motor Power/Direction", "%4.2f, %4.2f", intakeMotor.getPower(), intakeMotor.getDirection());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("Current Ticks: ", Integer.toString(currentTicks));
             telemetry.update();
         }
     }}

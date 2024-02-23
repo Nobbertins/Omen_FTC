@@ -69,7 +69,7 @@ public class MeepMeepTesting {
                                 .lineToLinearHeading(new Pose2d(25, 30, Math.toRadians(0)))
                                 .lineTo(new Vector2d(31, 30))
                                 //.addTemporalMarker(()->slideRaise())
-                                .waitSeconds(0.8)
+                                .waitSeconds(0.9)
                                 //.addTemporalMarker(()->rslideServo.setPosition(0.24))
                                 //.addTemporalMarker(()->slideStop())
                                 .waitSeconds(1)
