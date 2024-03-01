@@ -366,16 +366,16 @@ public class DriveMotorOP extends LinearOpMode {
             if(gamepad2.left_trigger>0) {
                 rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
                 lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
-                lraiseMotor.setPower(0.6);
-                rraiseMotor.setPower(0.6);
+                lraiseMotor.setPower(gamepad2.left_trigger);
+                rraiseMotor.setPower(gamepad2.left_trigger);
                 //up
             }
             //right trigger linear slide go down
             else if(gamepad2.right_trigger>0){
                 rraiseMotor.setDirection(DcMotor.Direction.FORWARD);
                 lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
-                lraiseMotor.setPower(0.5);
-                rraiseMotor.setPower(0.5);
+                lraiseMotor.setPower(gamepad2.right_trigger);
+                rraiseMotor.setPower(gamepad2.right_trigger);
                 //down
             }
             //otherwise do nothing
@@ -393,6 +393,7 @@ public class DriveMotorOP extends LinearOpMode {
             //telemetry.addData("Intake Motor Power/Direction", "%4.2f, %4.2f", intakeMotor.getPower(), intakeMotor.getDirection());
             telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
             telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
+            telemetry.addData("Left trigger / Right trigger", "%4.2f, %4.2f", gamepad2.left_trigger, gamepad2.right_trigger);
             telemetry.update();
         }
     }}

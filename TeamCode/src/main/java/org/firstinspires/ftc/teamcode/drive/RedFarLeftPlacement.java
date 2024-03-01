@@ -36,6 +36,13 @@ public class RedFarLeftPlacement extends LinearOpMode {
     private Servo lslideServo = null;
 
     private Servo rslideServo = null;
+    private void printLocation(SampleMecanumDrive d){
+        Pose2d poseEstimate = d.getPoseEstimate();
+        telemetry.addData("x", poseEstimate.getX());
+        telemetry.addData("y", poseEstimate.getY());
+        telemetry.addData("heading", Math.toDegrees(poseEstimate.getHeading()));
+        telemetry.update();
+    }
     private void slideRaise() {
         rraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setDirection(DcMotor.Direction.FORWARD);
@@ -79,21 +86,24 @@ public class RedFarLeftPlacement extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
-        Pose2d startPose = new Pose2d(-12, -62, Math.toRadians(270));
+        Pose2d startPose = new Pose2d(-12-11, -62-0.5, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(-18, -43))
-                .lineTo(new Vector2d(-18, -55))
+                .lineTo(new Vector2d(-18-11, -43-0.5))
+                .addTemporalMarker(()->printLocation(drive))
+                .lineTo(new Vector2d(-18-11, -55-0.5))
                 .strafeLeft(7)
-                .lineTo(new Vector2d(-20, -11))
-                .lineToLinearHeading(new Pose2d(40, -18, Math.toRadians(180)))
+                .lineTo(new Vector2d(-20-11, -11-0.5))
+                .lineToLinearHeading(new Pose2d(40-11, -18-0.5, Math.toRadians(180)))
+                .addTemporalMarker(()->printLocation(drive))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.6)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineTo(new Vector2d( 64,-30-(pixelPlacement*3.5)))
+                .lineTo(new Vector2d( 64-11,-30-0.5-(pixelPlacement*3.5)))
                 .back(9)
+                .addTemporalMarker(()->printLocation(drive))
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
                 .addTemporalMarker(()->slideRaise())
@@ -102,6 +112,7 @@ public class RedFarLeftPlacement extends LinearOpMode {
                 .addTemporalMarker(()->rslideServo.setPosition(0.02))
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
+                .addTemporalMarker(()->printLocation(drive))
                 .waitSeconds(2)
                 .build();
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
