@@ -246,6 +246,12 @@ public class DriveMotorOP extends LinearOpMode {
             rightBackDrive.setPower(rightBackPower);
 
             //switch slide servos position on y press
+            if(gamepad2.left_bumper){
+                rslideServo.setPosition(rslideServo.getPosition()+0.001);
+            }
+            if(gamepad2.right_bumper){
+                rslideServo.setPosition(rslideServo.getPosition()-0.001);
+            }
             if(gamepad2.y && !yPressed) {
                 slideState = !slideState;
                 if (slideState) {
