@@ -59,33 +59,39 @@ public class MeepMeepTesting {
          Vector2d redCloseMarkerTile = new Vector2d(12, -36);
          Vector2d redFarMarkerTile = new Vector2d(-36, -36);
 */
+        int pixelPlacement = 0;
         Pose2d startPose = new Pose2d(12, 62, Math.toRadians(90));
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42, 30, 3, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                .lineTo(new Vector2d(18, 50))
-                                .lineToLinearHeading(new Pose2d(25, 30, Math.toRadians(0)))
-                                .lineTo(new Vector2d(31, 30))
+                                //Drive to Pixel
+                                .lineTo(new Vector2d(17, 43))
+                                //Leave pixel behind and begin route
+                                .splineToConstantHeading(new Vector2d(30, 54), Math.toRadians(0))
                                 //.addTemporalMarker(()->slideRaise())
-                                .waitSeconds(0.9)
                                 //.addTemporalMarker(()->rslideServo.setPosition(0.24))
                                 //.addTemporalMarker(()->slideStop())
-                                .waitSeconds(1)
-                                .lineToLinearHeading(new Pose2d(51, 38, Math.toRadians(180)))
+
+                                //spline to back drop
+                                .splineToSplineHeading(new Pose2d(54, 45 - (pixelPlacement * 3.2), Math.toRadians(180)), Math.toRadians(5))
+
                                 //.addTemporalMarker(()->depositServo.setPosition(0.5))
-                                //.waitSeconds(1)
-                                //.addTemporalMarker(()->slideRaise())
-                                //.waitSeconds(0.4)
+                               // .addTemporalMarker(()->slideRaise())
+
                                 //.addTemporalMarker(()->slideStop())
-                                //.addTemporalMarker(()->rslideServo.setPosition(0.02))
-                                //.waitSeconds(0.4)
-                                //.addTemporalMarker(()->slideDrop())
-                                .waitSeconds(2.3)
-                                .strafeRight(20)
-                                .back(8)
+                               // .addTemporalMarker(()->rslideServo.setPosition(0.02))
+
+                               // .addTemporalMarker(()->slideDrop())
+
+                                //back off and prepare for park
+                                .splineToConstantHeading(new Vector2d(48, 60), Math.toRadians(3))
+
+                                //park
+                                .splineToConstantHeading(new Vector2d(57,60 + (pixelPlacement * 3.2)), Math.toRadians(3))
                                 .build()
+                                //.build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

@@ -180,27 +180,30 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
 
         //Trajectory which is run if the piece is detected on the left spike mark
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, 43))
-                .lineTo(new Vector2d(18, 50))
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.9)
-                .addTemporalMarker(()->rslideServo.setPosition(0.24))
-                .addTemporalMarker(()->slideStop())
-                .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(45, 45 - (pixelPlacement * 3.2), Math.toRadians(180)))
-                .back(9)
-                .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(1)
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideStop())
-                .addTemporalMarker(()->rslideServo.setPosition(0.02))
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(5)
-                .strafeRight(15 + (pixelPlacement * 3.2))
-                .back(8)
+                //Drive to Pixel
+                .lineTo(new Vector2d(17, 43))
+                //could be wrong if marker offsets chain off eachother
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1, ()->rslideServo.setPosition(0.24))
+                .UNSTABLE_addTemporalMarkerOffset(1, ()->slideStop())
+                //Leave pixel behind and begin route
+                .splineToConstantHeading(new Vector2d(30, 54), Math.toRadians(0))
+
+
+                //spline to back drop
+                .splineToSplineHeading(new Pose2d(54, 45 - (pixelPlacement * 3.2), Math.toRadians(180)), Math.toRadians(5))
+                //Drop pixel
+                .UNSTABLE_addTemporalMarkerOffset(1,()->depositServo.setPosition(0.5))
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideStop())
+
+                //back off and prepare for park
+                .splineToConstantHeading(new Vector2d(48, 60), Math.toRadians(3))
+                //lower slides
+                .UNSTABLE_addTemporalMarkerOffset(1,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideDrop())
+                //park
+                .splineToConstantHeading(new Vector2d(57,60 + (pixelPlacement * 3.2)), Math.toRadians(3))
                 .build();
         waitForStart();
 
