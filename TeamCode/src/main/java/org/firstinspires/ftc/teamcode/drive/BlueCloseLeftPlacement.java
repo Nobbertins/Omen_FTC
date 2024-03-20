@@ -140,12 +140,22 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 //lower slides all the way down
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                //Back away from backboard
-                .forward(5)
-                //the robot will go relatively left all the way to corner
-                .strafeRight(28 + (pixelPlacement * 3.2))
-                //go forward into corner
-                .back(8)
+                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-60, 10), Math.toRadians(0))
+                .splineTo(new Vector2d(-60, 35),Math.toRadians(0))
+                //pickup pixels
+                .waitSeconds(1)
+                .splineTo(new Vector2d(-50, 10),Math.toRadians(0))
+                .splineTo(new Vector2d(30, 10),Math.toRadians(0))
+                .waitSeconds(0.8)
+                .lineToLinearHeading(new Pose2d(54, 32 - (pixelPlacement * 1.2), Math.toRadians(180)))
+                //deposit second set of pixels
+                .waitSeconds(1)
+                .waitSeconds(0.4)
+                .waitSeconds(0.4)
+                .waitSeconds(2.3)
+                .strafeLeft(20)
+                .back(11)
                 .build();
 
         //Trajectory which is run if the piece is detected on the middle spike mark
@@ -155,13 +165,13 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 //push pixel to line
                 .lineToLinearHeading(new Pose2d(27, 28.5, Math.toRadians(0)))
                 //leave pixel on line
-                .lineTo(new Vector2d(35, 28.5))
+                .splineTo(new Vector2d(35, 28.5), Math.toRadians(180))
                 .addTemporalMarker(()->slideRaise())
                 .waitSeconds(0.9)
                 .addTemporalMarker(()->rslideServo.setPosition(0.24))
                 .addTemporalMarker(()->slideStop())
                 .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(45, 37 - (pixelPlacement * 2.2), Math.toRadians(180)))
+                .splineToConstantHeading(new Vector2d(45, 37 - (pixelPlacement * 2.2)), Math.toRadians(180))
                 .back(9)
                 .addTemporalMarker(()->depositServo.setPosition(0.5))
                 .waitSeconds(1)
@@ -172,10 +182,26 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .waitSeconds(0.4)
                 .addTemporalMarker(()->slideDrop())
                 .waitSeconds(1)
-                // added forward to make sure the bot moves forward away from the wall
-                .forward(5)
-                .strafeRight(22 + (pixelPlacement * 3.2))
-                .back(8)
+                .splineTo(new Vector2d(30, 10),Math.toRadians(0))
+                .splineToSplineHeading(new Pose2d(-50, 10), Math.toRadians(180))
+                .splineTo(new Vector2d(-60, 35),Math.toRadians(180))
+                //pickup pixels
+                .waitSeconds(1)
+                .splineTo(new Vector2d(-50, 10),Math.toRadians(180))
+                .splineTo(new Vector2d(30, 10),Math.toRadians(180))
+                .waitSeconds(0.8)
+                .splineToConstantHeading(new Vector2d(54, 37 - pixelPlacement * 2.2), Math.toRadians(180))
+                .addTemporalMarker(()->depositServo.setPosition(0.5))
+                .waitSeconds(1)
+                .addTemporalMarker(()->slideRaise())
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideStop())
+                .addTemporalMarker(()->rslideServo.setPosition(0.02))
+                .waitSeconds(0.4)
+                .addTemporalMarker(()->slideDrop())
+                .waitSeconds(1)
+                .strafeLeft(26)
+                .back(11)
                 .build();
 
         //Trajectory which is run if the piece is detected on the left spike mark
@@ -198,12 +224,25 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideStop())
 
                 //back off and prepare for park
-                .splineToConstantHeading(new Vector2d(48, 60), Math.toRadians(3))
-                //lower slides
-                .UNSTABLE_addTemporalMarkerOffset(1,()->rslideServo.setPosition(0.02))
-                .UNSTABLE_addTemporalMarkerOffset(1,()->slideDrop())
+                //.splineToConstantHeading(new Vector2d(48, 60), Math.toRadians(3))
+
                 //park
-                .splineToConstantHeading(new Vector2d(57,60 + (pixelPlacement * 3.2)), Math.toRadians(3))
+                //.splineToConstantHeading(new Vector2d(57,60 + (pixelPlacement * 3.2)), Math.toRadians(3))
+                //move toward pixels
+                .lineTo(new Vector2d(30, 10))
+                .lineToLinearHeading(new Pose2d(-60, 10, Math.toRadians(180)))
+                .lineTo(new Vector2d(-60, 35))
+                //pickup pixels
+                .waitSeconds(1)
+                .lineTo(new Vector2d(-60, 10))
+                .lineTo(new Vector2d(30, 10))
+                .lineToLinearHeading(new Pose2d(54, 45, Math.toRadians(180)))
+                //deposit second set of pixels
+                .UNSTABLE_addTemporalMarkerOffset(1,()->depositServo.setPosition(0.5))
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideStop())
+                .strafeLeft(32)
+                .back(11)
                 .build();
         waitForStart();
 
