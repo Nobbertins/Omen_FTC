@@ -87,79 +87,117 @@ public class RedCloseLeftPlacement extends LinearOpMode {
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
+
         Pose2d startPose = new Pose2d(12, -62, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
-        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(10, -40, Math.toRadians(0)))
-                .lineTo(new Vector2d(15, -40))
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.9)
-                .addTemporalMarker(()->rslideServo.setPosition(0.24))
-                .addTemporalMarker(()->slideStop())
-                .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d( 45,-25.5-(pixelPlacement*3.2), Math.toRadians(180)))
-                .back(7)
-                .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(1)
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideStop())
-                .addTemporalMarker(()->rslideServo.setPosition(0.02))
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(5.5)
-                .strafeLeft(34-(pixelPlacement*3.2))
-                .back(10)
-                .build();
-        TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(18, -50))
-                .lineToLinearHeading(new Pose2d(25, -28, Math.toRadians(0)))
-                .lineTo(new Vector2d(31, -28))
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.9)
-                .addTemporalMarker(()->rslideServo.setPosition(0.24))
-                .addTemporalMarker(()->slideStop())
-                .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(45, -31.5-(pixelPlacement*3.2), Math.toRadians(180)))
-                .back(8.5)
-                .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(1)
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideStop())
-                .addTemporalMarker(()->rslideServo.setPosition(0.02))
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(6)
-                .strafeLeft(25-(pixelPlacement*3.2))
-                .back(10)
-                .build();
+
+        Vector2d rightSpikeEndWaypoint = new Vector2d(17,-47);
+        Vector2d middleSpikeEndWaypoint = new Vector2d(11,-43);
+        Vector2d leftSpikeEndWaypoint = new Vector2d(15, -41);
+
+        Vector2d backdropStagingWaypoint = new Vector2d(30,-54);
+
+        Vector2d backdropLeftEndWaypoint = new Vector2d(50, -43);
+        Vector2d backdropMiddleEndWaypoint = new Vector2d(50,-37);
+        Vector2d backdropRightEndWaypoint = new Vector2d(51,-30);
+
+        Vector2d parkStagingWaypoint = new Vector2d(42,-60);
+        Vector2d parkEndWaypoint = new Vector2d(54,-60);
+
+
+        //Starting position and heading of the robot. *YOU SHOULD NOT NEED TO CHANGE HEADING*
+        drive.setPoseEstimate(startPose);
+
+        //Trajectory which is run if the piece is detected on the right spike mark
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-                .lineTo(new Vector2d(17, -43))
-                .lineTo(new Vector2d(17, -51))
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.9)
-                .addTemporalMarker(()->rslideServo.setPosition(0.24))
-                .addTemporalMarker(()->slideStop())
-                .waitSeconds(1)
-                .lineToLinearHeading(new Pose2d(45, -40.2-(pixelPlacement*3.9), Math.toRadians(180)))
-                .back(8.5)
-                .addTemporalMarker(()->depositServo.setPosition(0.5))
-                .waitSeconds(1)
-                .addTemporalMarker(()->slideRaise())
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideStop())
-                .addTemporalMarker(()->rslideServo.setPosition(0.02))
-                .waitSeconds(0.4)
-                .addTemporalMarker(()->slideDrop())
-                .waitSeconds(1)
-                .forward(6)
-                .strafeLeft(20-(pixelPlacement*3.2))
-                .back(10)
+                //Drive to Pixel
+                .lineToLinearHeading(new Pose2d(rightSpikeEndWaypoint, Math.toRadians(0)))
+                //could be wrong if marker offsets chain off eachother
+                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.3, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
+                //Leave pixel behind and begin route
+                //spline to back drop
+                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(310), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //Drop pixel
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
+                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
+                .waitSeconds(1.5)
+                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
+                //back off and prepare for park
+                .lineTo(parkStagingWaypoint)
+                //lower slides
+                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                //park
+                .lineTo(parkEndWaypoint)
                 .build();
+
+
+        //Trajectory which is run if the piece is detected on the middle spike mark
+        TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
+                //Drive to Pixel
+                .lineToLinearHeading(new Pose2d(middleSpikeEndWaypoint, Math.toRadians(150)))
+                //could be wrong if marker offsets chain off eachother
+                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.2, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.3, ()->rslideServo.setPosition(0.28))
+                //Leave pixel behind and begin route
+                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(0))
+
+                //spline to back drop
+                .splineToSplineHeading(new Pose2d(backdropMiddleEndWaypoint, Math.toRadians(180)), Math.toRadians(20), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //Drop pixel
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
+                .waitSeconds(1)
+                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
+                //back off and prepare for park
+                .lineTo(parkStagingWaypoint)
+                //lower slides
+                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                //park
+                .lineTo(parkEndWaypoint)
+                .build();
+
+
+
+        //Trajectory which is run if the piece is detected on the left spike mark
+        TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
+                //drive forward to a better start locaiton
+                .lineToConstantHeading(new Vector2d(15, -55))
+                //Drive to Pixel
+                .lineTo(leftSpikeEndWaypoint)
+                //could be wrong if marker offsets chain off eachother
+                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.8, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.9, ()->rslideServo.setPosition(0.28))
+                //Leave pixel behind and begin route
+                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(0))
+
+                //spline to back drop
+                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //Drop pixel
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
+                .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
+                .waitSeconds(1)
+                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
+                //back off and prepare for park
+                .lineTo(parkStagingWaypoint)
+                //lower slides
+                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                //park
+                .lineTo(parkEndWaypoint)
+                .build();
+
         waitForStart();
 
         if(isStopRequested()) return;

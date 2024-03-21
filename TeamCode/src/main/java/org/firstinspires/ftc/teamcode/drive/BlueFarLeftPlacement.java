@@ -85,57 +85,63 @@ public class BlueFarLeftPlacement extends LinearOpMode {
         depositServo.setPosition(0);
 
         Vector2d rightSpikeEndWaypoint = new Vector2d(-40,44);
-        Vector2d rightSpikeStagingWaypoint = new Vector2d(-36, 55);
         Vector2d middleSpikeEndWaypoint = new Vector2d(-37,36);
+        Vector2d leftSpikeEndWaypoint = new Vector2d(-35, 44);
+        Vector2d leftSpikeStagingWaypoint = new Vector2d(-33,55);
 
-        Vector2d leftSpikeEndWaypoint = new Vector2d(-45, 51);
-        Vector2d leftSpikeStagingWaypoint = new Vector2d(-30,55);
         Vector2d trussStagingWaypoint = new Vector2d(-35, 60);
         Vector2d trussEndWaypoint = new Vector2d(-12,60);
 
+        Vector2d gateStagingWaypoint = new Vector2d(-50,30);
+        Vector2d gateEndWaypoint = new Vector2d(10, 0);
+
         Vector2d backdropStagingWaypoint = new Vector2d(30,54);
 
-
-        Vector2d backdropLeftEndWaypoint = new Vector2d(50, 43);
+        Vector2d backdropLeftEndWaypoint = new Vector2d(51, 38);
         Vector2d backdropMiddleEndWaypoint = new Vector2d(51,33.5);
         Vector2d backdropRightEndWaypoint = new Vector2d(51,29);
 
         Vector2d parkStagingWaypoint = new Vector2d(42,10);
         Vector2d parkEndWaypoint = new Vector2d(54,10);
 
+        //true means travel along edges to get to backboard and false means travel through middle
+        boolean edgeTraverse = true;
+
         Pose2d startPose = new Pose2d(-33, 62, Math.toRadians(90));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
-                //drive to spike
-                .lineTo(leftSpikeEndWaypoint)
-                //Drive through truss
-                .lineTo(trussStagingWaypoint)
-                .lineTo(trussEndWaypoint)
-                .waitSeconds(0.3)
+                //drop pixel
+                .lineToLinearHeading(new Pose2d(leftSpikeEndWaypoint, Math.toRadians(180)),  SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                //drive through truss
+                .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)),SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                        SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .lineToConstantHeading(trussEndWaypoint)
+                .waitSeconds(1)
                 //could be wrong if marker offsets chain off eachother
-                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.9, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(1.3, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1.8, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.9, ()->rslideServo.setPosition(0.28))
+                .lineTo(backdropStagingWaypoint)
                 //Leave pixel behind and begin route
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(310), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(backdropLeftEndWaypoint, Math.toRadians(290), SampleMecanumDrive.getVelocityConstraint(50, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                 .waitSeconds(1.5)
-                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
                 //back off and prepare for park
-                .lineTo(parkStagingWaypoint)
-                //lower slides
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                .lineTo(parkStagingWaypoint)
+                //lower slides
                 //park
                 .lineTo(parkEndWaypoint)
                 .build();
+
 
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
                 //drop pixel
@@ -160,13 +166,11 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                 .waitSeconds(1.5)
-                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-                //back off and prepare for park
-                .lineTo(parkStagingWaypoint)
                 //lower slides
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                //back off and prepare for park
+                .lineTo(parkStagingWaypoint)
                 //park
                 .lineTo(parkEndWaypoint)
                 .build();
@@ -194,13 +198,11 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                 .waitSeconds(1.5)
-                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-                //back off and prepare for park
-                .lineTo(parkStagingWaypoint)
                 //lower slides
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                //back off and prepare for park
+                .lineTo(parkStagingWaypoint)
                 //park
                 .lineTo(parkEndWaypoint)
                 .build();
