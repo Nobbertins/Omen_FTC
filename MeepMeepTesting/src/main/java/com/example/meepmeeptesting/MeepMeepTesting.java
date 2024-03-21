@@ -64,58 +64,52 @@ public class MeepMeepTesting {
 
 
 
-        Pose2d startPose = new Pose2d(-33, -62, Math.toRadians(270));
-        //drive.setPoseEstimate(startPose);
+        Vector2d leftSpikeEndWaypoint = new Vector2d(19.5,47);
+        Vector2d middleSpikeEndWaypoint = new Vector2d(11,38.5);
+        Vector2d rightSpikeEndWaypoint = new Vector2d(12.5, 41);
 
-        Vector2d leftSpikeEndWaypoint = new Vector2d(-35,-40.5);
-        Vector2d middleSpikeEndWaypoint = new Vector2d(-35,-37);
-        Vector2d rightSpikeEndWaypoint = new Vector2d(-34, -40);
+        Vector2d backdropStagingWaypoint = new Vector2d(30,54);
 
-        Vector2d trussStagingWaypoint = new Vector2d(-37.5, -60);
-        Vector2d trussEndWaypoint = new Vector2d(-12,-60);
 
-        Vector2d gateStagingWaypoint = new Vector2d(-50,-30);
-        Vector2d gateEndWaypoint = new Vector2d(10, 0);
+        Vector2d backdropLeftEndWaypoint = new Vector2d(51, 43);
+        Vector2d backdropMiddleEndWaypoint = new Vector2d(52,37);
+        Vector2d backdropRightEndWaypoint = new Vector2d(52,29);
 
-        Vector2d backdropStagingWaypoint = new Vector2d(30,-54);
+        Vector2d parkStagingWaypoint = new Vector2d(42,60);
+        Vector2d parkEndWaypoint = new Vector2d(54,60);
 
-        Vector2d backdropRightEndWaypoint = new Vector2d(49.5, -39.3);
-        Vector2d backdropMiddleEndWaypoint = new Vector2d(50, -36.5);
-        Vector2d backdropLeftEndWaypoint = new Vector2d(49.5,-31.5);
 
-        Vector2d parkStagingWaypoint = new Vector2d(42,-11);
-        Vector2d parkEndWaypoint = new Vector2d(54,-14);
+        //Starting position and heading of the robot. *YOU SHOULD NOT NEED TO CHANGE HEADING*
+        Pose2d startPose = new Pose2d(12, 62, Math.toRadians(90));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
                 .setConstraints(42, 30, 3, Math.toRadians(60), 16.05)
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
-                                //drop pixel
-                                .lineToLinearHeading(new Pose2d(middleSpikeEndWaypoint, Math.toRadians(240)))
-                                //drive through truss
-                                .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)))
-                                .lineToConstantHeading(trussEndWaypoint)
-                                //Change time dleay to match alliance member
-                                .waitSeconds(1)
+                                //Drive to Pixel
+                                .lineTo(leftSpikeEndWaypoint)
                                 //could be wrong if marker offsets chain off eachother
-//                                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-//                                .UNSTABLE_addTemporalMarkerOffset(1.8, ()->slideStop())
-//                                .UNSTABLE_addTemporalMarkerOffset(1.9, ()->rslideServo.setPosition(0.28))
-                                .lineTo(backdropStagingWaypoint)
+//                                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+//                                .UNSTABLE_addTemporalMarkerOffset(1.1, ()->slideStop())
+//                                .UNSTABLE_addTemporalMarkerOffset(0.9, ()->rslideServo.setPosition(0.31))
                                 //Leave pixel behind and begin route
+                                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90))
+
                                 //spline to back drop
-                                .splineToConstantHeading(backdropMiddleEndWaypoint, Math.toRadians(5))
+                                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1))
                                 //Drop pixel
 //                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-//                                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-//                                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
-                                .waitSeconds(1.5)
+//                                .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
+//                                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
+                                .waitSeconds(1)
+                                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
+                                //back off and prepare for park
+                                .lineTo(parkStagingWaypoint)
                                 //lower slides
 //                                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
 //                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
-                                //back off and prepare for park
-                                .lineTo(parkStagingWaypoint)
                                 //park
                                 .lineTo(parkEndWaypoint)
                                 .build()
