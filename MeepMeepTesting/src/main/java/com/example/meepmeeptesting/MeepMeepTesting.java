@@ -62,26 +62,29 @@ public class MeepMeepTesting {
 */
         int pixelPlacement = 0;
 
-        Vector2d rightSpikeEndWaypoint = new Vector2d(-36,51);
-        Vector2d rightSpikeStagingWaypoint = new Vector2d(-36, 55);
-        Vector2d middleSpikeEndWaypoint = new Vector2d(-11,43);
-        Vector2d leftSpikeEndWaypoint = new Vector2d(-45, 51);
-        Vector2d leftSpikeStagingWaypoint = new Vector2d(-30,55);
-        Vector2d trussStagingWaypoint = new Vector2d(-35, 60);
-        Vector2d trussEndWaypoint = new Vector2d(-10,60);
-
-        Vector2d backdropStagingWaypoint = new Vector2d(30,54);
 
 
-        Vector2d backdropLeftEndWaypoint = new Vector2d(50, 43);
-        Vector2d backdropMiddleEndWaypoint = new Vector2d(50,37);
-        Vector2d backdropRightEndWaypoint = new Vector2d(51,30);
+        Pose2d startPose = new Pose2d(-33, -62, Math.toRadians(270));
+        //drive.setPoseEstimate(startPose);
 
-        Vector2d parkStagingWaypoint = new Vector2d(42,60);
-        Vector2d parkEndWaypoint = new Vector2d(54,60);
+        Vector2d leftSpikeEndWaypoint = new Vector2d(-35,-40.5);
+        Vector2d middleSpikeEndWaypoint = new Vector2d(-35,-37);
+        Vector2d rightSpikeEndWaypoint = new Vector2d(-34, -40);
 
-        Pose2d startPose = new Pose2d(-33, 62, Math.toRadians(90));
+        Vector2d trussStagingWaypoint = new Vector2d(-37.5, -60);
+        Vector2d trussEndWaypoint = new Vector2d(-12,-60);
 
+        Vector2d gateStagingWaypoint = new Vector2d(-50,-30);
+        Vector2d gateEndWaypoint = new Vector2d(10, 0);
+
+        Vector2d backdropStagingWaypoint = new Vector2d(30,-54);
+
+        Vector2d backdropRightEndWaypoint = new Vector2d(49.5, -39.3);
+        Vector2d backdropMiddleEndWaypoint = new Vector2d(50, -36.5);
+        Vector2d backdropLeftEndWaypoint = new Vector2d(49.5,-31.5);
+
+        Vector2d parkStagingWaypoint = new Vector2d(42,-11);
+        Vector2d parkEndWaypoint = new Vector2d(54,-14);
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -89,33 +92,33 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 //drop pixel
-                                .lineToConstantHeading(rightSpikeEndWaypoint)
+                                .lineToLinearHeading(new Pose2d(middleSpikeEndWaypoint, Math.toRadians(240)))
                                 //drive through truss
-                                .lineToLinearHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)))
+                                .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)))
                                 .lineToConstantHeading(trussEndWaypoint)
+                                //Change time dleay to match alliance member
                                 .waitSeconds(1)
-                                .lineTo(backdropStagingWaypoint)
                                 //could be wrong if marker offsets chain off eachother
-                                //.UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                                //.UNSTABLE_addTemporalMarkerOffset(0.3, ()->slideStop())
-                                //.UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
+//                                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+//                                .UNSTABLE_addTemporalMarkerOffset(1.8, ()->slideStop())
+//                                .UNSTABLE_addTemporalMarkerOffset(1.9, ()->rslideServo.setPosition(0.28))
+                                .lineTo(backdropStagingWaypoint)
                                 //Leave pixel behind and begin route
                                 //spline to back drop
-                                .splineToConstantHeading(backdropRightEndWaypoint, Math.toRadians(290))
+                                .splineToConstantHeading(backdropMiddleEndWaypoint, Math.toRadians(5))
                                 //Drop pixel
-                                //.UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-                                //.UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-                                //.UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
+//                                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
+//                                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                                 .waitSeconds(1.5)
+                                //lower slides
+//                                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
+//                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
                                 //back off and prepare for park
                                 .lineTo(parkStagingWaypoint)
-                                //lower slides
-                                //.UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-                                //.UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
                                 //park
                                 .lineTo(parkEndWaypoint)
                                 .build()
-                                //.build()
                 );
 
         meepMeep.setBackground(MeepMeep.Background.FIELD_CENTERSTAGE_JUICE_DARK)

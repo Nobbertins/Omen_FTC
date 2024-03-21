@@ -34,7 +34,6 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
 
     private DcMotor lraiseMotor = null;
     private Servo depositServo = null;
-    private Servo lslideServo = null;
 
     private Servo rslideServo = null;
 
@@ -119,7 +118,6 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
         rraiseMotor = hardwareMap.get(DcMotor.class, "rraise");
         lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         depositServo = hardwareMap.get(Servo.class, "deposit");
-        lslideServo = hardwareMap.get(Servo.class, "lslide");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         //Intialize robot
         rslideServo.setPosition(0.02);

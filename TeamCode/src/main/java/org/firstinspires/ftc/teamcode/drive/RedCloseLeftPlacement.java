@@ -33,7 +33,6 @@ public class RedCloseLeftPlacement extends LinearOpMode {
 
     private DcMotor lraiseMotor = null;
     private Servo depositServo = null;
-    private Servo lslideServo = null;
 
     private Servo rslideServo = null;
 
@@ -83,7 +82,6 @@ public class RedCloseLeftPlacement extends LinearOpMode {
         rraiseMotor = hardwareMap.get(DcMotor.class, "rraise");
         lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         depositServo = hardwareMap.get(Servo.class, "deposit");
-        lslideServo = hardwareMap.get(Servo.class, "lslide");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         rslideServo.setPosition(0.02);
         depositServo.setPosition(0);
@@ -92,7 +90,7 @@ public class RedCloseLeftPlacement extends LinearOpMode {
         drive.setPoseEstimate(startPose);
 
         Vector2d rightSpikeEndWaypoint = new Vector2d(15,-50);
-        Vector2d middleSpikeEndWaypoint = new Vector2d(11,-38);
+        Vector2d middleSpikeEndWaypoint = new Vector2d(11,-37);
         Vector2d leftSpikeEndWaypoint = new Vector2d(11, -42);
 
         Vector2d backdropStagingWaypoint = new Vector2d(30,-54);
