@@ -157,8 +157,8 @@ public class RedFarLeftPlacement extends LinearOpMode {
 
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.93, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(1.5, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.8, ()->rslideServo.setPosition(0.28))
                 //Change time dleay to match alliance member
                 .waitSeconds(1)
                 .lineTo(backdropStagingWaypoint,  SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),

@@ -146,16 +146,16 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
         //close deposit servo to lock in piece
         depositServo.setPosition(0);
         moveIntake(0);
-        Vector2d leftSpikeEndWaypoint = new Vector2d(20,47);
+        Vector2d leftSpikeEndWaypoint = new Vector2d(18,47);
         Vector2d middleSpikeEndWaypoint = new Vector2d(11,37);
         Vector2d rightSpikeEndWaypoint = new Vector2d(12.5, 40.5);
 
         Vector2d backdropStagingWaypoint = new Vector2d(30,54);
 
 
-        Vector2d backdropLeftEndWaypoint = new Vector2d(50, 42.5);
+        Vector2d backdropLeftEndWaypoint = new Vector2d(50, 45);
         Vector2d backdropMiddleEndWaypoint = new Vector2d(52,37);
-        Vector2d backdropRightEndWaypoint = new Vector2d(50,30);
+        Vector2d backdropRightEndWaypoint = new Vector2d(51,30);
 
         Vector2d parkStagingWaypoint = new Vector2d(42,60);
         Vector2d parkEndWaypoint = new Vector2d(54,60);
@@ -167,16 +167,16 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
 
         //Trajectory which is run if the piece is detected on the right spike mark
         TrajectorySequence trajSeqRight = drive.trajectorySequenceBuilder(startPose)
-            //drive forward to a better start locaiton
+            //drive forward to a better start location
             .lineToConstantHeading(new Vector2d(15, 55))
             //Drive to Pixel
             .lineToLinearHeading(new Pose2d(rightSpikeEndWaypoint, Math.toRadians(0)))
             //could be wrong if marker offsets chain off eachother
             .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-            .UNSTABLE_addTemporalMarkerOffset(0.35, ()->slideStop())
+            .UNSTABLE_addTemporalMarkerOffset(0.24, ()->slideStop())
             //Leave pixel behind and begin route
             //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1), SampleMecanumDrive.getVelocityConstraint(45, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                     SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0.3, ()->rslideServo.setPosition(0.31))
 
@@ -187,6 +187,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1.4,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(1.8,()->slideDrop())
             .waitSeconds(2)
+                .forward(3)
+                .strafeRight(35)
+                .back(8)
             .build();
 
 
@@ -199,7 +202,7 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.5, ()->slideStop())
 
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropMiddleEndWaypoint, Math.toRadians(180)), Math.toRadians(20), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToSplineHeading(new Pose2d(backdropMiddleEndWaypoint, Math.toRadians(180)), Math.toRadians(20), SampleMecanumDrive.getVelocityConstraint(45, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 .UNSTABLE_addTemporalMarkerOffset(0.3, ()->rslideServo.setPosition(0.31))
@@ -210,7 +213,10 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
                 .UNSTABLE_addTemporalMarkerOffset(1.6,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(2.1,()->slideDrop())
-                .waitSeconds(2)
+                .waitSeconds(2.2)
+                .forward(3)
+                .strafeLeft(25)
+                .back(8)
                 .build();
 
 
@@ -221,12 +227,12 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .lineTo(leftSpikeEndWaypoint)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.1, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1, ()->slideStop())
                 //Leave pixel behind and begin route
                 .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90))
 
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1), SampleMecanumDrive.getVelocityConstraint(45, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .UNSTABLE_addTemporalMarkerOffset(0.3, ()->rslideServo.setPosition(0.31))
 
                 //Drop pixel
@@ -236,6 +242,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(1,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(1.5,()->slideDrop())
                 .waitSeconds(2)
+                .forward(3)
+                .strafeLeft(32)
+                .back(8)
                 .build();
 
         waitForStart();
@@ -249,11 +258,13 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 drive.followTrajectorySequence(trajSeqLeft);
                 intakePose = trajSeqLeft.end();
                 yPlacement = backdropRightEndWaypoint.getY();
+                pushes = 1;
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(trajSeqRight);
                 intakePose = trajSeqRight.end();
                 yPlacement = backdropLeftEndWaypoint.getY();
+                pushes = -1;
                 break;
             case MIDDLE:
                 drive.followTrajectorySequence(trajSeqMiddle);
@@ -263,54 +274,54 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
             default:
                 break;
         }
-        TrajectorySequence Intake = drive.trajectorySequenceBuilder(intakePose)
-                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-40, 10,Math.toRadians(180)))
-                .lineTo(new Vector2d(-60, 35))
-                .forward(6.5 + pushes)
-                //pickup pixels
-                .build();
-        drive.followTrajectorySequence(Intake);
-        depositServo.setPosition(0.5);
-        sleep(500);
-        moveIntake(0.5);
-        sleep(800);
-        drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
-        sleep(800);
-        runIntake();
-        drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
-        sleep(600);
-        for(int i = 0; i < 3; i++) {
-            drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
-            sleep(200);
-            drive.setMotorPowers(0,0,0,0);
-            sleep(200);
-        }
-        sleep(1800);
-        stopIntake();
-        depositServo.setPosition(0);
-        sleep(500);
-        moveIntake(0);
-        runOuttake();
-        sleep(1500);
-        stopIntake();
-        TrajectorySequence Deposit = drive.trajectorySequenceBuilder(Intake.end())
-                .lineToLinearHeading(new Pose2d(-40, 10, Math.toRadians(0)))
-                .lineTo(new Vector2d(30, 10))
-                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
-                .lineTo(new Vector2d(50, yPlacement))
-                .addTemporalMarker(() -> depositServo.setPosition(0.5))
-                .waitSeconds(0.5)
-                .addTemporalMarker(() -> slideRaise())
-                .waitSeconds(0.7)
-                .addTemporalMarker(() -> slideStop())
-                .waitSeconds(0.2)
-                .addTemporalMarker(() -> rslideServo.setPosition(0.03))
-                .waitSeconds(0.5)
-                .build();
-        drive.followTrajectorySequence(Deposit);
+//        TrajectorySequence Intake = drive.trajectorySequenceBuilder(intakePose)
+//                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
+//                .lineToLinearHeading(new Pose2d(-50, 9.5,Math.toRadians(180)))
+//                .forward(6.5 + pushes)
+//                //pickup pixels
+//                .build();
+//        drive.followTrajectorySequence(Intake);
+//        depositServo.setPosition(0.5);
+//        sleep(500);
+//        moveIntake(0.5);
+//        sleep(800);
+//        drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
+//        sleep(800);
+//        runIntake();
+//        drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+//        sleep(600);
+//        for(int i = 0; i < 3; i++) {
+//            drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+//            sleep(200);
+//            drive.setMotorPowers(0,0,0,0);
+//            sleep(200);
+//        }
+//        sleep(1800);
+//        stopIntake();
+//        depositServo.setPosition(0);
+//        sleep(500);
+//        moveIntake(0);
+//        runOuttake();
+//        sleep(1500);
+//        stopIntake();
+//        TrajectorySequence Deposit = drive.trajectorySequenceBuilder(Intake.end())
+//                .lineToLinearHeading(new Pose2d(-40, 10, Math.toRadians(180)))
+//                .lineTo(new Vector2d(30, 10))
+//                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+//                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->slideStop())
+//                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
+//                .waitSeconds(1)
+//                .lineTo(new Vector2d(50, yPlacement))
+//                .addTemporalMarker(() -> depositServo.setPosition(0.5))
+//                .waitSeconds(0.5)
+//                .addTemporalMarker(() -> slideRaise())
+//                .waitSeconds(0.7)
+//                .addTemporalMarker(() -> slideStop())
+//                .waitSeconds(0.2)
+//                .addTemporalMarker(() -> rslideServo.setPosition(0.03))
+//                .waitSeconds(0.5)
+//                .build();
+//        drive.followTrajectorySequence(Deposit);
     }
 
 

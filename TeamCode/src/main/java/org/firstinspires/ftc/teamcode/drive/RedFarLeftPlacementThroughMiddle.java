@@ -25,12 +25,6 @@ import org.openftc.easyopencv.OpenCvWebcam;
 // btw strafeRight goes left and strafeLeft goes right
 @Autonomous
 public class RedFarLeftPlacementThroughMiddle extends LinearOpMode {
-
-    public int pixelPlacement;//0 is left, 1 is right
-
-    public RedFarLeftPlacementThroughMiddle(){
-        pixelPlacement = 0;
-    }
     private DcMotor rraiseMotor = null;
 
     private DcMotor lraiseMotor = null;
@@ -103,7 +97,7 @@ public class RedFarLeftPlacementThroughMiddle extends LinearOpMode {
         //true means travel along edges to get to backboard and false means travel through middle
         boolean edgeTraverse = true;
 
-        Pose2d startPose = new Pose2d(-33, -62, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(-33, -62, Math.toRadians(270));
         drive.setPoseEstimate(startPose);
 
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
@@ -116,8 +110,8 @@ public class RedFarLeftPlacementThroughMiddle extends LinearOpMode {
                 .waitSeconds(1)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(2.1, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(1.6, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->rslideServo.setPosition(0.28))
                 .splineTo(backdropStagingWaypoint,Math.toRadians(180))
                 //Leave pixel behind and begin route
                 //spline to back drop
@@ -147,8 +141,8 @@ public class RedFarLeftPlacementThroughMiddle extends LinearOpMode {
                 .waitSeconds(1)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(2.1, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(1.6, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->rslideServo.setPosition(0.28))
                 .splineTo(backdropStagingWaypoint,Math.toRadians(180))
                 //Leave pixel behind and begin route
                 //spline to back drop
@@ -176,8 +170,8 @@ public class RedFarLeftPlacementThroughMiddle extends LinearOpMode {
                 .waitSeconds(1)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(2.1, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(1.6, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->rslideServo.setPosition(0.28))
                 .splineTo(backdropStagingWaypoint,Math.toRadians(180))
                 //Leave pixel behind and begin route
                 //spline to back drop
