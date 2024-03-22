@@ -80,7 +80,7 @@ public class MeepMeepTesting {
 
 
         //Starting position and heading of the robot. *YOU SHOULD NOT NEED TO CHANGE HEADING*
-        Pose2d startPose = new Pose2d(12, 62, Math.toRadians(90));
+        Pose2d startPose = new Pose2d(54, 38, Math.toRadians(180));
 
         RoadRunnerBotEntity myBot = new DefaultBotBuilder(meepMeep)
                 // Set bot constraints: maxVel, maxAccel, maxAngVel, maxAngAccel, track width
@@ -88,30 +88,25 @@ public class MeepMeepTesting {
                 .followTrajectorySequence(drive ->
                         drive.trajectorySequenceBuilder(startPose)
                                 //Drive to Pixel
-                                .lineTo(leftSpikeEndWaypoint)
-                                //could be wrong if marker offsets chain off eachother
-//                                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-//                                .UNSTABLE_addTemporalMarkerOffset(1.1, ()->slideStop())
-//                                .UNSTABLE_addTemporalMarkerOffset(0.9, ()->rslideServo.setPosition(0.31))
-                                //Leave pixel behind and begin route
-                                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90))
-
-                                //spline to back drop
-                                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0.1))
-                                //Drop pixel
-//                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-//                                .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
-//                                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
+                                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
+                                .splineToSplineHeading(new Pose2d(-40, 10), Math.toRadians(180))
+                                .splineToLinearHeading(new Pose2d(-60, 35),Math.toRadians(180))
+                                .turn(Math.toRadians(180))
+                                //pickup pixels
                                 .waitSeconds(1)
-                                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-                                //back off and prepare for park
-                                .lineTo(parkStagingWaypoint)
-                                //lower slides
-//                                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-//                                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
-                                //park
-                                .lineTo(parkEndWaypoint)
+                                .turn(Math.toRadians(180))
+                                .splineTo(new Vector2d(-40, 10),Math.toRadians(0))
+                                .splineTo(new Vector2d(30, 10),Math.toRadians(0))
+                                .splineTo(new Vector2d(46, 38),Math.toRadians(180))
+                                .back(8)
+                                .waitSeconds(0.8)
+                                //deposit second set of pixels
+                                .waitSeconds(1)
+                                .waitSeconds(0.4)
+                                .waitSeconds(0.4)
+                                .waitSeconds(2.3)
+                                .strafeLeft(24)
+                                .back(8)
                                 .build()
                 );
 
