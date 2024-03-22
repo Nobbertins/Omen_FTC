@@ -36,6 +36,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
     private Servo depositServo = null;
 
     private Servo rslideServo = null;
+    private Servo ldropServo = null;
+    private Servo rdropServo = null;
+    private DcMotor intakeMotor = null;
 
     //Raise bucket to drop height
     private void slideRaise() {
@@ -57,6 +60,22 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
         lraiseMotor.setDirection(DcMotor.Direction.REVERSE);
         lraiseMotor.setPower(0.5);
         rraiseMotor.setPower(0.5);
+    }
+    private void runIntake(){
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor.setPower(1);
+    }
+    private void stopIntake(){
+        intakeMotor.setPower(0);
+    }
+    private void runOuttake(){
+        intakeMotor.setDirection(DcMotor.Direction.REVERSE);
+        intakeMotor.setPower(0.9);
+    }
+    private void moveIntake(double position){
+        //from 0 (top) to 0.5 (bottom)
+        ldropServo.setPosition(0.5 - position);
+        rdropServo.setPosition(position);
     }
     OpenCvWebcam webcam1 = null;
     public MarkerPosition currentMarkerPosition = MarkerPosition.UNKNOWN;
@@ -119,11 +138,14 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
         lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         depositServo = hardwareMap.get(Servo.class, "deposit");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
+        rdropServo = hardwareMap.get(Servo.class, "rdrop");
+        ldropServo = hardwareMap.get(Servo.class, "ldrop");
+        intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         //Intialize robot
-        rslideServo.setPosition(0.02);
+        rslideServo.setPosition(0.03);
         //close deposit servo to lock in piece
         depositServo.setPosition(0);
-
+        moveIntake(0);
         Vector2d leftSpikeEndWaypoint = new Vector2d(20,47);
         Vector2d middleSpikeEndWaypoint = new Vector2d(11,37);
         Vector2d rightSpikeEndWaypoint = new Vector2d(12.5, 40.5);
@@ -162,16 +184,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
             .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
             .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
             .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
-            .waitSeconds(1.5)
-            //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-            //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-            //back off and prepare for park
-            .lineTo(parkStagingWaypoint)
-            //lower slides
-            .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-            .UNSTABLE_addTemporalMarkerOffset(0.7,()->slideDrop())
-            //park
-            .lineTo(parkEndWaypoint)
+                .UNSTABLE_addTemporalMarkerOffset(1.4,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(1.8,()->slideDrop())
+            .waitSeconds(2)
             .build();
 
 
@@ -193,15 +208,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-                .waitSeconds(1)
-
-                //back off and prepare for park
-                .lineTo(parkStagingWaypoint)
-                //lower slides
-                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
-                //park
-                .lineTo(parkEndWaypoint)
+                .UNSTABLE_addTemporalMarkerOffset(1.6,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(2.1,()->slideDrop())
+                .waitSeconds(2)
                 .build();
 
 
@@ -224,34 +233,84 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
-                .waitSeconds(1)
-                //.UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                //.UNSTABLE_addTemporalMarkerOffset(1.5,()->slideStop())
-                //back off and prepare for park
-                .lineTo(parkStagingWaypoint)
-                //lower slides
-                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
-                //park
-                .lineTo(parkEndWaypoint)
+                .UNSTABLE_addTemporalMarkerOffset(1,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(1.5,()->slideDrop())
+                .waitSeconds(2)
                 .build();
 
         waitForStart();
 
         if(isStopRequested()) return;
+        Pose2d intakePose = null;
+        int pushes = 0;
+        double yPlacement = 0;
         switch(currentMarkerPosition){
             case LEFT:
                 drive.followTrajectorySequence(trajSeqLeft);
+                intakePose = trajSeqLeft.end();
+                yPlacement = backdropRightEndWaypoint.getY();
                 break;
             case RIGHT:
                 drive.followTrajectorySequence(trajSeqRight);
+                intakePose = trajSeqRight.end();
+                yPlacement = backdropLeftEndWaypoint.getY();
                 break;
             case MIDDLE:
                 drive.followTrajectorySequence(trajSeqMiddle);
+                intakePose = trajSeqMiddle.end();
+                yPlacement = backdropRightEndWaypoint.getY();
                 break;
             default:
                 break;
         }
+        TrajectorySequence Intake = drive.trajectorySequenceBuilder(intakePose)
+                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
+                .lineToLinearHeading(new Pose2d(-40, 10,Math.toRadians(180)))
+                .lineTo(new Vector2d(-60, 35))
+                .forward(6.5 + pushes)
+                //pickup pixels
+                .build();
+        drive.followTrajectorySequence(Intake);
+        depositServo.setPosition(0.5);
+        sleep(500);
+        moveIntake(0.5);
+        sleep(800);
+        drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
+        sleep(800);
+        runIntake();
+        drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+        sleep(600);
+        for(int i = 0; i < 3; i++) {
+            drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+            sleep(200);
+            drive.setMotorPowers(0,0,0,0);
+            sleep(200);
+        }
+        sleep(1800);
+        stopIntake();
+        depositServo.setPosition(0);
+        sleep(500);
+        moveIntake(0);
+        runOuttake();
+        sleep(1500);
+        stopIntake();
+        TrajectorySequence Deposit = drive.trajectorySequenceBuilder(Intake.end())
+                .lineToLinearHeading(new Pose2d(-40, 10, Math.toRadians(0)))
+                .lineTo(new Vector2d(30, 10))
+                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
+                .lineTo(new Vector2d(50, yPlacement))
+                .addTemporalMarker(() -> depositServo.setPosition(0.5))
+                .waitSeconds(0.5)
+                .addTemporalMarker(() -> slideRaise())
+                .waitSeconds(0.7)
+                .addTemporalMarker(() -> slideStop())
+                .waitSeconds(0.2)
+                .addTemporalMarker(() -> rslideServo.setPosition(0.03))
+                .waitSeconds(0.5)
+                .build();
+        drive.followTrajectorySequence(Deposit);
     }
 
 
