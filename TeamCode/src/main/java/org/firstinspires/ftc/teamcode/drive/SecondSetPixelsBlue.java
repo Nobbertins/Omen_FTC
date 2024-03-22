@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class SecondSetPixels extends LinearOpMode {
+public class SecondSetPixelsBlue extends LinearOpMode {
 
 
     // pos x is closer to the wall in this case, pos y is farther away from wall
