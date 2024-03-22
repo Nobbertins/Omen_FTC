@@ -18,7 +18,7 @@ import org.openftc.easyopencv.OpenCvPipeline;
 import org.openftc.easyopencv.OpenCvWebcam;
 
 @Autonomous
-public class SecondSetPixelsBlue extends LinearOpMode {
+public class SecondSetPixelsRed extends LinearOpMode {
 
 
     // pos x is closer to the wall in this case, pos y is farther away from wall
@@ -118,10 +118,9 @@ public class SecondSetPixelsBlue extends LinearOpMode {
 
         //Trajectory which is run if the piece is detected on the right spike mark
         TrajectorySequence Intake = drive.trajectorySequenceBuilder(startPose)
-                //Drive to Pixel
-                .splineTo(new Vector2d(20, 10),Math.toRadians(180))
-                .splineToSplineHeading(new Pose2d(-40, 10), Math.toRadians(180))
-                .splineToLinearHeading(new Pose2d(-60, 35),Math.toRadians(180))
+                .splineTo(new Vector2d(20, -10),Math.toRadians(180))
+                .splineToSplineHeading(new Pose2d(-40, -10), Math.toRadians(180))
+                .splineToLinearHeading(new Pose2d(-60, -11),Math.toRadians(180))
                 .turn(Math.toRadians(180))
                 //pickup pixels
                 .waitSeconds(1)
@@ -132,17 +131,18 @@ public class SecondSetPixelsBlue extends LinearOpMode {
 
         TrajectorySequence Deposit = drive.trajectorySequenceBuilder(startPose)
                 .turn(Math.toRadians(180))
-                .splineTo(new Vector2d(-40, 10),Math.toRadians(0))
-                .splineTo(new Vector2d(30, 10),Math.toRadians(0))
-                .splineTo(new Vector2d(46, 38),Math.toRadians(180))
-                .back(8)
-                .waitSeconds(1.8)
+                .splineTo(new Vector2d(-40, -10),Math.toRadians(0))
+                .splineTo(new Vector2d(30, -10),Math.toRadians(0))
+                .splineTo(new Vector2d(46, -38),Math.toRadians(0))
+                .forward(8)
+                .waitSeconds(0.8)
                 //deposit second set of pixels
-                .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
+                .waitSeconds(1)
+                .waitSeconds(0.4)
+                .waitSeconds(0.4)
+                .waitSeconds(2.3)
                 .strafeLeft(24)
-                .back(8)
+                .forward(8)
                 .build();
 
         waitForStart();
