@@ -136,8 +136,6 @@ public class DriveMotorOP extends LinearOpMode {
     private DcMotor intakeMotor = null;
     private DcMotor hangMotor = null;
     //declare all servo motors
-    private Servo lslideServo = null;
-
     private Servo rslideServo = null;
 
     private Servo ldropServo = null;
@@ -146,6 +144,7 @@ public class DriveMotorOP extends LinearOpMode {
 
     private Servo depositServo = null;
     private Servo launchServo = null;
+    private Servo placeServo = null;
     //private CRServo contServo = null;
     @Override
     public void runOpMode() {
@@ -160,12 +159,13 @@ public class DriveMotorOP extends LinearOpMode {
         lraiseMotor = hardwareMap.get(DcMotor.class, "lraise");
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         hangMotor = hardwareMap.get(DcMotor.class, "hang");
-        lslideServo = hardwareMap.get(Servo.class, "lslide");
+        placeServo = hardwareMap.get(Servo.class, "place");
         rslideServo = hardwareMap.get(Servo.class, "rslide");
         ldropServo = hardwareMap.get(Servo.class, "ldrop");
         rdropServo = hardwareMap.get(Servo.class, "rdrop");
         depositServo = hardwareMap.get(Servo.class, "deposit");
         launchServo = hardwareMap.get(Servo.class, "launch");
+
         //contServo = hardwareMap.crservo.get("contservo");
 
         //set all default directions
@@ -201,14 +201,18 @@ public class DriveMotorOP extends LinearOpMode {
 
         boolean runIntakeMotor = false;
         boolean rbPressed = false;
+        boolean placePressed = false;
+        boolean placeState = false;
         double dropPosition = 0;
+
         //initialize servos positions
         //lslideServo.setPosition(0);
-        rslideServo.setPosition(0.02);
+        rslideServo.setPosition(0.03);
         depositServo.setPosition(0.5);
         ldropServo.setPosition(0.5);
         rdropServo.setPosition(0);
         launchServo.setPosition(0.2);
+        placeServo.setPosition(0.2);
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             //max variable will be used later -> calculated then compared
@@ -244,7 +248,17 @@ public class DriveMotorOP extends LinearOpMode {
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
-
+            //switch place servo on x press
+            if(gamepad2.x && !placePressed){
+                placeState = !placeState;
+                if(placeState){
+                    placeServo.setPosition(0.45);
+                }
+                else{
+                    placeServo.setPosition(0.2);
+                }
+            }
+            placePressed = gamepad2.x;
             //switch slide servos position on y press
             if(gamepad2.left_bumper){
                 rslideServo.setPosition(rslideServo.getPosition()+0.001);
@@ -259,7 +273,7 @@ public class DriveMotorOP extends LinearOpMode {
                     rslideServo.setPosition(0.24);
                 } else {
                     //lslideServo.setPosition(0.5);
-                    rslideServo.setPosition(0.02);
+                    rslideServo.setPosition(0.03);
                 }
             }
             //launch drone
