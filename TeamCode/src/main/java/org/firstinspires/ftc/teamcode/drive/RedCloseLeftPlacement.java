@@ -173,6 +173,7 @@ private DcMotor intakeMotor = null;
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(0.35, ()->slideStop())
                 .UNSTABLE_addTemporalMarkerOffset(0.45, ()->rslideServo.setPosition(0.28))
+                .waitSeconds(1.5)
                 //spline to back drop
                 .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
