@@ -183,8 +183,8 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 //Drop pixel
             .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
             .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-            .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(1.4,()->rslideServo.setPosition(0.02))
+            .UNSTABLE_addTemporalMarkerOffset(1.15, () -> slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.25,()->rslideServo.setPosition(0.02))
                 .UNSTABLE_addTemporalMarkerOffset(1.8,()->slideDrop())
             .waitSeconds(2)
                 .forward(3)
@@ -236,11 +236,9 @@ public class BlueCloseLeftPlacement extends LinearOpMode {
                 .UNSTABLE_addTemporalMarkerOffset(0.3, ()->rslideServo.setPosition(0.31))
 
                 //Drop pixel
-                .UNSTABLE_addTemporalMarkerOffset(0.55,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(0.6, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.9, () -> slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(1,()->rslideServo.setPosition(0.02))
-                .UNSTABLE_addTemporalMarkerOffset(1.5,()->slideDrop())
+                .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
+                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                 .waitSeconds(2)
                 .forward(3)
                 .strafeLeft(32)

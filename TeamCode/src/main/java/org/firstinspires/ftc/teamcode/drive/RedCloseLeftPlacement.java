@@ -105,9 +105,9 @@ private DcMotor intakeMotor = null;
 
         Vector2d backdropStagingWaypoint = new Vector2d(30,-54);
 
-        Vector2d backdropLeftEndWaypoint = new Vector2d(51, -31);
-        Vector2d backdropMiddleEndWaypoint = new Vector2d(51,-37);
-        Vector2d backdropRightEndWaypoint = new Vector2d(51,-42.8);
+        Vector2d backdropLeftEndWaypoint = new Vector2d(51, -31.5);
+        Vector2d backdropMiddleEndWaypoint = new Vector2d(51,-37.2);
+        Vector2d backdropRightEndWaypoint = new Vector2d(50.,-42.8);
 
         Vector2d parkStagingWaypoint = new Vector2d(42,-60);
         Vector2d parkEndWaypoint = new Vector2d(56,-60);
@@ -123,21 +123,22 @@ private DcMotor intakeMotor = null;
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.81, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.25, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->rslideServo.setPosition(0.28))
                 //Leave pixel behind and begin route
+                .forward(5)
                 .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //spline to back drop
                 .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(310), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
-                .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.28))
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.3,()->rslideServo.setPosition(0.03))
-                .UNSTABLE_addTemporalMarkerOffset(1.8,()->slideDrop())
-                .waitSeconds(2)
-                .forward(3)
+                .UNSTABLE_addTemporalMarkerOffset(0.7,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1.2,()->rslideServo.setPosition(0.03))
+                .UNSTABLE_addTemporalMarkerOffset(1.6,()->slideDrop())
+                .waitSeconds(1)
+                .back(10)
                 .strafeRight(30)
                 .back(8)
                 .build();
@@ -159,13 +160,13 @@ private DcMotor intakeMotor = null;
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.7,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(1.2,()->rslideServo.setPosition(0.03))
                 .UNSTABLE_addTemporalMarkerOffset(1.6,()->slideDrop())
-                .waitSeconds(2)
+                .waitSeconds(1)
                 .forward(3)
-                .strafeRight(20)
-                .back(8)
+                .strafeRight(28)
+                .back(10)
                 .build();
 
 
@@ -177,20 +178,20 @@ private DcMotor intakeMotor = null;
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.35, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(0.25, ()->slideStop())
                 .UNSTABLE_addTemporalMarkerOffset(0.45, ()->rslideServo.setPosition(0.28))
-                .waitSeconds(1.5)
+                .waitSeconds(0.7)
                 //spline to back drop
                 .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(0.75, () -> slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(0.7, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(0.95,()->rslideServo.setPosition(0.03))
                 .UNSTABLE_addTemporalMarkerOffset(1.35,()->slideDrop())
-                .waitSeconds(2)
+                .waitSeconds(1)
                 .forward(3)
-                .strafeRight(10)
-                .back(8)
+                .strafeRight(20)
+                .back(10)
                 .build();
 
         waitForStart();

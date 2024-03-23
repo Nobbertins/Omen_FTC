@@ -96,8 +96,8 @@ public class BlueFarLeftPlacement extends LinearOpMode {
         Vector2d backdropStagingWaypoint = new Vector2d(30,54);
 
         Vector2d backdropLeftEndWaypoint = new Vector2d(50, 40.5);
-        Vector2d backdropMiddleEndWaypoint = new Vector2d(50, 34);
-        Vector2d backdropRightEndWaypoint = new Vector2d(50,28);
+        Vector2d backdropMiddleEndWaypoint = new Vector2d(50, 35);
+        Vector2d backdropRightEndWaypoint = new Vector2d(49.5,29.5);
 
         Vector2d parkStagingWaypoint = new Vector2d(42,10);
         Vector2d parkEndWaypoint = new Vector2d(57,10);
@@ -116,7 +116,7 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)),SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToConstantHeading(trussEndWaypoint)
-                .waitSeconds(13)
+                .waitSeconds(4)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
@@ -151,11 +151,11 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)),SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToConstantHeading(trussEndWaypoint)
-                .waitSeconds(13)
+                .waitSeconds(5)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.7, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(1.8, ()->rslideServo.setPosition(0.28))
+                .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(2.1, ()->rslideServo.setPosition(0.28))
                 .lineTo(backdropStagingWaypoint,  SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Leave pixel behind and begin route
@@ -165,11 +165,11 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.2, () -> slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
                 .waitSeconds(1.5)
-                //lower slides
+                //back off and prepare for park
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
-                .UNSTABLE_addTemporalMarkerOffset(0.5,()->slideDrop())
+                .UNSTABLE_addTemporalMarkerOffset( 0.5,()->slideDrop())
                 .waitSeconds(2)
                 //back off and prepare for park
 //                .lineTo(parkStagingWaypoint)
@@ -185,7 +185,7 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                 .lineToSplineHeading(new Pose2d(trussStagingWaypoint, Math.toRadians(180)),SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 .lineToConstantHeading(trussEndWaypoint)
-                .waitSeconds(17)
+                .waitSeconds(4)
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(1,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(2, ()->slideStop())
@@ -198,8 +198,8 @@ public class BlueFarLeftPlacement extends LinearOpMode {
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
-                .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.3, () -> slideStop())
+                .UNSTABLE_addTemporalMarkerOffset(1.05, () -> slideRaise())
+                .UNSTABLE_addTemporalMarkerOffset(1.2, () -> slideStop())
                 .waitSeconds(1.5)
                 //lower slides
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.02))
