@@ -125,18 +125,21 @@ private DcMotor intakeMotor = null;
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(0.81, ()->slideStop())
                 //Leave pixel behind and begin route
-                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(90), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(310), SampleMecanumDrive.getVelocityConstraint(30, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToSplineHeading(new Pose2d(backdropRightEndWaypoint, Math.toRadians(180)), Math.toRadians(310), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0,()->rslideServo.setPosition(0.28))
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(1, () -> slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(1.3,()->rslideServo.setPosition(0.02))
+                .UNSTABLE_addTemporalMarkerOffset(1.3,()->rslideServo.setPosition(0.03))
                 .UNSTABLE_addTemporalMarkerOffset(1.8,()->slideDrop())
                 .waitSeconds(2)
+                .forward(3)
+                .strafeRight(30)
+                .back(8)
                 .build();
         //Trajectory which is run if the piece is detected on the middle spike mark
         TrajectorySequence trajSeqMiddle = drive.trajectorySequenceBuilder(startPose)
@@ -148,11 +151,11 @@ private DcMotor intakeMotor = null;
                 .UNSTABLE_addTemporalMarkerOffset(0.25, ()->slideStop())
                 .UNSTABLE_addTemporalMarkerOffset(0.4, ()->rslideServo.setPosition(0.28))
                 //Leave pixel behind and begin route
-                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToConstantHeading(backdropStagingWaypoint, Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
 
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropMiddleEndWaypoint, Math.toRadians(180)), Math.toRadians(20), SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .splineToSplineHeading(new Pose2d(backdropMiddleEndWaypoint, Math.toRadians(180)), Math.toRadians(20), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
@@ -160,6 +163,9 @@ private DcMotor intakeMotor = null;
                 .UNSTABLE_addTemporalMarkerOffset(1.2,()->rslideServo.setPosition(0.03))
                 .UNSTABLE_addTemporalMarkerOffset(1.6,()->slideDrop())
                 .waitSeconds(2)
+                .forward(3)
+                .strafeRight(20)
+                .back(8)
                 .build();
 
 
@@ -167,7 +173,7 @@ private DcMotor intakeMotor = null;
         //Trajectory which is run if the piece is detected on the left spike mark
         TrajectorySequence trajSeqLeft = drive.trajectorySequenceBuilder(startPose)
                 //Drive to Pixel
-                .lineToLinearHeading(new Pose2d(leftSpikeEndWaypoint, Math.toRadians(359)), SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
+                .lineToLinearHeading(new Pose2d(leftSpikeEndWaypoint, Math.toRadians(359)), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH),
                         SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //could be wrong if marker offsets chain off eachother
                 .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
@@ -175,13 +181,16 @@ private DcMotor intakeMotor = null;
                 .UNSTABLE_addTemporalMarkerOffset(0.45, ()->rslideServo.setPosition(0.28))
                 .waitSeconds(1.5)
                 //spline to back drop
-                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(40, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
+                .splineToSplineHeading(new Pose2d(backdropLeftEndWaypoint, Math.toRadians(180)), Math.toRadians(0), SampleMecanumDrive.getVelocityConstraint(60, DriveConstants.MAX_ANG_VEL, DriveConstants.TRACK_WIDTH), SampleMecanumDrive.getAccelerationConstraint(DriveConstants.MAX_ACCEL))
                 //Drop pixel
                 .UNSTABLE_addTemporalMarkerOffset(0.5,()->depositServo.setPosition(0.5))
                 .UNSTABLE_addTemporalMarkerOffset(0.75, () -> slideRaise())
                 .UNSTABLE_addTemporalMarkerOffset(0.95,()->rslideServo.setPosition(0.03))
                 .UNSTABLE_addTemporalMarkerOffset(1.35,()->slideDrop())
                 .waitSeconds(2)
+                .forward(3)
+                .strafeRight(10)
+                .back(8)
                 .build();
 
         waitForStart();
@@ -210,52 +219,52 @@ private DcMotor intakeMotor = null;
                 break;
         }
         //Trajectory which is run if the piece is detected on the right spike mark
-        TrajectorySequence Intake = drive.trajectorySequenceBuilder(intakePose)
-                .splineTo(new Vector2d(20, -10),Math.toRadians(180))
-                .lineToLinearHeading(new Pose2d(-50, -10,Math.toRadians(180)))
-                .forward(6.5 + pushes)
-                //pickup pixels
-                .build();
-        drive.followTrajectorySequence(Intake);
-        depositServo.setPosition(0.5);
-        sleep(500);
-        moveIntake(0.5);
-        sleep(800);
-        drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
-        sleep(800);
-        runIntake();
-        drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
-        sleep(600);
-        for(int i = 0; i < 3; i++) {
-            drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
-            sleep(200);
-            drive.setMotorPowers(0,0,0,0);
-            sleep(200);
-        }
-        sleep(1800);
-        stopIntake();
-        depositServo.setPosition(0);
-        sleep(500);
-        moveIntake(0);
-        runOuttake();
-        sleep(1500);
-        stopIntake();
-        TrajectorySequence Deposit = drive.trajectorySequenceBuilder(Intake.end())
-                .lineTo(new Vector2d(30, -10))
-                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
-                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->slideStop())
-                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
-                .lineTo(new Vector2d(50, yPlacement))
-                .addTemporalMarker(() -> depositServo.setPosition(0.5))
-                .waitSeconds(0.5)
-                .addTemporalMarker(() -> slideRaise())
-                .waitSeconds(0.7)
-                .addTemporalMarker(() -> slideStop())
-                .waitSeconds(0.2)
-                .addTemporalMarker(() -> rslideServo.setPosition(0.03))
-                .waitSeconds(0.5)
-                .build();
-        drive.followTrajectorySequence(Deposit);
+//        TrajectorySequence Intake = drive.trajectorySequenceBuilder(intakePose)
+//                .splineTo(new Vector2d(20, -10),Math.toRadians(180))
+//                .lineToLinearHeading(new Pose2d(-50, -10,Math.toRadians(180)))
+//                .forward(6.5 + pushes)
+//                //pickup pixels
+//                .build();
+//        drive.followTrajectorySequence(Intake);
+//        depositServo.setPosition(0.5);
+//        sleep(500);
+//        moveIntake(0.5);
+//        sleep(800);
+//        drive.setMotorPowers(-0.4,-0.4,-0.4,-0.4);
+//        sleep(800);
+//        runIntake();
+//        drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+//        sleep(600);
+//        for(int i = 0; i < 3; i++) {
+//            drive.setMotorPowers(0.3, 0.3, 0.3, 0.3);
+//            sleep(200);
+//            drive.setMotorPowers(0,0,0,0);
+//            sleep(200);
+//        }
+//        sleep(1800);
+//        stopIntake();
+//        depositServo.setPosition(0);
+//        sleep(500);
+//        moveIntake(0);
+//        runOuttake();
+//        sleep(1500);
+//        stopIntake();
+//        TrajectorySequence Deposit = drive.trajectorySequenceBuilder(Intake.end())
+//                .lineTo(new Vector2d(30, -10))
+//                .UNSTABLE_addTemporalMarkerOffset(0,()->slideRaise())
+//                .UNSTABLE_addTemporalMarkerOffset(0.4, ()->slideStop())
+//                .UNSTABLE_addTemporalMarkerOffset(0.5, ()->rslideServo.setPosition(0.28))
+//                .lineTo(new Vector2d(50, yPlacement))
+//                .addTemporalMarker(() -> depositServo.setPosition(0.5))
+//                .waitSeconds(0.5)
+//                .addTemporalMarker(() -> slideRaise())
+//                .waitSeconds(0.7)
+//                .addTemporalMarker(() -> slideStop())
+//                .waitSeconds(0.2)
+//                .addTemporalMarker(() -> rslideServo.setPosition(0.03))
+//                .waitSeconds(0.5)
+//                .build();
+//        drive.followTrajectorySequence(Deposit);
     }
     //Camera lens was 12.5cm from right side of tile and at edge of tile when these values were calibrated
     class examplePipeline extends OpenCvPipeline{
